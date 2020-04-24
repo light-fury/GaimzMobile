@@ -23,6 +23,7 @@ const ConfirmButton = ({
   height = 58,
   label = '',
   fontStyle = {},
+  containerStyle = {},
   onClick = () => {},
 }) => {
   return (
@@ -30,6 +31,7 @@ const ConfirmButton = ({
       style={[
         {height, backgroundColor: color, borderColor, borderWidth: 1},
         styles.centerStyle,
+        containerStyle,
       ]}
       onPress={onClick}>
       <Text style={[styles.textStyle, {color: textColor}, fontStyle]}>
