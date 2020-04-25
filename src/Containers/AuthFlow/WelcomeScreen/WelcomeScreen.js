@@ -49,26 +49,6 @@ class WelcomeScreen extends React.PureComponent {
     };
   }
 
-  UNSAFE_componentWillMount() {
-    const {
-      Secrets: {secretsData},
-      createSecretsData,
-      navigation,
-    } = this.props;
-    if (secretsData && secretsData.auth_token) {
-      this.setState(
-        {
-          email: secretsData.email,
-          password: secretsData.password,
-        },
-        () => {
-          const {email, password} = this.state;
-          createSecretsData({email, password, navigation});
-        },
-      );
-    }
-  }
-
   componentDidMount() {
     SplashScreen.hide();
   }
@@ -158,7 +138,7 @@ class WelcomeScreen extends React.PureComponent {
             borderColor={colors.transparent}
             textColor={colors.gray}
             label={'Forgot password?'}
-            onClick={() => alert('Forgot Password')}
+            onClick={() => navigation.navigate('ForgotPasswordScreen')}
             fontStyle={styles.lightFont}
           />
           <View style={styles.space} />

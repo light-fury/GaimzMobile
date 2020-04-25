@@ -21,11 +21,11 @@ import SocialButton from '../../../Components/SocialButton';
 import ConfirmButton from '../../../Components/ConfirmButton';
 import CustomInput from '../../../Components/CustomInput';
 
-import styles from './SignUpScreen.style';
+import styles from './ForgotPasswordScreen.style';
 import {colors, baseUrl} from '../../../Assets/config';
 import Axios from 'axios';
 
-class SignUpScreen extends React.PureComponent {
+class ForgotPasswordScreen extends React.PureComponent {
   static propTypes = {
     Secrets: PropTypes.shape({
       isFetching: PropTypes.bool.isRequired,
@@ -71,47 +71,20 @@ class SignUpScreen extends React.PureComponent {
             source={require('../../../Assets/app_logo.png')}
             resizeMode={'contain'}
           />
+          <SocialButton
+            style={styles.socialButton}
+            icon={require('../../../Assets/arrow_left.png')}
+            onClick={() => navigation.pop()}
+          />
         </ImageBackground>
         <KeyboardAwareScrollView
           enableOnAndroid
           style={styles.absoluteFill}
           contentContainerStyle={styles.scrollInner}>
-          <Text style={styles.title}>Create an account</Text>
-          <Text style={styles.instructionText}>Sign in to continue</Text>
-          <View style={styles.socialContainer}>
-            <SocialButton
-              style={[styles.socialButton, {backgroundColor: colors.fbColor}]}
-              icon={require('../../../Assets/facebook_icon.png')}
-              onClick={() => {
-                alert('FB Login');
-              }}
-            />
-            <SocialButton
-              style={[styles.socialButton, {backgroundColor: colors.lightGray}]}
-              icon={require('../../../Assets/twitch_icon.png')}
-              onClick={() => {
-                alert('Twitch Login');
-              }}
-            />
-            <SocialButton
-              style={[styles.socialButton, {backgroundColor: colors.secondary}]}
-              icon={require('../../../Assets/steam_icon.png')}
-              onClick={() => {
-                alert('Steam Login');
-              }}
-            />
-            <Text style={[styles.instructionText, {fontSize: 12}]}>
-              Or use your email account
-            </Text>
-          </View>
-          <CustomInput
-            label={'Username'}
-            value={username}
-            onUpdateValue={(text) => this.setState({username: text})}
-            icon={require('../../../Assets/check_icon.png')}
-            iconVisible={username.length > 0}
-            containerStyle={styles.inputContainer}
-          />
+          <Text style={styles.title}>Password recovery</Text>
+          <Text style={styles.instructionText}>We all forget something.</Text>
+          <View style={styles.space} />
+          <View style={styles.space} />
           <CustomInput
             label={'Email'}
             value={email}
@@ -121,29 +94,18 @@ class SignUpScreen extends React.PureComponent {
             borderColor={email.length > 0 ? colors.red : colors.grayOpacity}
             containerStyle={styles.inputContainer}
           />
-          <CustomInput
-            label={'Password'}
-            value={password}
-            secureTextEntry={!passwordVisible}
-            icon={require('../../../Assets/eye_icon.png')}
-            iconVisible={password.length > 0}
-            onUpdateValue={(text) => this.setState({password: text})}
-            onClick={() => this.setState({passwordVisible: !passwordVisible})}
-            containerStyle={styles.inputContainer}
+          <View style={styles.flexStyle} />
+          <ConfirmButton
+            color={colors.signUpColor}
+            label={'Send'}
+            onClick={() => alert('Pin code sent')}
+            containerStyle={styles.mh20}
           />
           <View style={styles.space} />
           <ConfirmButton
-            color={colors.signUpColor}
-            label={'Sign Up'}
-            onClick={() =>
-              navigation.dangerouslyGetParent().navigate('MainFlow')
-            }
-            containerStyle={styles.mh20}
-          />
-          <ConfirmButton
             borderColor={colors.transparent}
             textColor={colors.gray}
-            label={'Already have an account? Login'}
+            label={'Get Back'}
             onClick={() => navigation.pop()}
             fontStyle={styles.lightFont}
           />
@@ -153,4 +115,4 @@ class SignUpScreen extends React.PureComponent {
   }
 }
 
-export default SignUpScreen;
+export default ForgotPasswordScreen;

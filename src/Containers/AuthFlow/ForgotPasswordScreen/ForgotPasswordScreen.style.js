@@ -30,6 +30,7 @@ export default StyleSheet.create({
     borderTopRightRadius: 32,
   },
   scrollInner: {
+    flex: 1,
     paddingVertical: 40,
     paddingHorizontal: 28,
   },
@@ -45,20 +46,16 @@ export default StyleSheet.create({
     color: colors.gray,
     marginTop: 8,
   },
-  socialContainer: {
-    marginTop: 38,
-    flexDirection: 'row',
-    alignItems: 'center',
-    height: 38,
-    marginBottom: 28,
-  },
   socialButton: {
     width: 38,
     height: 38,
     borderRadius: 12,
-    marginRight: 18,
+    position: 'absolute',
+    top: getStatusBarHeight(false),
+    left: 23,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: `${colors.lightGray}70`,
   },
   inputContainer: {
     marginBottom: 18,

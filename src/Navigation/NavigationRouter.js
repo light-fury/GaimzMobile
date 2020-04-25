@@ -11,9 +11,11 @@ import {
   Text,
   Platform,
 } from 'react-native';
-
+// Auth Flow
 import WelcomeScreen from '../Containers/AuthFlow/WelcomeScreen';
 import SignUpScreen from '../Containers/AuthFlow/SignUpScreen';
+import ForgotPasswordScreen from '../Containers/AuthFlow/ForgotPasswordScreen';
+// Main Flow
 import DashboardScreen from '../Containers/MainFlow/HomeFlow/DashboardScreen';
 import TabScreen from '../Components/TabScreen/TabScreen';
 import styles from './NavigationRouter.style';
@@ -27,18 +29,24 @@ export const MainNavigator = createStackNavigator(
         WelcomeScreen: {
           screen: WelcomeScreen,
           navigationOptions: () => ({
-            header: null,
+            headerShown: false,
           }),
         },
         SignUpScreen: {
           screen: SignUpScreen,
           navigationOptions: () => ({
-            header: null,
+            headerShown: false,
+          }),
+        },
+        ForgotPasswordScreen: {
+          screen: ForgotPasswordScreen,
+          navigationOptions: () => ({
+            headerShown: false,
           }),
         },
       }),
       navigationOptions: () => ({
-        header: null,
+        headerShown: false,
       }),
     },
     MainFlow: {
@@ -62,7 +70,7 @@ export const MainNavigator = createStackNavigator(
             navigationOptions: ({navigation}) => {
               let {routeName} = navigation.state.routes[navigation.state.index];
               let navigationOptions = {
-                header: null,
+                headerShown: false,
               };
               if (['ProfileDetailScreen'].indexOf(routeName) >= 0) {
                 navigationOptions.tabBarVisible = false;
@@ -85,8 +93,8 @@ export const MainNavigator = createStackNavigator(
           navigationOptions: () => ({
             headerStyle: {backgroundColor: colors.primary},
             headerTintColor: colors.white,
-            header: null,
-            gesturesEnabled: false,
+            headerShown: false,
+            gestureEnabled: false,
           }),
         },
       ),
