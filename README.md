@@ -7,8 +7,12 @@
 ## Description
 This project is the React Native Frontend used for Gaimz as a platform. You should be able to follow the steps from this readme to get an app up and running.
 
+## Commands
 yarn
 > Run for Android
+
 react-native run-android
+
 > Run for iOS
+
 react-native run-ios
