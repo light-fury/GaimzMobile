@@ -16,11 +16,19 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   padding0: {
-    padding: 0,
-    paddingBottom: calcReal(30),
+    flex: 1,
   },
   mh48: {
     marginHorizontal: calcReal(48),
+  },
+  mh16: {
+    marginTop: calcReal(12),
+    marginHorizontal: calcReal(16),
+    height: calcReal(42),
+    backgroundColor: `${colors.loginColor}D8`,
+  },
+  disabledColor: {
+    backgroundColor: `${colors.loginColor}30`,
   },
   space: {
     height: calcReal(18),
@@ -35,32 +43,36 @@ export default StyleSheet.create({
     marginTop: calcReal(24),
     backgroundColor: colors.secondary,
     borderRadius: calcReal(12),
-    paddingHorizontal: calcReal(23),
+    paddingHorizontal: calcReal(48),
     paddingVertical: calcReal(12),
   },
   itemTitle: {
-    fontSize: calcReal(12),
-    lineHeight: calcReal(20),
+    fontSize: calcReal(18),
+    lineHeight: calcReal(23),
     fontWeight: 'bold',
     color: colors.white,
     textAlign: 'center',
-    textTransform: 'uppercase',
   },
   whiteColor: {
     color: colors.white,
     marginBottom: 0,
   },
   inputContainer: {
-    marginTop: calcReal(28),
+    marginBottom: calcReal(30),
   },
   flexContainer: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  rowContainer: {
-    marginTop: calcReal(6),
-    flexDirection: 'row',
-  },
-  ml20: {
-    marginLeft: calcReal(26),
+  descriptionText: {
+    fontSize: calcReal(12),
+    lineHeight: calcReal(17),
+    fontWeight: '300',
+    color: colors.white,
+    textAlign: 'center',
+    letterSpacing: -calcReal(0.25),
+    marginVertical: calcReal(24),
+    marginHorizontal: calcReal(16),
   },
 });

@@ -1,19 +1,8 @@
 /* eslint-disable react-native/no-inline-styles */
 // @flow
 import React from 'react';
-import {
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
-  ImageBackground,
-  Image,
-  Alert,
-  ActivityIndicator,
-} from 'react-native';
+import {Text, View, ImageBackground, Image} from 'react-native';
 import PropTypes from 'prop-types';
-import IIcon from 'react-native-vector-icons/Ionicons';
-import SplashScreen from 'react-native-splash-screen';
 import SafeAreaView from 'react-native-safe-area-view';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
@@ -23,7 +12,6 @@ import CustomInput from '../../../Components/CustomInput';
 
 import styles from './SignUpScreen.style';
 import {colors, calcReal} from '../../../Assets/config';
-import Axios from 'axios';
 
 class SignUpScreen extends React.PureComponent {
   static propTypes = {
@@ -38,9 +26,6 @@ class SignUpScreen extends React.PureComponent {
 
   constructor(props) {
     super(props);
-    const {
-      Secrets: {secretsData},
-    } = props;
     this.state = {
       username: '',
       email: '',
@@ -52,10 +37,7 @@ class SignUpScreen extends React.PureComponent {
 
   render() {
     const {email, password, passwordVisible, username} = this.state;
-    const {
-      Secrets: {isFetching},
-      navigation,
-    } = this.props;
+    const {navigation} = this.props;
 
     return (
       <SafeAreaView

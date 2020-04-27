@@ -4,25 +4,17 @@ import React from 'react';
 import {
   Text,
   View,
-  TextInput,
   TouchableOpacity,
   Image,
-  ScrollView,
-  ActivityIndicator,
   FlatList,
   ImageBackground,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import IIcon from 'react-native-vector-icons/Ionicons';
-import SplashScreen from 'react-native-splash-screen';
 import SafeAreaView from 'react-native-safe-area-view';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import Modal from 'react-native-modal';
 
 import SocialButton from '../../../../Components/SocialButton';
 import styles from './DashboardScreen.style';
-import {colors, baseUrl} from '../../../../Assets/config';
-import Axios from 'axios';
+import {colors} from '../../../../Assets/config';
 
 class DashboardScreen extends React.PureComponent {
   static propTypes = {
@@ -37,9 +29,6 @@ class DashboardScreen extends React.PureComponent {
 
   constructor(props) {
     super(props);
-    const {
-      Secrets: {secretsData},
-    } = props;
     this.state = {
       fullname: '',
       email: '',
@@ -122,11 +111,7 @@ class DashboardScreen extends React.PureComponent {
   };
 
   render() {
-    const {fullname, email, listData} = this.state;
-    const {
-      Secrets: {isFetching},
-      navigation,
-    } = this.props;
+    const {listData} = this.state;
 
     return (
       <SafeAreaView

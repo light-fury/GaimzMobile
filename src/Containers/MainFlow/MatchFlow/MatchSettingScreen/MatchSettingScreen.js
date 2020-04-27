@@ -1,30 +1,14 @@
 /* eslint-disable react-native/no-inline-styles */
 // @flow
 import React from 'react';
-import {
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
-  Image,
-  ScrollView,
-  Dimensions,
-  FlatList,
-  ImageBackground,
-} from 'react-native';
+import {Text, View, ScrollView, Dimensions} from 'react-native';
 import PropTypes from 'prop-types';
-import IIcon from 'react-native-vector-icons/Ionicons';
-import SplashScreen from 'react-native-splash-screen';
 import SafeAreaView from 'react-native-safe-area-view';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import Modal from 'react-native-modal';
 
 import ConfirmButton from '../../../../Components/ConfirmButton';
+import CustomDropdown from '../../../../Components/CustomDropdown';
 import styles from './MatchSettingScreen.style';
-import {colors, calcReal} from '../../../../Assets/config';
-import Axios from 'axios';
-
-const {width, height} = Dimensions.get('window');
+import {colors} from '../../../../Assets/config';
 
 class MatchSettingScreen extends React.PureComponent {
   static propTypes = {
@@ -39,81 +23,105 @@ class MatchSettingScreen extends React.PureComponent {
 
   constructor(props) {
     super(props);
-    const {
-      Secrets: {secretsData},
-    } = props;
     this.state = {
-      listData: [
-        {
-          image: require('../../../../Assets/dota_background.png'),
-          gameTitle: 'Dota 2',
-        },
-        {
-          image: require('../../../../Assets/dota_background.png'),
-          gameTitle: 'Dota 2',
-        },
-        {
-          image: require('../../../../Assets/dota_background.png'),
-          gameTitle: 'Dota 2',
-        },
-        {
-          image: require('../../../../Assets/dota_background.png'),
-          gameTitle: 'Dota 2',
-        },
+      gameTypeOption: ['1 Versus 1', '5 Versus 5'],
+      gameType: '1 Versus 1',
+      gameModeOption: ['All Pick'],
+      gameMode: 'All Pick',
+      regionOption: ['Automatic'],
+      region: 'Automatic',
+      streamerOptions: ['User1', 'User2', 'User3'],
+      streamer: 'User1',
+      matchOptions: [
+        'Free Mode',
+        'Subscriber Only',
+        'Follower Only',
+        'Password',
       ],
+      match: 'Free Mode',
       focused: 0,
     };
   }
 
-  renderItem = ({item, index}) => {
-    return (
-      <View style={styles.itemContainer}>
-        <TouchableOpacity>
-          <ImageBackground
-            style={styles.itemBackground}
-            imageStyle={styles.itemImage}
-            source={item.image}
-            resizeMode={'cover'}
-          />
-        </TouchableOpacity>
-      </View>
-    );
-  };
-
   render() {
-    const {listData} = this.state;
     const {
-      Secrets: {isFetching},
-      navigation,
-    } = this.props;
+      gameTypeOption,
+      gameType,
+      gameModeOption,
+      gameMode,
+      regionOption,
+      region,
+      streamerOptions,
+      streamer,
+      matchOptions,
+      match,
+    } = this.state;
+    const {navigation} = this.props;
 
     return (
       <SafeAreaView
         forceInset={{bottom: 'never', top: 'never'}}
         style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.profileName}>
-            Connect your steam account first
+        <View style={styles.header} />
+        <ScrollView
+          style={styles.searchContainer}
+          contentContainerStyle={styles.padding0}>
+          <Text style={[styles.itemTitle, styles.fontSpacing]}>
+            SEARCH SETTINGS
           </Text>
-        </View>
-        <FlatList
-          style={styles.flexContainer}
-          contentContainerStyle={styles.scrollIntent}
-          data={listData}
-          horizontal
-          pagingEnabled
-          getItemLayout={(data, index) => ({
-            length: width - calcReal(48),
-            offset: (width - calcReal(48)) * index,
-            index,
-          })}
-          renderItem={this.renderItem}
-          keyExtractor={(item, index) => `${item.gameTitle}-${index}`}
-        />
+          <CustomDropdown
+            label={'GAME TYPE'}
+            labelStyle={styles.whiteColor}
+            containerStyle={styles.inputContainer}
+            options={gameTypeOption}
+            value={gameType}
+            onUpdateValue={(val) => this.setState({gameType: val})}
+          />
+          <View style={styles.rowContainer}>
+            <CustomDropdown
+              label={'GAME MODE'}
+              labelStyle={styles.whiteColor}
+              containerStyle={styles.flexContainer}
+              options={gameModeOption}
+              value={gameMode}
+              onUpdateValue={(val) => this.setState({gameMode: val})}
+            />
+            <CustomDropdown
+              label={'REGION'}
+              labelStyle={styles.whiteColor}
+              containerStyle={[styles.flexContainer, styles.ml20]}
+              options={regionOption}
+              value={region}
+              onUpdateValue={(val) => this.setState({region: val})}
+            />
+          </View>
+          <CustomDropdown
+            label={'SELECT STREAMER'}
+            labelStyle={styles.whiteColor}
+            containerStyle={styles.inputContainer}
+            options={streamerOptions}
+            value={streamer}
+            onUpdateValue={(val) => this.setState({streamer: val})}
+          />
+          <CustomDropdown
+            label={'CREATE MATCH'}
+            labelStyle={styles.whiteColor}
+            containerStyle={styles.inputContainer}
+            options={matchOptions}
+            value={match}
+            onUpdateValue={(val) => this.setState({match: val})}
+          />
+        </ScrollView>
         <ConfirmButton
           color={colors.loginColor}
           label={'FIND MATCH'}
-          onClick={() => alert('Find Match')}
+          onClick={() => {
+            if (match === 'Password') {
+              navigation.navigate('MatchPasswordScreen');
+            } else {
+              alert('Match Screen');
+            }
+          }}
           fontStyle={styles.fontSpacing}
           containerStyle={styles.mh48}
         />
@@ -122,7 +130,7 @@ class MatchSettingScreen extends React.PureComponent {
           borderColor={colors.secondaryOpacity}
           textColor={colors.grayText}
           label={'SETTINGS'}
-          onClick={() => alert('Settings')}
+          onClick={() => navigation.popToTop()}
           fontStyle={styles.fontSpacing}
           containerStyle={styles.mh48}
         />

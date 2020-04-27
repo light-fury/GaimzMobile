@@ -1,8 +1,6 @@
 // @flow
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {colors, calcReal} from '../../Assets/config';
-
-const drawerWidth = Dimensions.get('window').width * 0.7;
 
 export default StyleSheet.create({
   flexStyle: {

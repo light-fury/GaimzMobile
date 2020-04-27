@@ -2,8 +2,8 @@
 
 import {connect} from 'react-redux';
 
-import ForgotPasswordScreen from './ForgotPasswordScreen';
-import {createSecretsData} from '../../../State/Secrets/Actions';
+import MatchErrorScreen from './MatchErrorScreen';
+import {createSecretsData} from '../../../../State/Secrets/Actions';
 
 const mapStateToProps = (state) => ({
   Secrets: state.Secrets,
@@ -15,7 +15,4 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ForgotPasswordScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(MatchErrorScreen);

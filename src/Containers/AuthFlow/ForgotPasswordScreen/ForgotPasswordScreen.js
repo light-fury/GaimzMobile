@@ -1,19 +1,8 @@
 /* eslint-disable react-native/no-inline-styles */
 // @flow
 import React from 'react';
-import {
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
-  ImageBackground,
-  Image,
-  Alert,
-  ActivityIndicator,
-} from 'react-native';
+import {Text, View, ImageBackground, Image} from 'react-native';
 import PropTypes from 'prop-types';
-import IIcon from 'react-native-vector-icons/Ionicons';
-import SplashScreen from 'react-native-splash-screen';
 import SafeAreaView from 'react-native-safe-area-view';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
@@ -22,8 +11,7 @@ import ConfirmButton from '../../../Components/ConfirmButton';
 import CustomInput from '../../../Components/CustomInput';
 
 import styles from './ForgotPasswordScreen.style';
-import {colors, baseUrl} from '../../../Assets/config';
-import Axios from 'axios';
+import {colors} from '../../../Assets/config';
 
 class ForgotPasswordScreen extends React.PureComponent {
   static propTypes = {
@@ -38,9 +26,6 @@ class ForgotPasswordScreen extends React.PureComponent {
 
   constructor(props) {
     super(props);
-    const {
-      Secrets: {secretsData},
-    } = props;
     this.state = {
       username: '',
       email: '',
@@ -51,11 +36,8 @@ class ForgotPasswordScreen extends React.PureComponent {
   }
 
   render() {
-    const {email, password, passwordVisible, username} = this.state;
-    const {
-      Secrets: {isFetching},
-      navigation,
-    } = this.props;
+    const {email} = this.state;
+    const {navigation} = this.props;
 
     return (
       <SafeAreaView

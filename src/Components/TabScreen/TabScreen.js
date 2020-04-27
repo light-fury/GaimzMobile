@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {NavigationActions, StackActions} from 'react-navigation';
 import PropTypes from 'prop-types';
-import {Text, View, TouchableOpacity, Image} from 'react-native';
+import {View, TouchableOpacity} from 'react-native';
 import {connect} from 'react-redux';
 
 import SocialButton from '../../Components/SocialButton';
@@ -70,7 +70,7 @@ class TabScreen extends Component {
   };
 
   render() {
-    const {Secrets, navigation} = this.props;
+    const {navigation} = this.props;
     const {routes} = this.state;
     const currentRoutes = navigation.state.routes || [];
     return (
