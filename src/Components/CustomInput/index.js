@@ -8,43 +8,43 @@ import {
   View,
 } from 'react-native';
 
-import {colors} from '../../Assets/config';
+import {colors, calcReal} from '../../Assets/config';
 
 const styles = StyleSheet.create({
   labelStyle: {
-    fontSize: 12,
-    lineHeight: 20,
+    fontSize: calcReal(12),
+    lineHeight: calcReal(20),
     color: colors.secondary,
-    marginBottom: 8,
-    letterSpacing: 1,
+    marginBottom: calcReal(8),
+    letterSpacing: calcReal(1),
     textTransform: 'uppercase',
   },
   inputContainer: {
-    borderWidth: 2,
-    borderRadius: 4,
+    borderWidth: calcReal(2),
+    borderRadius: calcReal(4),
     borderColor: colors.grayOpacity,
-    height: 48,
+    height: calcReal(48),
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
   },
   flexStyle: {
     flex: 1,
-    fontSize: 14,
-    lineHeight: 20,
+    fontSize: calcReal(14),
+    lineHeight: calcReal(20),
     textAlignVertical: 'center',
     fontWeight: '300',
     color: colors.gray,
     padding: 0,
-    marginHorizontal: 14,
+    marginHorizontal: calcReal(14),
   },
   iconContainer: {
-    paddingHorizontal: 14,
-    paddingVertical: 10,
+    paddingHorizontal: calcReal(14),
+    paddingVertical: calcReal(10),
   },
   iconStyle: {
-    width: 18,
-    height: 18,
+    width: calcReal(18),
+    height: calcReal(18),
   },
 });
 

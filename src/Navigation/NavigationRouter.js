@@ -16,10 +16,14 @@ import WelcomeScreen from '../Containers/AuthFlow/WelcomeScreen';
 import SignUpScreen from '../Containers/AuthFlow/SignUpScreen';
 import ForgotPasswordScreen from '../Containers/AuthFlow/ForgotPasswordScreen';
 // Main Flow
+// Home Flow
 import DashboardScreen from '../Containers/MainFlow/HomeFlow/DashboardScreen';
+// Match Flow
+import MatchMainScreen from '../Containers/MainFlow/MatchFlow/MatchMainScreen';
+import MatchSettingScreen from '../Containers/MainFlow/MatchFlow/MatchSettingScreen';
 import TabScreen from '../Components/TabScreen/TabScreen';
 import styles from './NavigationRouter.style';
-import {colors} from '../Assets/config';
+import {colors, calcReal} from '../Assets/config';
 import {store} from '../Containers/App';
 
 export const MainNavigator = createStackNavigator(
@@ -58,8 +62,38 @@ export const MainNavigator = createStackNavigator(
                 DashboardScreen: {
                   screen: DashboardScreen,
                   navigationOptions: ({navigation}) => ({
-                    headerStyle: {backgroundColor: colors.primary},
-                    headerTintColor: colors.white,
+                    headerShown: false,
+                  }),
+                },
+              },
+              {
+                headerMode: 'screen',
+              },
+            ),
+            navigationOptions: ({navigation}) => {
+              let {routeName} = navigation.state.routes[navigation.state.index];
+              let navigationOptions = {
+                headerShown: false,
+              };
+              if (['ProfileDetailScreen'].indexOf(routeName) >= 0) {
+                navigationOptions.tabBarVisible = false;
+              }
+              return navigationOptions;
+            },
+          },
+          MatchFlow: {
+            screen: createStackNavigator(
+              {
+                MatchMainScreen: {
+                  screen: MatchMainScreen,
+                  navigationOptions: ({navigation}) => ({
+                    headerShown: false,
+                  }),
+                },
+                MatchSettingScreen: {
+                  screen: MatchSettingScreen,
+                  navigationOptions: ({navigation}) => ({
+                    headerShown: false,
                   }),
                 },
               },

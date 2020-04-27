@@ -1,16 +1,16 @@
 import React from 'react';
 import {TouchableOpacity, Text, StyleSheet} from 'react-native';
-import {colors} from '../../Assets/config';
+import {colors, calcReal} from '../../Assets/config';
 
 const styles = StyleSheet.create({
   centerStyle: {
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 12,
+    borderRadius: calcReal(12),
   },
   textStyle: {
-    fontSize: 14,
-    lineHeight: 20,
+    fontSize: calcReal(14),
+    lineHeight: calcReal(20),
     textAlignVertical: 'center',
     fontWeight: 'bold',
   },
@@ -20,7 +20,7 @@ const ConfirmButton = ({
   color = '#FFF',
   borderColor = '#0000',
   textColor = colors.white,
-  height = 58,
+  height = calcReal(58),
   label = '',
   fontStyle = {},
   containerStyle = {},

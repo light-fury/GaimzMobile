@@ -22,7 +22,7 @@ import ConfirmButton from '../../../Components/ConfirmButton';
 import CustomInput from '../../../Components/CustomInput';
 
 import styles from './SignUpScreen.style';
-import {colors, baseUrl} from '../../../Assets/config';
+import {colors, calcReal} from '../../../Assets/config';
 import Axios from 'axios';
 
 class SignUpScreen extends React.PureComponent {
@@ -100,7 +100,7 @@ class SignUpScreen extends React.PureComponent {
                 alert('Steam Login');
               }}
             />
-            <Text style={[styles.instructionText, {fontSize: 12}]}>
+            <Text style={[styles.instructionText, {fontSize: calcReal(12)}]}>
               Or use your email account
             </Text>
           </View>

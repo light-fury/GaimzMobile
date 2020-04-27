@@ -3,8 +3,8 @@ import {NavigationActions, StackActions} from 'react-navigation';
 import PropTypes from 'prop-types';
 import {Text, View, TouchableOpacity, Image} from 'react-native';
 import {connect} from 'react-redux';
-import IIcon from 'react-native-vector-icons/Ionicons';
 
+import SocialButton from '../../Components/SocialButton';
 import {removeSecretsData} from '../../State/Secrets/Actions';
 import styles from './TabScreen.style';
 import {colors} from '../../Assets/config';
@@ -17,19 +17,18 @@ class TabScreen extends Component {
       routes: [
         {
           title: 'Home',
-          routeName: 'DashboardScreen',
+          routeName: 'HomeFlow',
+          icon: require('../../Assets/home_icon.png'),
         },
         {
-          title: 'Train',
-          routeName: 'TrainFlow',
+          title: 'Match',
+          routeName: 'MatchFlow',
+          icon: require('../../Assets/match_icon.png'),
         },
         {
-          title: 'Meals',
-          routeName: 'ProfileFlow',
-        },
-        {
-          title: 'Gallery',
-          routeName: 'GalleryFlow',
+          title: 'Setting',
+          routeName: 'SettingFlow',
+          icon: require('../../Assets/settings_icon.png'),
         },
       ],
     };
@@ -76,31 +75,31 @@ class TabScreen extends Component {
     const currentRoutes = navigation.state.routes || [];
     return (
       <View style={styles.flexStyle}>
-        {routes.map((item) => (
-          <TouchableOpacity
-            key={item.routeName}
-            onPress={() => this.navigateToScreen(item.routeName)}
-            style={[
-              styles.tabItem,
-              currentRoutes.length > 0 &&
-                currentRoutes[navigation.state.index || 0].routeName ===
-                  item.routeName && {
-                  borderTopColor: colors.primary,
-                },
-            ]}>
-            <Text
-              style={[
-                styles.tabItemTitle,
-                currentRoutes.length > 0 &&
-                  currentRoutes[navigation.state.index || 0].routeName ===
-                    item.routeName && {
-                    color: colors.primary,
-                  },
-              ]}>
-              {item.title}
-            </Text>
-          </TouchableOpacity>
-        ))}
+        {routes.map((item) => {
+          const selected =
+            currentRoutes.length > 0 &&
+            currentRoutes[navigation.state.index || 0].routeName ===
+              item.routeName;
+          return (
+            <TouchableOpacity
+              key={item.routeName}
+              onPress={() => this.navigateToScreen(item.routeName)}
+              style={styles.tabItem}>
+              <SocialButton
+                style={[
+                  styles.tabButton,
+                  selected && {backgroundColor: colors.secondary},
+                ]}
+                iconStyle={[
+                  styles.tabIcon,
+                  selected && {tintColor: colors.white},
+                ]}
+                icon={item.icon}
+                onClick={() => this.navigateToScreen(item.routeName)}
+              />
+            </TouchableOpacity>
+          );
+        })}
       </View>
     );
   }
