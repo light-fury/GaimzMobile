@@ -1,13 +1,15 @@
 // @flow
 import {StyleSheet, Dimensions} from 'react-native';
-import {colors} from '../../Assets/config';
+import {colors, calcReal} from '../../Assets/config';
 
 const drawerWidth = Dimensions.get('window').width * 0.7;
 
 export default StyleSheet.create({
   flexStyle: {
-    height: 80,
-    backgroundColor: colors.secondary,
+    height: calcReal(100),
+    paddingBottom: calcReal(20),
+    paddingHorizontal: calcReal(22),
+    backgroundColor: colors.white,
     position: 'absolute',
     bottom: 0,
     left: 0,
@@ -15,24 +17,28 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  tabItemTitle: {
-    color: colors.gray,
-    fontSize: 14,
-    lineHeight: 26,
-    textAlign: 'center',
-  },
   tabItemImage: {
-    width: 25,
-    height: 25,
+    width: calcReal(25),
+    height: calcReal(25),
     tintColor: colors.gray,
   },
   tabItem: {
     flex: 1,
-    height: 90,
+    height: calcReal(80),
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    borderTopWidth: 2,
-    borderTopColor: colors.gray,
+  },
+  tabButton: {
+    width: calcReal(56),
+    height: calcReal(56),
+    borderRadius: calcReal(12),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  tabIcon: {
+    width: calcReal(30),
+    height: calcReal(30),
+    tintColor: colors.secondary,
   },
 });

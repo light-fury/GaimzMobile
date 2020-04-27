@@ -1,4 +1,11 @@
+import {Dimensions} from 'react-native';
+
+const width = Dimensions.get('window').width;
+
 export const baseUrl = 'https://sheets.googleapis.com/';
+
+export const calcReal = (number) =>
+  width > 450 || width < 400 ? (width / 420) * number : number;
 
 export const colors = {
   primary: '#119DCD',
@@ -7,6 +14,7 @@ export const colors = {
   secondaryOpacity: '#1E1F2030',
   white: '#FFF',
   gray: '#8F92A1',
+  darkGray: '#474747',
   grayOpacity: '#8F92A130',
   lightGray: '#F7F7F7',
   transparent: '#0000',
@@ -17,6 +25,6 @@ export const colors = {
   red: '#FF3A3A',
   black: '#000000',
   grayBorder: '#DDDDDD',
-  grayText: '#A0A0A0',
+  grayText: '#979797',
   grayBackground: '#2E3134',
 };
