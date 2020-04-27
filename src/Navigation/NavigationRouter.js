@@ -1,8 +1,8 @@
 // @flow
 
-import {createAppContainer} from 'react-navigation';
-import {createStackNavigator} from 'react-navigation-stack';
-import {createBottomTabNavigator} from 'react-navigation-tabs';
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
 // Auth Flow
 import WelcomeScreen from '../Containers/AuthFlow/WelcomeScreen';
 import SignUpScreen from '../Containers/AuthFlow/SignUpScreen';
@@ -20,7 +20,7 @@ import SettingMainScreen from '../Containers/MainFlow/SettingFlow/SettingMainScr
 import ConnectionSettingScreen from '../Containers/MainFlow/SettingFlow/ConnectionSettingScreen';
 import AccountSettingScreen from '../Containers/MainFlow/SettingFlow/AccountSettingScreen';
 import TabScreen from '../Components/TabScreen/TabScreen';
-import {colors} from '../Assets/config';
+import { colors } from '../Assets/config';
 
 export const MainNavigator = createStackNavigator(
   {
@@ -66,9 +66,9 @@ export const MainNavigator = createStackNavigator(
                 headerMode: 'screen',
               },
             ),
-            navigationOptions: ({navigation}) => {
-              let {routeName} = navigation.state.routes[navigation.state.index];
-              let navigationOptions = {
+            navigationOptions: ({ navigation }) => {
+              const { routeName } = navigation.state.routes[navigation.state.index];
+              const navigationOptions = {
                 headerShown: false,
               };
               if (['ProfileDetailScreen'].indexOf(routeName) >= 0) {
@@ -92,63 +92,14 @@ export const MainNavigator = createStackNavigator(
                     headerShown: false,
                   }),
                 },
-                MatchPasswordScreen: {
-                  screen: MatchPasswordScreen,
-                  navigationOptions: () => ({
-                    headerShown: false,
-                  }),
-                },
-                MatchErrorScreen: {
-                  screen: MatchErrorScreen,
-                  navigationOptions: () => ({
-                    headerShown: false,
-                  }),
-                },
               },
               {
                 headerMode: 'screen',
               },
             ),
-            navigationOptions: ({navigation}) => {
-              let {routeName} = navigation.state.routes[navigation.state.index];
-              let navigationOptions = {
-                headerShown: false,
-              };
-              if (['ProfileDetailScreen'].indexOf(routeName) >= 0) {
-                navigationOptions.tabBarVisible = false;
-              }
-              return navigationOptions;
-            },
-          },
-          SettingFlow: {
-            screen: createStackNavigator(
-              {
-                SettingMainScreen: {
-                  screen: SettingMainScreen,
-                  navigationOptions: () => ({
-                    headerShown: false,
-                  }),
-                },
-                ConnectionSettingScreen: {
-                  screen: ConnectionSettingScreen,
-                  navigationOptions: () => ({
-                    headerShown: false,
-                  }),
-                },
-                AccountSettingScreen: {
-                  screen: AccountSettingScreen,
-                  navigationOptions: () => ({
-                    headerShown: false,
-                  }),
-                },
-              },
-              {
-                headerMode: 'screen',
-              },
-            ),
-            navigationOptions: ({navigation}) => {
-              let {routeName} = navigation.state.routes[navigation.state.index];
-              let navigationOptions = {
+            navigationOptions: ({ navigation }) => {
+              const { routeName } = navigation.state.routes[navigation.state.index];
+              const navigationOptions = {
                 headerShown: false,
               };
               if (['ProfileDetailScreen'].indexOf(routeName) >= 0) {
@@ -170,7 +121,7 @@ export const MainNavigator = createStackNavigator(
           },
           tabBarComponent: TabScreen,
           navigationOptions: () => ({
-            headerStyle: {backgroundColor: colors.primary},
+            headerStyle: { backgroundColor: colors.primary },
             headerTintColor: colors.white,
             headerShown: false,
             gestureEnabled: false,

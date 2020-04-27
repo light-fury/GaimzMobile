@@ -1,6 +1,6 @@
 // @flow
-import {StyleSheet} from 'react-native';
-import {colors, calcReal} from '../../Assets/config';
+import { StyleSheet } from 'react-native';
+import { colors, calcReal } from '../../Assets/config';
 
 export default StyleSheet.create({
   flexStyle: {

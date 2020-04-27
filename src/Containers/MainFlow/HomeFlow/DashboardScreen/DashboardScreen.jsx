@@ -1,7 +1,7 @@
-/* eslint-disable react-native/no-inline-styles */
 // @flow
 import React from 'react';
 import {
+  Alert,
   Text,
   View,
   TouchableOpacity,
@@ -14,24 +14,12 @@ import SafeAreaView from 'react-native-safe-area-view';
 
 import SocialButton from '../../../../Components/SocialButton';
 import styles from './DashboardScreen.style';
-import {colors} from '../../../../Assets/config';
+import { colors } from '../../../../Assets/config';
 
 class DashboardScreen extends React.PureComponent {
-  static propTypes = {
-    Secrets: PropTypes.shape({
-      isFetching: PropTypes.bool.isRequired,
-      secretsData: PropTypes.shape(),
-      error: PropTypes.any,
-    }).isRequired,
-    navigation: PropTypes.shape().isRequired,
-    createSecretsData: PropTypes.func.isRequired,
-  };
-
   constructor(props) {
     super(props);
     this.state = {
-      fullname: '',
-      email: '',
       listData: [
         {
           image: require('../../../../Assets/template_image.png'),
@@ -62,11 +50,10 @@ class DashboardScreen extends React.PureComponent {
           viewCount: 500,
         },
       ],
-      focused: 0,
     };
   }
 
-  renderItem = ({item, index}) => {
+  renderItem({ item, index }) {
     return (
       <View key={index} style={styles.itemContainer}>
         <TouchableOpacity>
@@ -74,11 +61,12 @@ class DashboardScreen extends React.PureComponent {
             style={styles.itemBackground}
             imageStyle={styles.itemImage}
             source={item.image}
-            resizeMode={'cover'}>
+            resizeMode="cover"
+          >
             <View style={styles.statusContainer}>
               <Image
                 source={require('../../../../Assets/eye_icon.png')}
-                resizeMode={'contain'}
+                resizeMode="contain"
                 style={styles.eyeIcon}
               />
               <Text style={styles.statusText}>
@@ -94,7 +82,7 @@ class DashboardScreen extends React.PureComponent {
         <View style={styles.itemHostContainer}>
           <Image
             source={item.hostAvatar}
-            resizeMode={'cover'}
+            resizeMode="cover"
             style={styles.hostAvatar}
           />
           <View style={styles.hostDetailsContainer}>
@@ -108,20 +96,21 @@ class DashboardScreen extends React.PureComponent {
         </View>
       </View>
     );
-  };
+  }
 
   render() {
-    const {listData} = this.state;
+    const { listData } = this.state;
 
     return (
       <SafeAreaView
-        forceInset={{bottom: 'never', top: 'never'}}
-        style={styles.container}>
+        forceInset={{ bottom: 'never', top: 'never' }}
+        style={styles.container}
+      >
         <View style={styles.header}>
           <Image
             source={require('../../../../Assets/template_profile.png')}
             style={styles.avatarImage}
-            resizeMode={'cover'}
+            resizeMode="cover"
           />
           <Text style={[styles.flexContainer, styles.profileName]}>
             Aladin Ben
@@ -130,17 +119,17 @@ class DashboardScreen extends React.PureComponent {
             style={styles.headerButton}
             iconStyle={styles.headerIcon}
             icon={require('../../../../Assets/search_icon.png')}
-            onClick={() => alert('Search Clicked')}
+            onClick={() => Alert.alert('Search Clicked')}
           />
           <SocialButton
             style={styles.headerButton}
             iconStyle={styles.headerIcon}
             icon={require('../../../../Assets/notification_icon.png')}
-            onClick={() => alert('Bell Clicked')}
+            onClick={() => Alert.alert('Bell Clicked')}
           />
         </View>
         <FlatList
-          style={[styles.flexContainer, {backgroundColor: colors.lightGray}]}
+          style={[styles.flexContainer, { backgroundColor: colors.lightGray }]}
           contentContainerStyle={styles.scrollIntent}
           data={listData}
           renderItem={this.renderItem}
@@ -150,5 +139,13 @@ class DashboardScreen extends React.PureComponent {
     );
   }
 }
+
+DashboardScreen.propTypes = {
+  Secrets: PropTypes.shape({
+    isFetching: PropTypes.bool.isRequired,
+    secretsData: PropTypes.shape(),
+    error: PropTypes.any,
+  }).isRequired,
+};
 
 export default DashboardScreen;

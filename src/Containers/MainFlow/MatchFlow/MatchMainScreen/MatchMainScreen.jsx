@@ -1,7 +1,7 @@
-/* eslint-disable react-native/no-inline-styles */
 // @flow
 import React from 'react';
 import {
+  Alert,
   Text,
   View,
   TouchableOpacity,
@@ -14,21 +14,11 @@ import SafeAreaView from 'react-native-safe-area-view';
 
 import ConfirmButton from '../../../../Components/ConfirmButton';
 import styles from './MatchMainScreen.style';
-import {colors, calcReal} from '../../../../Assets/config';
+import { colors, calcReal } from '../../../../Assets/config';
 
-const {width} = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 class MatchMainScreen extends React.PureComponent {
-  static propTypes = {
-    Secrets: PropTypes.shape({
-      isFetching: PropTypes.bool.isRequired,
-      secretsData: PropTypes.shape(),
-      error: PropTypes.any,
-    }).isRequired,
-    navigation: PropTypes.shape().isRequired,
-    createSecretsData: PropTypes.func.isRequired,
-  };
-
   constructor(props) {
     super(props);
     this.state = {
@@ -50,11 +40,10 @@ class MatchMainScreen extends React.PureComponent {
           gameTitle: 'Dota 2',
         },
       ],
-      focused: 0,
     };
   }
 
-  renderItem = ({item}) => {
+  renderItem({ item }) {
     return (
       <View style={styles.itemContainer}>
         <TouchableOpacity>
@@ -62,21 +51,22 @@ class MatchMainScreen extends React.PureComponent {
             style={styles.itemBackground}
             imageStyle={styles.itemImage}
             source={item.image}
-            resizeMode={'cover'}
+            resizeMode="cover"
           />
         </TouchableOpacity>
       </View>
     );
-  };
+  }
 
   render() {
-    const {listData} = this.state;
-    const {navigation} = this.props;
+    const { listData } = this.state;
+    const { navigation } = this.props;
 
     return (
       <SafeAreaView
-        forceInset={{bottom: 'never', top: 'never'}}
-        style={styles.container}>
+        forceInset={{ bottom: 'never', top: 'never' }}
+        style={styles.container}
+      >
         <View style={styles.header}>
           <Text style={styles.profileName}>
             Connect your steam account first
@@ -98,8 +88,8 @@ class MatchMainScreen extends React.PureComponent {
         />
         <ConfirmButton
           color={colors.loginColor}
-          label={'FIND MATCH'}
-          onClick={() => alert('Find Match')}
+          label="FIND MATCH"
+          onClick={() => Alert.alert('Find Match')}
           fontStyle={styles.fontSpacing}
           containerStyle={styles.mh48}
         />
@@ -107,7 +97,7 @@ class MatchMainScreen extends React.PureComponent {
         <ConfirmButton
           borderColor={colors.secondaryOpacity}
           textColor={colors.grayText}
-          label={'SETTINGS'}
+          label="SETTINGS"
           onClick={() => navigation.navigate('MatchSettingScreen')}
           fontStyle={styles.fontSpacing}
           containerStyle={styles.mh48}
@@ -117,5 +107,14 @@ class MatchMainScreen extends React.PureComponent {
     );
   }
 }
+
+MatchMainScreen.propTypes = {
+  Secrets: PropTypes.shape({
+    isFetching: PropTypes.bool.isRequired,
+    secretsData: PropTypes.shape(),
+    error: PropTypes.any,
+  }).isRequired,
+  navigation: PropTypes.shape().isRequired,
+};
 
 export default MatchMainScreen;

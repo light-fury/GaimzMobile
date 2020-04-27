@@ -1,29 +1,24 @@
-/* eslint-disable react-native/no-inline-styles */
 // @flow
 import React from 'react';
-import {Text, View, ImageBackground, Image} from 'react-native';
+import {
+  Text,
+  View,
+  ImageBackground,
+  Image,
+  Alert,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import SocialButton from '../../../Components/SocialButton';
 import ConfirmButton from '../../../Components/ConfirmButton';
 import CustomInput from '../../../Components/CustomInput';
 
 import styles from './SignUpScreen.style';
-import {colors, calcReal} from '../../../Assets/config';
+import { colors, calcReal } from '../../../Assets/config';
 
 class SignUpScreen extends React.PureComponent {
-  static propTypes = {
-    Secrets: PropTypes.shape({
-      isFetching: PropTypes.bool.isRequired,
-      secretsData: PropTypes.shape(),
-      error: PropTypes.any,
-    }).isRequired,
-    navigation: PropTypes.shape().isRequired,
-    createSecretsData: PropTypes.func.isRequired,
-  };
-
   constructor(props) {
     super(props);
     this.state = {
@@ -36,96 +31,101 @@ class SignUpScreen extends React.PureComponent {
   }
 
   render() {
-    const {email, password, passwordVisible, username} = this.state;
-    const {navigation} = this.props;
+    const {
+      email, password, passwordVisible, username,
+    } = this.state;
+    const {
+      navigation,
+    } = this.props;
 
     return (
       <SafeAreaView
-        forceInset={{bottom: 'never', top: 'never'}}
-        style={styles.container}>
+        forceInset={{ bottom: 'never', top: 'never' }}
+        style={styles.container}
+      >
         <ImageBackground
           style={styles.topContainer}
           source={require('../../../Assets/splash_background.png')}
           imageStyle={styles.flexStyle}
-          resizeMode={'cover'}>
+          resizeMode="cover"
+        >
           <Image
             style={styles.logoImage}
             source={require('../../../Assets/app_logo.png')}
-            resizeMode={'contain'}
+            resizeMode="contain"
           />
         </ImageBackground>
         <KeyboardAwareScrollView
           enableOnAndroid
           style={styles.absoluteFill}
-          contentContainerStyle={styles.scrollInner}>
+          contentContainerStyle={styles.scrollInner}
+        >
           <Text style={styles.title}>Create an account</Text>
           <Text style={styles.instructionText}>Sign in to continue</Text>
           <View style={styles.socialContainer}>
             <SocialButton
-              style={[styles.socialButton, {backgroundColor: colors.fbColor}]}
+              style={[styles.socialButton, { backgroundColor: colors.fbColor }]}
               icon={require('../../../Assets/facebook_icon.png')}
               onClick={() => {
-                alert('FB Login');
+                Alert.alert('FB Login');
               }}
             />
             <SocialButton
-              style={[styles.socialButton, {backgroundColor: colors.lightGray}]}
+              style={[styles.socialButton, { backgroundColor: colors.lightGray }]}
               icon={require('../../../Assets/twitch_icon.png')}
               onClick={() => {
-                alert('Twitch Login');
+                Alert.alert('Twitch Login');
               }}
             />
             <SocialButton
-              style={[styles.socialButton, {backgroundColor: colors.secondary}]}
+              style={[styles.socialButton, { backgroundColor: colors.secondary }]}
               icon={require('../../../Assets/steam_icon.png')}
               onClick={() => {
-                alert('Steam Login');
+                Alert.alert('Steam Login');
               }}
             />
-            <Text style={[styles.instructionText, {fontSize: calcReal(12)}]}>
+            <Text style={[styles.instructionText, { fontSize: calcReal(12) }]}>
               Or use your email account
             </Text>
           </View>
           <CustomInput
-            label={'Username'}
+            label="Username"
             value={username}
-            onUpdateValue={(text) => this.setState({username: text})}
+            onUpdateValue={(text) => this.setState({ username: text })}
             icon={require('../../../Assets/check_icon.png')}
             iconVisible={username.length > 0}
             containerStyle={styles.inputContainer}
           />
           <CustomInput
-            label={'Email'}
+            label="Email"
             value={email}
-            onUpdateValue={(text) => this.setState({email: text})}
+            onUpdateValue={(text) => this.setState({ email: text })}
             icon={require('../../../Assets/close_icon.png')}
             iconVisible={email.length > 0}
             borderColor={email.length > 0 ? colors.red : colors.grayOpacity}
             containerStyle={styles.inputContainer}
           />
           <CustomInput
-            label={'Password'}
+            label="Password"
             value={password}
             secureTextEntry={!passwordVisible}
             icon={require('../../../Assets/eye_icon.png')}
             iconVisible={password.length > 0}
-            onUpdateValue={(text) => this.setState({password: text})}
-            onClick={() => this.setState({passwordVisible: !passwordVisible})}
+            onUpdateValue={(text) => this.setState({ password: text })}
+            onClick={() => this.setState({ passwordVisible: !passwordVisible })}
             containerStyle={styles.inputContainer}
           />
           <View style={styles.space} />
           <ConfirmButton
             color={colors.signUpColor}
-            label={'Sign Up'}
-            onClick={() =>
-              navigation.dangerouslyGetParent().navigate('MainFlow')
-            }
+            label="Sign Up"
+            onClick={() => navigation.dangerouslyGetParent().navigate('MainFlow')}
             containerStyle={styles.mh20}
           />
           <ConfirmButton
             borderColor={colors.transparent}
             textColor={colors.gray}
-            label={'Already have an account? Login'}
+            label="Already have an account? Login"
             onClick={() => navigation.pop()}
             fontStyle={styles.lightFont}
           />
@@ -134,5 +134,14 @@ class SignUpScreen extends React.PureComponent {
     );
   }
 }
+
+SignUpScreen.propTypes = {
+  Secrets: PropTypes.shape({
+    isFetching: PropTypes.bool.isRequired,
+    secretsData: PropTypes.shape(),
+    error: PropTypes.any,
+  }).isRequired,
+  navigation: PropTypes.shape().isRequired,
+};
 
 export default SignUpScreen;

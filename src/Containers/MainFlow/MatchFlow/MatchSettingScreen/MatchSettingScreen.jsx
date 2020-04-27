@@ -1,26 +1,25 @@
-/* eslint-disable react-native/no-inline-styles */
 // @flow
 import React from 'react';
-import {Text, View, ScrollView, Dimensions} from 'react-native';
+import {
+  Alert,
+  Text,
+  View,
+  TouchableOpacity,
+  Dimensions,
+  FlatList,
+  ImageBackground,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
 
 import ConfirmButton from '../../../../Components/ConfirmButton';
 import CustomDropdown from '../../../../Components/CustomDropdown';
 import styles from './MatchSettingScreen.style';
-import {colors} from '../../../../Assets/config';
+import { colors, calcReal } from '../../../../Assets/config';
+
+const { width } = Dimensions.get('window');
 
 class MatchSettingScreen extends React.PureComponent {
-  static propTypes = {
-    Secrets: PropTypes.shape({
-      isFetching: PropTypes.bool.isRequired,
-      secretsData: PropTypes.shape(),
-      error: PropTypes.any,
-    }).isRequired,
-    navigation: PropTypes.shape().isRequired,
-    createSecretsData: PropTypes.func.isRequired,
-  };
-
   constructor(props) {
     super(props);
     this.state = {
@@ -38,36 +37,35 @@ class MatchSettingScreen extends React.PureComponent {
         'Follower Only',
         'Password',
       ],
-      match: 'Free Mode',
-      focused: 0,
     };
   }
 
+  renderItem({ item }) {
+    return (
+      <View style={styles.itemContainer}>
+        <TouchableOpacity>
+          <ImageBackground
+            style={styles.itemBackground}
+            imageStyle={styles.itemImage}
+            source={item.image}
+            resizeMode="cover"
+          />
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
   render() {
-    const {
-      gameTypeOption,
-      gameType,
-      gameModeOption,
-      gameMode,
-      regionOption,
-      region,
-      streamerOptions,
-      streamer,
-      matchOptions,
-      match,
-    } = this.state;
-    const {navigation} = this.props;
+    const { listData } = this.state;
 
     return (
       <SafeAreaView
-        forceInset={{bottom: 'never', top: 'never'}}
-        style={styles.container}>
-        <View style={styles.header} />
-        <ScrollView
-          style={styles.searchContainer}
-          contentContainerStyle={styles.padding0}>
-          <Text style={[styles.itemTitle, styles.fontSpacing]}>
-            SEARCH SETTINGS
+        forceInset={{ bottom: 'never', top: 'never' }}
+        style={styles.container}
+      >
+        <View style={styles.header}>
+          <Text style={styles.profileName}>
+            Connect your steam account first
           </Text>
           <CustomDropdown
             label={'GAME TYPE'}
@@ -114,14 +112,8 @@ class MatchSettingScreen extends React.PureComponent {
         </ScrollView>
         <ConfirmButton
           color={colors.loginColor}
-          label={'FIND MATCH'}
-          onClick={() => {
-            if (match === 'Password') {
-              navigation.navigate('MatchPasswordScreen');
-            } else {
-              alert('Match Screen');
-            }
-          }}
+          label="FIND MATCH"
+          onClick={() => Alert.alert('Find Match')}
           fontStyle={styles.fontSpacing}
           containerStyle={styles.mh48}
         />
@@ -129,8 +121,8 @@ class MatchSettingScreen extends React.PureComponent {
         <ConfirmButton
           borderColor={colors.secondaryOpacity}
           textColor={colors.grayText}
-          label={'SETTINGS'}
-          onClick={() => navigation.popToTop()}
+          label="SETTINGS"
+          onClick={() => Alert.alert('Settings')}
           fontStyle={styles.fontSpacing}
           containerStyle={styles.mh48}
         />
@@ -139,5 +131,13 @@ class MatchSettingScreen extends React.PureComponent {
     );
   }
 }
+
+MatchSettingScreen.propTypes = {
+  Secrets: PropTypes.shape({
+    isFetching: PropTypes.bool.isRequired,
+    secretsData: PropTypes.shape(),
+    error: PropTypes.any,
+  }).isRequired,
+};
 
 export default MatchSettingScreen;

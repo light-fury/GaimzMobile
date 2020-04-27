@@ -1,9 +1,9 @@
 // @flow
-import {StyleSheet, Dimensions} from 'react-native';
-import {getStatusBarHeight} from 'react-native-status-bar-height';
-import {colors, calcReal} from '../../../Assets/config';
+import { StyleSheet, Dimensions } from 'react-native';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
+import { colors, calcReal } from '../../../Assets/config';
 
-const width = Dimensions.get('window').width;
+const { width } = Dimensions.get('window');
 
 export default StyleSheet.create({
   container: {

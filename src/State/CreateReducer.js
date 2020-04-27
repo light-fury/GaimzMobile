@@ -8,3 +8,5 @@ export const createReducer = (initialState, reducers) => (
 
   return reducer ? reducer(state, action) : state;
 };
+
+export default createReducer;
