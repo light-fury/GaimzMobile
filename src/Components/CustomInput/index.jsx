@@ -8,7 +8,7 @@ import {
   View,
 } from 'react-native';
 
-import {colors, calcReal} from '../../Assets/config';
+import { colors, calcReal } from '../../Assets/config';
 
 const styles = StyleSheet.create({
   titleText: {
@@ -59,30 +59,28 @@ const CustomInput = ({
   icon,
   borderColor = colors.grayOpacity,
   iconVisible = false,
-}) => {
-  return (
-    <View style={containerStyle}>
-      <Text style={[styles.titleText, labelStyle]}>{label}</Text>
-      <View style={[styles.inputContainer, {borderColor}]}>
-        <TextInput
-          style={styles.flexStyle}
-          value={value}
-          secureTextEntry={secureTextEntry}
-          onChangeText={onUpdateValue}
-          clearTextOnFocus={false}
+}) => (
+  <View style={containerStyle}>
+    <Text style={[styles.titleText, labelStyle]}>{label}</Text>
+    <View style={[styles.inputContainer, { borderColor }]}>
+      <TextInput
+        style={styles.flexStyle}
+        value={value}
+        secureTextEntry={secureTextEntry}
+        onChangeText={onUpdateValue}
+        clearTextOnFocus={false}
+      />
+      {iconVisible && icon && (
+      <TouchableOpacity onPress={onClick} style={styles.iconContainer}>
+        <Image
+          style={styles.iconStyle}
+          resizeMode="contain"
+          source={icon}
         />
-        {iconVisible && icon && (
-          <TouchableOpacity onPress={onClick} style={styles.iconContainer}>
-            <Image
-              style={styles.iconStyle}
-              resizeMode={'contain'}
-              source={icon}
-            />
-          </TouchableOpacity>
-        )}
-      </View>
+      </TouchableOpacity>
+      )}
     </View>
-  );
-};
+  </View>
+);
 
 export default CustomInput;

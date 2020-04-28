@@ -1,6 +1,6 @@
 // @flow
-import {StyleSheet} from 'react-native';
-import {colors} from '../Assets/config';
+import { StyleSheet } from 'react-native';
+import { colors } from '../Assets/config';
 
 export default StyleSheet.create({
   headerRightButton: {
@@ -22,7 +22,7 @@ export default StyleSheet.create({
   },
   headerLeftTextStyle: {
     marginLeft: 20,
-    
+
     fontSize: 16,
     lineHeight: 22,
     letterSpacing: 1,
@@ -31,7 +31,7 @@ export default StyleSheet.create({
   },
   headerRightTextStyle: {
     marginRight: 20,
-    
+
     fontSize: 16,
     lineHeight: 18,
     letterSpacing: 1,

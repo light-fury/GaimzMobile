@@ -6,7 +6,7 @@ import {
   GET_SECRETS_ERROR,
   UPDATE_SETTINGS,
 } from '../ActionTypes';
-import {createReducer} from '../CreateReducer';
+import { createReducer } from '../CreateReducer';
 
 const INITIAL_STATE = {
   secretsData: [],
@@ -15,14 +15,14 @@ const INITIAL_STATE = {
 };
 
 const reducers = {
-  [GET_SECRETS]: (state) => ({...state, isFetching: true}),
-  [UPDATE_SETTINGS]: (state, {data}) => ({...state, ...data}),
-  [GET_SECRETS_SUCCESS]: (state, {data}) => ({
+  [GET_SECRETS]: (state) => ({ ...state, isFetching: true }),
+  [UPDATE_SETTINGS]: (state, { data }) => ({ ...state, ...data }),
+  [GET_SECRETS_SUCCESS]: (state, { data }) => ({
     ...state,
     secretsData: [...data],
     isFetching: false,
   }),
-  [GET_SECRETS_ERROR]: (state, {error}) => ({
+  [GET_SECRETS_ERROR]: (state, { error }) => ({
     ...state,
     secretsData: [],
     error,
@@ -31,3 +31,5 @@ const reducers = {
 };
 
 export const reducer = createReducer(INITIAL_STATE, reducers);
+
+export default reducer;

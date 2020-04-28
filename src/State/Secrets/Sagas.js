@@ -1,12 +1,10 @@
-import {Platform, Alert} from 'react-native';
-import {put, takeLatest, select} from 'redux-saga/effects';
-import FastImage from 'react-native-fast-image';
-import Axios from 'axios';
+import { put, takeLatest } from 'redux-saga/effects';
 
-import {GET_SECRETS} from '../ActionTypes';
+import { GET_SECRETS } from '../ActionTypes';
 import * as CreateSecretsActions from './Actions';
 
-export function* getImageData({payload}) {
+// export function* getImageData({ payload }) {
+export function* getImageData() {
   try {
     // const {navigation, fromMain} = payload;
     yield put(CreateSecretsActions.createSecretsDataError('Load failed'));

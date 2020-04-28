@@ -1,26 +1,17 @@
-/* eslint-disable react-native/no-inline-styles */
 // @flow
 import React from 'react';
-import {Text, View, ScrollView, Dimensions} from 'react-native';
+import {
+  Text, View, ScrollView, Alert, Dimensions
+} from 'react-native';
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
 
 import ConfirmButton from '../../../../Components/ConfirmButton';
 import CustomDropdown from '../../../../Components/CustomDropdown';
 import styles from './MatchSettingScreen.style';
-import {colors} from '../../../../Assets/config';
+import { colors } from '../../../../Assets/config';
 
 class MatchSettingScreen extends React.PureComponent {
-  static propTypes = {
-    Secrets: PropTypes.shape({
-      isFetching: PropTypes.bool.isRequired,
-      secretsData: PropTypes.shape(),
-      error: PropTypes.any,
-    }).isRequired,
-    navigation: PropTypes.shape().isRequired,
-    createSecretsData: PropTypes.func.isRequired,
-  };
-
   constructor(props) {
     super(props);
     this.state = {
@@ -56,70 +47,72 @@ class MatchSettingScreen extends React.PureComponent {
       matchOptions,
       match,
     } = this.state;
-    const {navigation} = this.props;
+    const { navigation } = this.props;
 
     return (
       <SafeAreaView
-        forceInset={{bottom: 'never', top: 'never'}}
-        style={styles.container}>
+        forceInset={{ bottom: 'never', top: 'never' }}
+        style={styles.container}
+      >
         <View style={styles.header} />
         <ScrollView
           style={styles.searchContainer}
-          contentContainerStyle={styles.padding0}>
+          contentContainerStyle={styles.padding0}
+        >
           <Text style={[styles.itemTitle, styles.fontSpacing]}>
             SEARCH SETTINGS
           </Text>
           <CustomDropdown
-            label={'GAME TYPE'}
+            label="GAME TYPE"
             labelStyle={styles.whiteColor}
             containerStyle={styles.inputContainer}
             options={gameTypeOption}
             value={gameType}
-            onUpdateValue={(val) => this.setState({gameType: val})}
+            onUpdateValue={(val) => this.setState({ gameType: val })}
           />
           <View style={styles.rowContainer}>
             <CustomDropdown
-              label={'GAME MODE'}
+              label="GAME MODE"
               labelStyle={styles.whiteColor}
               containerStyle={styles.flexContainer}
               options={gameModeOption}
               value={gameMode}
-              onUpdateValue={(val) => this.setState({gameMode: val})}
+              onUpdateValue={(val) => this.setState({ gameMode: val })}
             />
             <CustomDropdown
-              label={'REGION'}
+              label="REGION"
               labelStyle={styles.whiteColor}
               containerStyle={[styles.flexContainer, styles.ml20]}
               options={regionOption}
               value={region}
-              onUpdateValue={(val) => this.setState({region: val})}
+              onUpdateValue={(val) => this.setState({ region: val })}
             />
           </View>
           <CustomDropdown
-            label={'SELECT STREAMER'}
+            label="SELECT STREAMER"
             labelStyle={styles.whiteColor}
             containerStyle={styles.inputContainer}
             options={streamerOptions}
             value={streamer}
-            onUpdateValue={(val) => this.setState({streamer: val})}
+            onUpdateValue={(val) => this.setState({ streamer: val })}
           />
           <CustomDropdown
-            label={'CREATE MATCH'}
+            label="CREATE MATCH"
             labelStyle={styles.whiteColor}
             containerStyle={styles.inputContainer}
             options={matchOptions}
             value={match}
-            onUpdateValue={(val) => this.setState({match: val})}
+            onUpdateValue={(val) => this.setState({ match: val })}
           />
         </ScrollView>
         <ConfirmButton
           color={colors.loginColor}
-          label={'FIND MATCH'}
+          label="FIND MATCH"
           onClick={() => {
             if (match === 'Password') {
               navigation.navigate('MatchPasswordScreen');
             } else {
-              alert('Match Screen');
+              Alert.alert('Match Screen');
             }
           }}
           fontStyle={styles.fontSpacing}
@@ -129,7 +122,7 @@ class MatchSettingScreen extends React.PureComponent {
         <ConfirmButton
           borderColor={colors.secondaryOpacity}
           textColor={colors.grayText}
-          label={'SETTINGS'}
+          label="SETTINGS"
           onClick={() => navigation.popToTop()}
           fontStyle={styles.fontSpacing}
           containerStyle={styles.mh48}
@@ -139,5 +132,15 @@ class MatchSettingScreen extends React.PureComponent {
     );
   }
 }
+
+MatchSettingScreen.propTypes = {
+  Secrets: PropTypes.shape({
+    isFetching: PropTypes.bool.isRequired,
+    secretsData: PropTypes.shape(),
+    error: PropTypes.any,
+  }).isRequired,
+  navigation: PropTypes.shape().isRequired,
+  createSecretsData: PropTypes.func.isRequired,
+};
 
 export default MatchSettingScreen;

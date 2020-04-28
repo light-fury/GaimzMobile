@@ -19,3 +19,5 @@ export const updateSettingsData = (data) => ({
   type: ActionTypes.UPDATE_SETTINGS,
   data,
 });
+
+export const removeSecretsData = () => ({});

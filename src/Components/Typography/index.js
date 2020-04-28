@@ -1,9 +1,13 @@
 import React from 'react';
-import {Text, Platform, StyleSheet} from 'react-native';
+import { Text, StyleSheet } from 'react-native';
+
+const styles = StyleSheet.create({
+  defaultText: {},
+});
 
 export const typography = () => {
   const oldTextRender = Text.render;
-  Text.render = function (...args) {
+  Text.render = (...args) => {
     const origin = oldTextRender.call(this, ...args);
     return React.cloneElement(origin, {
       style: [styles.defaultText, origin.props.style],
@@ -11,6 +15,4 @@ export const typography = () => {
   };
 };
 
-const styles = StyleSheet.create({
-  defaultText: {},
-});
+export default typography;

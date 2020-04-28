@@ -1,6 +1,6 @@
 import React from 'react';
-import {TouchableOpacity, Text, StyleSheet} from 'react-native';
-import {colors, calcReal} from '../../Assets/config';
+import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { colors, calcReal } from '../../Assets/config';
 
 const styles = StyleSheet.create({
   centerStyle: {
@@ -25,20 +25,21 @@ const ConfirmButton = ({
   fontStyle = {},
   containerStyle = {},
   onClick = () => {},
-}) => {
-  return (
-    <TouchableOpacity
-      style={[
-        {height, backgroundColor: color, borderColor, borderWidth: 1},
-        styles.centerStyle,
-        containerStyle,
-      ]}
-      onPress={onClick}>
-      <Text style={[styles.textStyle, {color: textColor}, fontStyle]}>
-        {label}
-      </Text>
-    </TouchableOpacity>
-  );
-};
+}) => (
+  <TouchableOpacity
+    style={[
+      {
+        height, backgroundColor: color, borderColor, borderWidth: 1,
+      },
+      styles.centerStyle,
+      containerStyle,
+    ]}
+    onPress={onClick}
+  >
+    <Text style={[styles.textStyle, { color: textColor }, fontStyle]}>
+      {label}
+    </Text>
+  </TouchableOpacity>
+);
 
 export default ConfirmButton;

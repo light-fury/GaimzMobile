@@ -1,13 +1,17 @@
-import React, {Component} from 'react';
-import {NavigationActions, StackActions} from 'react-navigation';
+import React, { Component } from 'react';
+import { NavigationActions, StackActions } from 'react-navigation';
 import PropTypes from 'prop-types';
-import {View, TouchableOpacity} from 'react-native';
-import {connect} from 'react-redux';
+import {
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import { connect } from 'react-redux';
 
-import SocialButton from '../../Components/SocialButton';
-import {removeSecretsData} from '../../State/Secrets/Actions';
+import SocialButton from '../SocialButton';
+import { removeSecretsData } from '../../State/Secrets/Actions';
 import styles from './TabScreen.style';
-import {colors} from '../../Assets/config';
+import { homeIcon, matchIcon, settingsIcon } from '../../Assets';
+import { colors } from '../../Assets/config';
 
 class TabScreen extends Component {
   constructor(props) {
@@ -18,26 +22,26 @@ class TabScreen extends Component {
         {
           title: 'Home',
           routeName: 'HomeFlow',
-          icon: require('../../Assets/home_icon.png'),
+          icon: homeIcon,
         },
         {
           title: 'Match',
           routeName: 'MatchFlow',
-          icon: require('../../Assets/match_icon.png'),
+          icon: matchIcon,
         },
         {
           title: 'Setting',
           routeName: 'SettingFlow',
-          icon: require('../../Assets/settings_icon.png'),
+          icon: settingsIcon,
         },
       ],
     };
   }
 
-  navigateToScreen = (route) => {
-    const {navigation, removeSecretsData} = this.props;
+  navigateToScreen(route) {
+    const { navigation, storeRemoveSecretsData } = this.props;
     if (route === 'LogOut') {
-      removeSecretsData();
+      storeRemoveSecretsData();
 
       // Immediately reload the React Native Bundle
       // RNRestart.Restart();
@@ -57,42 +61,42 @@ class TabScreen extends Component {
       try {
         const mainRoutes = navigation.state.routes;
         if (
-          mainRoutes[0].index !== 0 &&
-          mainRoutes[0].routes &&
-          mainRoutes[0].routes.length > 1
+          mainRoutes[0].index !== 0
+          && mainRoutes[0].routes
+          && mainRoutes[0].routes.length > 1
         ) {
           navigation.dispatch(StackActions.popToTop());
         }
       } catch (error) {
-        console.log(error);
+        console.warn(error);
       }
     }
-  };
+  }
 
   render() {
-    const {navigation} = this.props;
-    const {routes} = this.state;
+    const { navigation } = this.props;
+    const { routes } = this.state;
     const currentRoutes = navigation.state.routes || [];
     return (
       <View style={styles.flexStyle}>
         {routes.map((item) => {
-          const selected =
-            currentRoutes.length > 0 &&
-            currentRoutes[navigation.state.index || 0].routeName ===
-              item.routeName;
+          const selected = currentRoutes.length > 0
+            && currentRoutes[navigation.state.index || 0].routeName
+              === item.routeName;
           return (
             <TouchableOpacity
               key={item.routeName}
               onPress={() => this.navigateToScreen(item.routeName)}
-              style={styles.tabItem}>
+              style={styles.tabItem}
+            >
               <SocialButton
                 style={[
                   styles.tabButton,
-                  selected && {backgroundColor: colors.secondary},
+                  selected && { backgroundColor: colors.secondary },
                 ]}
                 iconStyle={[
                   styles.tabIcon,
-                  selected && {tintColor: colors.white},
+                  selected && { tintColor: colors.white },
                 ]}
                 icon={item.icon}
                 onClick={() => this.navigateToScreen(item.routeName)}
@@ -107,18 +111,13 @@ class TabScreen extends Component {
 
 TabScreen.propTypes = {
   navigation: PropTypes.shape().isRequired,
-  Secrets: PropTypes.shape().isRequired,
-  removeSecretsData: PropTypes.func.isRequired,
+  storeRemoveSecretsData: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  Secrets: JSON.parse(JSON.stringify(state.Secrets)),
-});
-
 const mapDispatchToProps = (dispatch) => ({
-  removeSecretsData: () => {
+  storeRemoveSecretsData: () => {
     dispatch(removeSecretsData());
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(TabScreen);
+export default connect(null, mapDispatchToProps)(TabScreen);

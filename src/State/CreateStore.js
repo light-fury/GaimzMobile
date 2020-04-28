@@ -1,8 +1,8 @@
 // @flow
 
-import {AsyncStorage} from 'react-native';
-import {createStore, applyMiddleware, compose} from 'redux';
-import {persistStore, persistReducer} from 'redux-persist';
+import { AsyncStorage } from 'react-native';
+import { createStore, applyMiddleware, compose } from 'redux';
+import { persistStore, persistReducer } from 'redux-persist';
 import createSagaMiddleware from 'redux-saga';
 
 export default (rootReducer, rootSaga) => {
@@ -38,12 +38,12 @@ export default (rootReducer, rootSaga) => {
     compose(
       applyMiddleware(...middleware),
       global.reduxNativeDevTools
-        ? global.reduxNativeDevTools({name: 'FirstDerm'})
-        : nope => nope,
+        ? global.reduxNativeDevTools({ name: 'FirstDerm' })
+        : (nope) => nope,
     ),
   );
   sagaMiddleware.run(rootSaga);
   const persistor = persistStore(store);
 
-  return {store, persistor};
+  return { store, persistor };
 };

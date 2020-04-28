@@ -1,9 +1,9 @@
 // @flow
 
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 import SettingMainScreen from './SettingMainScreen';
-import {createSecretsData} from '../../../../State/Secrets/Actions';
+import { createSecretsData } from '../../../../State/Secrets/Actions';
 
 const mapStateToProps = (state) => ({
   Secrets: state.Secrets,

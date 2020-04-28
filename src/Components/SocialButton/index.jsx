@@ -1,6 +1,8 @@
 import React from 'react';
-import {TouchableOpacity, Image, StyleSheet, View} from 'react-native';
-import {calcReal} from '../../Assets/config';
+import {
+  TouchableOpacity, Image, StyleSheet, View,
+} from 'react-native';
+import { calcReal } from '../../Assets/config';
 
 const styles = StyleSheet.create({
   iconTemplate: {
@@ -21,7 +23,7 @@ const SocialButton = ({
       <View style={style}>
         <Image
           style={[styles.iconTemplate, iconStyle]}
-          resizeMode={'contain'}
+          resizeMode="contain"
           source={icon}
         />
       </View>
@@ -31,10 +33,11 @@ const SocialButton = ({
     <TouchableOpacity
       style={style}
       activeOpacity={clickOpacity}
-      onPress={onClick}>
+      onPress={onClick}
+    >
       <Image
         style={[styles.iconTemplate, iconStyle]}
-        resizeMode={'contain'}
+        resizeMode="contain"
         source={icon}
       />
     </TouchableOpacity>

@@ -1,64 +1,59 @@
-/* eslint-disable react-native/no-inline-styles */
 // @flow
 import React from 'react';
 import {
+  Alert,
   Text,
   View,
   TouchableOpacity,
   Image,
   FlatList,
-  ImageBackground,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
 
+import {
+  userIcon,
+  connectionIcon,
+  helpIcon,
+  arrowRight,
+  templateProfile,
+  settingsIcon,
+} from '../../../../Assets';
 import SocialButton from '../../../../Components/SocialButton';
 import styles from './SettingMainScreen.style';
-import {colors} from '../../../../Assets/config';
 
 class SettingMainScreen extends React.PureComponent {
-  static propTypes = {
-    Secrets: PropTypes.shape({
-      isFetching: PropTypes.bool.isRequired,
-      secretsData: PropTypes.shape(),
-      error: PropTypes.any,
-    }).isRequired,
-    navigation: PropTypes.shape().isRequired,
-    createSecretsData: PropTypes.func.isRequired,
-  };
-
   constructor(props) {
     super(props);
     this.state = {
-      fullname: '',
-      email: '',
       listData: [
         {
-          image: require('../../../../Assets/user_icon.png'),
+          image: userIcon,
           title: 'My Account',
           route: 'AccountSettingScreen',
         },
         {
-          image: require('../../../../Assets/connection_icon.png'),
+          image: connectionIcon,
           title: 'Connection',
           route: 'ConnectionSettingScreen',
         },
         {
-          image: require('../../../../Assets/help_icon.png'),
+          image: helpIcon,
           title: 'Help',
           route: 'HelpSettingScreen',
         },
       ],
-      focused: 0,
     };
   }
 
-  renderItem = ({item, index}) => {
+  renderItem({ item, index }) {
+    const { navigation } = this.props;
     return (
       <TouchableOpacity
         key={index}
-        onPress={() => this.props.navigation.navigate(item.route)}
-        style={styles.itemContainer}>
+        onPress={() => navigation.navigate(item.route)}
+        style={styles.itemContainer}
+      >
         <SocialButton
           style={styles.itemButton}
           iconStyle={styles.itemIcon}
@@ -69,26 +64,27 @@ class SettingMainScreen extends React.PureComponent {
           {item.title}
         </Text>
         <Image
-          source={require('../../../../Assets/arrow_right.png')}
-          resizeMode={'contain'}
+          source={arrowRight}
+          resizeMode="contain"
           style={styles.arrowIcon}
         />
       </TouchableOpacity>
     );
-  };
+  }
 
   render() {
-    const {listData} = this.state;
+    const { listData } = this.state;
 
     return (
       <SafeAreaView
-        forceInset={{bottom: 'never', top: 'never'}}
-        style={styles.container}>
+        forceInset={{ bottom: 'never', top: 'never' }}
+        style={styles.container}
+      >
         <View style={styles.header}>
           <Image
-            source={require('../../../../Assets/template_profile.png')}
+            source={templateProfile}
             style={styles.avatarImage}
-            resizeMode={'cover'}
+            resizeMode="cover"
           />
           <Text style={[styles.flexContainer, styles.profileName]}>
             Aladin Ben
@@ -96,8 +92,8 @@ class SettingMainScreen extends React.PureComponent {
           <SocialButton
             style={styles.headerButton}
             iconStyle={styles.headerIcon}
-            icon={require('../../../../Assets/settings_icon.png')}
-            onClick={() => alert('Bell Clicked')}
+            icon={settingsIcon}
+            onClick={() => Alert.alert('Bell Clicked')}
           />
         </View>
         <Text style={styles.titleText}>Settings</Text>
@@ -105,12 +101,21 @@ class SettingMainScreen extends React.PureComponent {
           style={styles.flexContainer}
           contentContainerStyle={styles.scrollIntent}
           data={listData}
-          renderItem={this.renderItem}
+          renderItem={(data) => this.renderItem(data)}
           keyExtractor={(item, index) => `${item.host}-${index}`}
         />
       </SafeAreaView>
     );
   }
 }
+
+SettingMainScreen.propTypes = {
+  Secrets: PropTypes.shape({
+    isFetching: PropTypes.bool.isRequired,
+    secretsData: PropTypes.shape(),
+    error: PropTypes.any,
+  }).isRequired,
+  navigation: PropTypes.shape().isRequired,
+};
 
 export default SettingMainScreen;

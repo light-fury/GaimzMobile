@@ -1,7 +1,10 @@
-import React, {useState} from 'react';
-import {TouchableOpacity, Image, StyleSheet, Text, View} from 'react-native';
+import React, { useState } from 'react';
+import {
+  TouchableOpacity, Image, StyleSheet, Text, View,
+} from 'react-native';
 
-import {colors, calcReal} from '../../Assets/config';
+import { colors, calcReal } from '../../Assets/config';
+import { arrowUp, arrowDown } from '../../Assets';
 
 const styles = StyleSheet.create({
   labelInnerStyle: {
@@ -57,23 +60,23 @@ const CustomDropdown = ({
       <View
         style={[
           styles.dropDownContainer,
-          {borderColor},
-          options.length <= 1 && {paddingHorizontal: calcReal(5)},
-        ]}>
+          { borderColor },
+          options.length <= 1 && { paddingHorizontal: calcReal(5) },
+        ]}
+      >
         <TouchableOpacity
-          onPress={() =>
-            options.length > 1 && setDropDownVisible(!dropDownVisible)
-          }
-          style={styles.itemContainer}>
+          onPress={() => options.length > 1 && setDropDownVisible(!dropDownVisible)}
+          style={styles.itemContainer}
+        >
           <Text style={styles.itemText}>{value}</Text>
           {options.length > 1 && (
             <Image
               style={styles.iconStyle}
-              resizeMode={'contain'}
+              resizeMode="contain"
               source={
                 dropDownVisible
-                  ? require('../../Assets/arrow_up.png')
-                  : require('../../Assets/arrow_down.png')
+                  ? arrowUp
+                  : arrowDown
               }
             />
           )}
@@ -87,8 +90,9 @@ const CustomDropdown = ({
                   setDropDownVisible(false);
                 }}
                 key={index}
-                style={[styles.itemContainer, {height: calcReal(30)}]}>
-                <Text style={[styles.itemText, {color: colors.primary}]}>
+                style={[styles.itemContainer, { height: calcReal(30) }]}
+              >
+                <Text style={[styles.itemText, { color: colors.primary }]}>
                   {item}
                 </Text>
               </TouchableOpacity>
