@@ -48,8 +48,6 @@ const CustomDropdown = ({
   value,
   options,
   onUpdateValue,
-  secureTextEntry = false,
-  onClick = () => {},
   borderColor = colors.grayOpacity,
 }) => {
   const [dropDownVisible, setDropDownVisible] = useState(false);
@@ -89,7 +87,7 @@ const CustomDropdown = ({
                   onUpdateValue(item);
                   setDropDownVisible(false);
                 }}
-                key={index}
+                key={index} // eslint-disable-line react/no-array-index-key
                 style={[styles.itemContainer, { height: calcReal(30) }]}
               >
                 <Text style={[styles.itemText, { color: colors.primary }]}>
