@@ -3,7 +3,6 @@ import {
   TouchableOpacity, Image, StyleSheet, Text, View,
 } from 'react-native';
 
-import { arrowUp, arrowDown } from '../../Assets';
 import { colors, calcReal } from '../../Assets/config';
 
 const styles = StyleSheet.create({
@@ -48,6 +47,8 @@ const CustomDropdown = ({
   value,
   options,
   onUpdateValue,
+  secureTextEntry = false,
+  onClick = () => {},
   borderColor = colors.grayOpacity,
 }) => {
   const [dropDownVisible, setDropDownVisible] = useState(false);
@@ -73,8 +74,8 @@ const CustomDropdown = ({
               resizeMode="contain"
               source={
                 dropDownVisible
-                  ? arrowUp
-                  : arrowDown
+                  ? require('../../Assets/arrow_up.png')
+                  : require('../../Assets/arrow_down.png')
               }
             />
           )}
@@ -87,7 +88,7 @@ const CustomDropdown = ({
                   onUpdateValue(item);
                   setDropDownVisible(false);
                 }}
-                key={`${index}`} // eslint-disable-line react/no-array-index-key
+                key={index}
                 style={[styles.itemContainer, { height: calcReal(30) }]}
               >
                 <Text style={[styles.itemText, { color: colors.primary }]}>

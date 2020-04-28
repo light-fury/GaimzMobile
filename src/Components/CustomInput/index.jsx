@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
 const CustomInput = ({
   label,
   containerStyle = {},
+  labelStyle = {},
   value,
   onUpdateValue,
   secureTextEntry = false,
@@ -60,7 +61,7 @@ const CustomInput = ({
   iconVisible = false,
 }) => (
   <View style={containerStyle}>
-    <Text style={styles.labelStyle}>{label}</Text>
+    <Text style={[styles.titleText, labelStyle]}>{label}</Text>
     <View style={[styles.inputContainer, { borderColor }]}>
       <TextInput
         style={styles.flexStyle}

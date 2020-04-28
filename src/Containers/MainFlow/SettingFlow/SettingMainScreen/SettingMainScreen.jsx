@@ -101,7 +101,7 @@ class SettingMainScreen extends React.PureComponent {
           style={styles.flexContainer}
           contentContainerStyle={styles.scrollIntent}
           data={listData}
-          renderItem={this.renderItem}
+          renderItem={(data) => this.renderItem(data)}
           keyExtractor={(item, index) => `${item.host}-${index}`}
         />
       </SafeAreaView>
