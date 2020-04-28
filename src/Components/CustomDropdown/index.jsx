@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 
 import { colors, calcReal } from '../../Assets/config';
+import { arrowUp, arrowDown } from '../../Assets';
 
 const styles = StyleSheet.create({
   labelInnerStyle: {
@@ -74,8 +75,8 @@ const CustomDropdown = ({
               resizeMode="contain"
               source={
                 dropDownVisible
-                  ? require('../../Assets/arrow_up.png')
-                  : require('../../Assets/arrow_down.png')
+                  ? arrowUp
+                  : arrowDown
               }
             />
           )}
