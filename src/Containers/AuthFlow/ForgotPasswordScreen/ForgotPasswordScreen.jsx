@@ -16,6 +16,9 @@ import ConfirmButton from '../../../Components/ConfirmButton';
 import CustomInput from '../../../Components/CustomInput';
 
 import styles from './ForgotPasswordScreen.style';
+import {
+  splashBackground, appLogo, arrowLeft, closeIcon,
+} from '../../../Assets';
 import { colors } from '../../../Assets/config';
 
 class ForgotPasswordScreen extends React.PureComponent {
@@ -37,18 +40,18 @@ class ForgotPasswordScreen extends React.PureComponent {
       >
         <ImageBackground
           style={styles.topContainer}
-          source={require('../../../Assets/splash_background.png')}
+          source={splashBackground}
           imageStyle={styles.flexStyle}
           resizeMode="cover"
         >
           <Image
             style={styles.logoImage}
-            source={require('../../../Assets/app_logo.png')}
+            source={appLogo}
             resizeMode="contain"
           />
           <SocialButton
             style={styles.socialButton}
-            icon={require('../../../Assets/arrow_left.png')}
+            icon={arrowLeft}
             onClick={() => navigation.pop()}
           />
         </ImageBackground>
@@ -65,7 +68,7 @@ class ForgotPasswordScreen extends React.PureComponent {
             label="Email"
             value={email}
             onUpdateValue={(text) => this.setState({ email: text })}
-            icon={require('../../../Assets/close_icon.png')}
+            icon={closeIcon}
             iconVisible={email.length > 0}
             borderColor={email.length > 0 ? colors.red : colors.grayOpacity}
             containerStyle={styles.inputContainer}

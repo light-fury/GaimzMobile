@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import SocialButton from '../SocialButton';
 import { removeSecretsData } from '../../State/Secrets/Actions';
 import styles from './TabScreen.style';
+import { homeIcon, matchIcon, settingsIcon } from '../../Assets';
 import { colors } from '../../Assets/config';
 
 class TabScreen extends Component {
@@ -21,17 +22,17 @@ class TabScreen extends Component {
         {
           title: 'Home',
           routeName: 'HomeFlow',
-          icon: require('../../Assets/home_icon.png'),
+          icon: homeIcon,
         },
         {
           title: 'Match',
           routeName: 'MatchFlow',
-          icon: require('../../Assets/match_icon.png'),
+          icon: matchIcon,
         },
         {
           title: 'Setting',
           routeName: 'SettingFlow',
-          icon: require('../../Assets/settings_icon.png'),
+          icon: settingsIcon,
         },
       ],
     };
@@ -66,7 +67,9 @@ class TabScreen extends Component {
         ) {
           navigation.dispatch(StackActions.popToTop());
         }
-      } catch (error) {}
+      } catch (error) {
+        console.warn(error);
+      }
     }
   }
 

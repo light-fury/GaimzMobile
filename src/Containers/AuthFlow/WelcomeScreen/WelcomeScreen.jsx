@@ -21,9 +21,21 @@ import ConfirmButton from '../../../Components/ConfirmButton';
 import CustomInput from '../../../Components/CustomInput';
 
 import styles from './WelcomeScreen.style';
+<<<<<<< HEAD
 <<<<<<< HEAD:src/Containers/AuthFlow/WelcomeScreen/WelcomeScreen.js
 import {colors, calcReal} from '../../../Assets/config';
 =======
+=======
+import {
+  splashBackground,
+  appLogo,
+  facebookIcon,
+  twitchIcon,
+  steamIcon,
+  checkIcon,
+  eyeIcon,
+} from '../../../Assets';
+>>>>>>> :recycle: Refactoring images
 import { colors, calcReal } from '../../../Assets/config';
 >>>>>>> :recycle: Refactoring:src/Containers/AuthFlow/WelcomeScreen/WelcomeScreen.jsx
 
@@ -60,13 +72,13 @@ class WelcomeScreen extends React.PureComponent {
       >
         <ImageBackground
           style={styles.topContainer}
-          source={require('../../../Assets/splash_background.png')}
+          source={splashBackground}
           imageStyle={styles.flexStyle}
           resizeMode="cover"
         >
           <Image
             style={styles.logoImage}
-            source={require('../../../Assets/app_logo.png')}
+            source={appLogo}
             resizeMode="contain"
           />
         </ImageBackground>
@@ -82,21 +94,21 @@ class WelcomeScreen extends React.PureComponent {
           <View style={styles.socialContainer}>
             <SocialButton
               style={[styles.socialButton, { backgroundColor: colors.fbColor }]}
-              icon={require('../../../Assets/facebook_icon.png')}
+              icon={facebookIcon}
               onClick={() => {
                 Alert.alert('FB Login');
               }}
             />
             <SocialButton
               style={[styles.socialButton, { backgroundColor: colors.lightGray }]}
-              icon={require('../../../Assets/twitch_icon.png')}
+              icon={twitchIcon}
               onClick={() => {
                 Alert.alert('Twitch Login');
               }}
             />
             <SocialButton
               style={[styles.socialButton, { backgroundColor: colors.secondary }]}
-              icon={require('../../../Assets/steam_icon.png')}
+              icon={steamIcon}
               onClick={() => {
                 Alert.alert('Steam Login');
               }}
@@ -109,7 +121,7 @@ class WelcomeScreen extends React.PureComponent {
             label="Email"
             value={email}
             onUpdateValue={(text) => this.setState({ email: text })}
-            icon={require('../../../Assets/check_icon.png')}
+            icon={checkIcon}
             iconVisible={email.length > 0}
             containerStyle={styles.inputContainer}
           />
@@ -117,7 +129,7 @@ class WelcomeScreen extends React.PureComponent {
             label="Password"
             value={password}
             secureTextEntry={!passwordVisible}
-            icon={require('../../../Assets/eye_icon.png')}
+            icon={eyeIcon}
             iconVisible={password.length > 0}
             onUpdateValue={(text) => this.setState({ password: text })}
             onClick={() => this.setState({ passwordVisible: !passwordVisible })}

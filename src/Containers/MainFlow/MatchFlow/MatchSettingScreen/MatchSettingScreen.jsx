@@ -15,122 +15,86 @@ import SafeAreaView from 'react-native-safe-area-view';
 import ConfirmButton from '../../../../Components/ConfirmButton';
 import CustomDropdown from '../../../../Components/CustomDropdown';
 import styles from './MatchSettingScreen.style';
+import { dotaBackground } from '../../../../Assets';
 import { colors, calcReal } from '../../../../Assets/config';
 
 const { width } = Dimensions.get('window');
 
-class MatchSettingScreen extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      gameTypeOption: ['1 Versus 1', '5 Versus 5'],
-      gameType: '1 Versus 1',
-      gameModeOption: ['All Pick'],
-      gameMode: 'All Pick',
-      regionOption: ['Automatic'],
-      region: 'Automatic',
-      streamerOptions: ['User1', 'User2', 'User3'],
-      streamer: 'User1',
-      matchOptions: [
-        'Free Mode',
-        'Subscriber Only',
-        'Follower Only',
-        'Password',
-      ],
-    };
-  }
+const listData = [
+  {
+    image: dotaBackground,
+    gameTitle: 'Dota 2',
+  },
+  {
+    image: dotaBackground,
+    gameTitle: 'Dota 2',
+  },
+  {
+    image: dotaBackground,
+    gameTitle: 'Dota 2',
+  },
+  {
+    image: dotaBackground,
+    gameTitle: 'Dota 2',
+  },
+];
 
-  renderItem({ item }) {
-    return (
-      <View style={styles.itemContainer}>
-        <TouchableOpacity>
-          <ImageBackground
-            style={styles.itemBackground}
-            imageStyle={styles.itemImage}
-            source={item.image}
-            resizeMode="cover"
-          />
-        </TouchableOpacity>
-      </View>
-    );
-  }
+const renderItem = ({ item }) => (
+  <View style={styles.itemContainer}>
+    <TouchableOpacity>
+      <ImageBackground
+        style={styles.itemBackground}
+        imageStyle={styles.itemImage}
+        source={item.image}
+        resizeMode="cover"
+      />
+    </TouchableOpacity>
+  </View>
+);
 
-  render() {
-    const { listData } = this.state;
-
-    return (
-      <SafeAreaView
-        forceInset={{ bottom: 'never', top: 'never' }}
-        style={styles.container}
-      >
-        <View style={styles.header}>
-          <Text style={styles.profileName}>
-            Connect your steam account first
-          </Text>
-          <CustomDropdown
-            label={'GAME TYPE'}
-            labelStyle={styles.whiteColor}
-            containerStyle={styles.inputContainer}
-            options={gameTypeOption}
-            value={gameType}
-            onUpdateValue={(val) => this.setState({gameType: val})}
-          />
-          <View style={styles.rowContainer}>
-            <CustomDropdown
-              label={'GAME MODE'}
-              labelStyle={styles.whiteColor}
-              containerStyle={styles.flexContainer}
-              options={gameModeOption}
-              value={gameMode}
-              onUpdateValue={(val) => this.setState({gameMode: val})}
-            />
-            <CustomDropdown
-              label={'REGION'}
-              labelStyle={styles.whiteColor}
-              containerStyle={[styles.flexContainer, styles.ml20]}
-              options={regionOption}
-              value={region}
-              onUpdateValue={(val) => this.setState({region: val})}
-            />
-          </View>
-          <CustomDropdown
-            label={'SELECT STREAMER'}
-            labelStyle={styles.whiteColor}
-            containerStyle={styles.inputContainer}
-            options={streamerOptions}
-            value={streamer}
-            onUpdateValue={(val) => this.setState({streamer: val})}
-          />
-          <CustomDropdown
-            label={'CREATE MATCH'}
-            labelStyle={styles.whiteColor}
-            containerStyle={styles.inputContainer}
-            options={matchOptions}
-            value={match}
-            onUpdateValue={(val) => this.setState({match: val})}
-          />
-        </ScrollView>
-        <ConfirmButton
-          color={colors.loginColor}
-          label="FIND MATCH"
-          onClick={() => Alert.alert('Find Match')}
-          fontStyle={styles.fontSpacing}
-          containerStyle={styles.mh48}
-        />
-        <View style={styles.space} />
-        <ConfirmButton
-          borderColor={colors.secondaryOpacity}
-          textColor={colors.grayText}
-          label="SETTINGS"
-          onClick={() => Alert.alert('Settings')}
-          fontStyle={styles.fontSpacing}
-          containerStyle={styles.mh48}
-        />
-        <View style={styles.space} />
-      </SafeAreaView>
-    );
-  }
-}
+const MatchSettingScreen = () => (
+  <SafeAreaView
+    forceInset={{ bottom: 'never', top: 'never' }}
+    style={styles.container}
+  >
+    <View style={styles.header}>
+      <Text style={styles.profileName}>
+        Connect your steam account first
+      </Text>
+    </View>
+    <FlatList
+      style={styles.flexContainer}
+      contentContainerStyle={styles.scrollIntent}
+      data={listData}
+      horizontal
+      pagingEnabled
+      getItemLayout={(data, index) => ({
+        length: width - calcReal(48),
+        offset: (width - calcReal(48)) * index,
+        index,
+      })}
+      renderItem={renderItem}
+      keyExtractor={(item, index) => `${item.gameTitle}-${index}`}
+    />
+    <ConfirmButton
+      color={colors.loginColor}
+      label="FIND MATCH"
+      onClick={() => Alert.alert('Find Match')}
+      fontStyle={styles.fontSpacing}
+      containerStyle={styles.mh48}
+    />
+    <View style={styles.space} />
+    <ConfirmButton
+      borderColor={colors.secondaryOpacity}
+      textColor={colors.grayText}
+      label="SETTINGS"
+      onClick={() => Alert.alert('Settings')}
+      fontStyle={styles.fontSpacing}
+      containerStyle={styles.mh48}
+    />
+    <View style={styles.space} />
+  </SafeAreaView>
+);
 
 MatchSettingScreen.propTypes = {
   Secrets: PropTypes.shape({
