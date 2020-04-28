@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import {
-  Text, View, ScrollView, Alert, Dimensions
+  Text, View, ScrollView, Alert,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
@@ -30,7 +30,6 @@ class MatchSettingScreen extends React.PureComponent {
         'Password',
       ],
       match: 'Free Mode',
-      focused: 0,
     };
   }
 
@@ -140,7 +139,6 @@ MatchSettingScreen.propTypes = {
     error: PropTypes.any,
   }).isRequired,
   navigation: PropTypes.shape().isRequired,
-  createSecretsData: PropTypes.func.isRequired,
 };
 
 export default MatchSettingScreen;
