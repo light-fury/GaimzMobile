@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import {
   TouchableOpacity,
@@ -59,6 +60,7 @@ const CustomInput = ({
   icon,
   borderColor = colors.grayOpacity,
   iconVisible = false,
+  ...props
 }) => (
   <View style={containerStyle}>
     <Text style={[styles.titleText, labelStyle]}>{label}</Text>
@@ -69,6 +71,7 @@ const CustomInput = ({
         secureTextEntry={secureTextEntry}
         onChangeText={onUpdateValue}
         clearTextOnFocus={false}
+        {...props}
       />
       {iconVisible && icon && (
       <TouchableOpacity onPress={onClick} style={styles.iconContainer}>

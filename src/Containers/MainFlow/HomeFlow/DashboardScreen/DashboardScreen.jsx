@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Alert,
   Text,
@@ -22,6 +22,7 @@ import {
   notificationIcon,
 } from '../../../../Assets';
 import { colors } from '../../../../Assets/config';
+import { UserContext } from '../../../../contexts';
 
 const listData = [
   {
@@ -97,42 +98,46 @@ const renderItem = ({ item, index }) => (
   </View>
 );
 
-const DashboardScreen = () => (
-  <SafeAreaView
-    forceInset={{ bottom: 'never', top: 'never' }}
-    style={styles.container}
-  >
-    <View style={styles.header}>
-      <Image
-        source={templateImage}
-        style={styles.avatarImage}
-        resizeMode="cover"
+const DashboardScreen = () => {
+  const [user] = useContext(UserContext);
+
+  return (
+    <SafeAreaView
+      forceInset={{ bottom: 'never', top: 'never' }}
+      style={styles.container}
+    >
+      <View style={styles.header}>
+        <Image
+          source={templateImage}
+          style={styles.avatarImage}
+          resizeMode="cover"
+        />
+        <Text style={[styles.flexContainer, styles.profileName]}>
+          {user.userName}
+        </Text>
+        <SocialButton
+          style={styles.headerButton}
+          iconStyle={styles.headerIcon}
+          icon={searchIcon}
+          onClick={() => Alert.alert('Search Clicked')}
+        />
+        <SocialButton
+          style={styles.headerButton}
+          iconStyle={styles.headerIcon}
+          icon={notificationIcon}
+          onClick={() => Alert.alert('Bell Clicked')}
+        />
+      </View>
+      <FlatList
+        style={[styles.flexContainer, { backgroundColor: colors.lightGray }]}
+        contentContainerStyle={styles.scrollIntent}
+        data={listData}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => `${item.host}-${index}`}
       />
-      <Text style={[styles.flexContainer, styles.profileName]}>
-        Aladin Ben
-      </Text>
-      <SocialButton
-        style={styles.headerButton}
-        iconStyle={styles.headerIcon}
-        icon={searchIcon}
-        onClick={() => Alert.alert('Search Clicked')}
-      />
-      <SocialButton
-        style={styles.headerButton}
-        iconStyle={styles.headerIcon}
-        icon={notificationIcon}
-        onClick={() => Alert.alert('Bell Clicked')}
-      />
-    </View>
-    <FlatList
-      style={[styles.flexContainer, { backgroundColor: colors.lightGray }]}
-      contentContainerStyle={styles.scrollIntent}
-      data={listData}
-      renderItem={renderItem}
-      keyExtractor={(item, index) => `${item.host}-${index}`}
-    />
-  </SafeAreaView>
-);
+    </SafeAreaView>
+  );
+};
 
 DashboardScreen.propTypes = {
   Secrets: PropTypes.shape({
