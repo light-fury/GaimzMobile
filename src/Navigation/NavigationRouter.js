@@ -15,6 +15,9 @@ import MatchMainScreen from '../Containers/MainFlow/MatchFlow/MatchMainScreen';
 import MatchSettingScreen from '../Containers/MainFlow/MatchFlow/MatchSettingScreen';
 import MatchPasswordScreen from '../Containers/MainFlow/MatchFlow/MatchPasswordScreen';
 import MatchErrorScreen from '../Containers/MainFlow/MatchFlow/MatchErrorScreen';
+// Home Flow
+import SettingMainScreen from '../Containers/MainFlow/SettingFlow/SettingMainScreen';
+import ConnectionSettingScreen from '../Containers/MainFlow/SettingFlow/ConnectionSettingScreen';
 import TabScreen from '../Components/TabScreen/TabScreen';
 import {colors} from '../Assets/config';
 
@@ -96,6 +99,37 @@ export const MainNavigator = createStackNavigator(
                 },
                 MatchErrorScreen: {
                   screen: MatchErrorScreen,
+                  navigationOptions: () => ({
+                    headerShown: false,
+                  }),
+                },
+              },
+              {
+                headerMode: 'screen',
+              },
+            ),
+            navigationOptions: ({navigation}) => {
+              let {routeName} = navigation.state.routes[navigation.state.index];
+              let navigationOptions = {
+                headerShown: false,
+              };
+              if (['ProfileDetailScreen'].indexOf(routeName) >= 0) {
+                navigationOptions.tabBarVisible = false;
+              }
+              return navigationOptions;
+            },
+          },
+          SettingFlow: {
+            screen: createStackNavigator(
+              {
+                SettingMainScreen: {
+                  screen: SettingMainScreen,
+                  navigationOptions: () => ({
+                    headerShown: false,
+                  }),
+                },
+                ConnectionSettingScreen: {
+                  screen: ConnectionSettingScreen,
                   navigationOptions: () => ({
                     headerShown: false,
                   }),

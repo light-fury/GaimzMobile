@@ -119,7 +119,7 @@ class DashboardScreen extends React.PureComponent {
         style={styles.container}>
         <View style={styles.header}>
           <Image
-            source={require('../../../../Assets/template_image.png')}
+            source={require('../../../../Assets/template_profile.png')}
             style={styles.avatarImage}
             resizeMode={'cover'}
           />
