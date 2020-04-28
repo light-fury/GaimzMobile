@@ -51,7 +51,6 @@ const styles = StyleSheet.create({
 const CustomInput = ({
   label,
   containerStyle = {},
-  labelStyle = {},
   value,
   onUpdateValue,
   secureTextEntry = false,

@@ -92,6 +92,55 @@ export const MainNavigator = createStackNavigator(
                     headerShown: false,
                   }),
                 },
+                MatchPasswordScreen: {
+                  screen: MatchPasswordScreen,
+                  navigationOptions: () => ({
+                    headerShown: false,
+                  }),
+                },
+                MatchErrorScreen: {
+                  screen: MatchErrorScreen,
+                  navigationOptions: () => ({
+                    headerShown: false,
+                  }),
+                },
+              },
+              {
+                headerMode: 'screen',
+              },
+            ),
+            navigationOptions: ({ navigation }) => {
+              const { routeName } = navigation.state.routes[navigation.state.index];
+              const navigationOptions = {
+                headerShown: false,
+              };
+              if (['ProfileDetailScreen'].indexOf(routeName) >= 0) {
+                navigationOptions.tabBarVisible = false;
+              }
+              return navigationOptions;
+            },
+          },
+          SettingFlow: {
+            screen: createStackNavigator(
+              {
+                SettingMainScreen: {
+                  screen: SettingMainScreen,
+                  navigationOptions: () => ({
+                    headerShown: false,
+                  }),
+                },
+                ConnectionSettingScreen: {
+                  screen: ConnectionSettingScreen,
+                  navigationOptions: () => ({
+                    headerShown: false,
+                  }),
+                },
+                AccountSettingScreen: {
+                  screen: AccountSettingScreen,
+                  navigationOptions: () => ({
+                    headerShown: false,
+                  }),
+                },
               },
               {
                 headerMode: 'screen',

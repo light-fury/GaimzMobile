@@ -1,7 +1,10 @@
-import React, {useState} from 'react';
-import {TouchableOpacity, Image, StyleSheet, Text, View} from 'react-native';
+import React, { useState } from 'react';
+import {
+  TouchableOpacity, Image, StyleSheet, Text, View,
+} from 'react-native';
 
-import {colors, calcReal} from '../../Assets/config';
+import { arrowUp, arrowDown } from '../../Assets';
+import { colors, calcReal } from '../../Assets/config';
 
 const styles = StyleSheet.create({
   labelInnerStyle: {
@@ -45,8 +48,6 @@ const CustomDropdown = ({
   value,
   options,
   onUpdateValue,
-  secureTextEntry = false,
-  onClick = () => {},
   borderColor = colors.grayOpacity,
 }) => {
   const [dropDownVisible, setDropDownVisible] = useState(false);
@@ -57,23 +58,23 @@ const CustomDropdown = ({
       <View
         style={[
           styles.dropDownContainer,
-          {borderColor},
-          options.length <= 1 && {paddingHorizontal: calcReal(5)},
-        ]}>
+          { borderColor },
+          options.length <= 1 && { paddingHorizontal: calcReal(5) },
+        ]}
+      >
         <TouchableOpacity
-          onPress={() =>
-            options.length > 1 && setDropDownVisible(!dropDownVisible)
-          }
-          style={styles.itemContainer}>
+          onPress={() => options.length > 1 && setDropDownVisible(!dropDownVisible)}
+          style={styles.itemContainer}
+        >
           <Text style={styles.itemText}>{value}</Text>
           {options.length > 1 && (
             <Image
               style={styles.iconStyle}
-              resizeMode={'contain'}
+              resizeMode="contain"
               source={
                 dropDownVisible
-                  ? require('../../Assets/arrow_up.png')
-                  : require('../../Assets/arrow_down.png')
+                  ? arrowUp
+                  : arrowDown
               }
             />
           )}
@@ -86,9 +87,10 @@ const CustomDropdown = ({
                   onUpdateValue(item);
                   setDropDownVisible(false);
                 }}
-                key={index}
-                style={[styles.itemContainer, {height: calcReal(30)}]}>
-                <Text style={[styles.itemText, {color: colors.primary}]}>
+                key={`${index}`} // eslint-disable-line react/no-array-index-key
+                style={[styles.itemContainer, { height: calcReal(30) }]}
+              >
+                <Text style={[styles.itemText, { color: colors.primary }]}>
                   {item}
                 </Text>
               </TouchableOpacity>

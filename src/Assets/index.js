@@ -1,7 +1,9 @@
 export { default as appIcon } from './appIcon.png';
 export { default as appLogo } from './app_logo.png';
+export { default as arrowDown } from './arrow_down.png';
 export { default as arrowLeft } from './arrow_left.png';
 export { default as arrowRight } from './arrow_right.png';
+export { default as arrowUp } from './arrow_up.png';
 export { default as cameraIcon } from './camera_icon.png';
 export { default as checkIcon } from './check_icon.png';
 export { default as checkWhiteIcon } from './check_white_icon.png';

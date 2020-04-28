@@ -1,7 +1,7 @@
 // @flow
-import {StyleSheet} from 'react-native';
-import {colors, calcReal} from '../../../../Assets/config';
-import {getStatusBarHeight} from 'react-native-status-bar-height';
+import { StyleSheet } from 'react-native';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
+import { colors, calcReal } from '../../../../Assets/config';
 
 export default StyleSheet.create({
   container: {

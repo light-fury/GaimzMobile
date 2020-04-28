@@ -13,7 +13,6 @@ import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
 
 import ConfirmButton from '../../../../Components/ConfirmButton';
-import CustomDropdown from '../../../../Components/CustomDropdown';
 import styles from './MatchSettingScreen.style';
 import { dotaBackground } from '../../../../Assets';
 import { colors, calcReal } from '../../../../Assets/config';

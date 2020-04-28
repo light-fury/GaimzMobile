@@ -1,8 +1,5 @@
 // @flow
 import React from 'react';
-<<<<<<< HEAD:src/Containers/AuthFlow/WelcomeScreen/WelcomeScreen.js
-import {Text, View, ImageBackground, Image} from 'react-native';
-=======
 import {
   Alert,
   Text,
@@ -10,7 +7,6 @@ import {
   ImageBackground,
   Image,
 } from 'react-native';
->>>>>>> :recycle: Refactoring:src/Containers/AuthFlow/WelcomeScreen/WelcomeScreen.jsx
 import PropTypes from 'prop-types';
 import SplashScreen from 'react-native-splash-screen';
 import SafeAreaView from 'react-native-safe-area-view';
@@ -21,11 +17,6 @@ import ConfirmButton from '../../../Components/ConfirmButton';
 import CustomInput from '../../../Components/CustomInput';
 
 import styles from './WelcomeScreen.style';
-<<<<<<< HEAD
-<<<<<<< HEAD:src/Containers/AuthFlow/WelcomeScreen/WelcomeScreen.js
-import {colors, calcReal} from '../../../Assets/config';
-=======
-=======
 import {
   splashBackground,
   appLogo,
@@ -35,9 +26,7 @@ import {
   checkIcon,
   eyeIcon,
 } from '../../../Assets';
->>>>>>> :recycle: Refactoring images
 import { colors, calcReal } from '../../../Assets/config';
->>>>>>> :recycle: Refactoring:src/Containers/AuthFlow/WelcomeScreen/WelcomeScreen.jsx
 
 class WelcomeScreen extends React.PureComponent {
   constructor(props) {
@@ -57,13 +46,8 @@ class WelcomeScreen extends React.PureComponent {
   }
 
   render() {
-<<<<<<< HEAD:src/Containers/AuthFlow/WelcomeScreen/WelcomeScreen.js
-    const {email, password, passwordVisible} = this.state;
-    const {navigation} = this.props;
-=======
     const { email, password, passwordVisible } = this.state;
     const { navigation } = this.props;
->>>>>>> :recycle: Refactoring:src/Containers/AuthFlow/WelcomeScreen/WelcomeScreen.jsx
 
     return (
       <SafeAreaView

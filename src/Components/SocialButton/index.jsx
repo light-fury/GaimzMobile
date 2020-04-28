@@ -1,5 +1,7 @@
 import React from 'react';
-import { TouchableOpacity, Image, StyleSheet } from 'react-native';
+import {
+  TouchableOpacity, Image, StyleSheet, View,
+} from 'react-native';
 import { calcReal } from '../../Assets/config';
 
 const styles = StyleSheet.create({
@@ -10,15 +12,36 @@ const styles = StyleSheet.create({
 });
 
 const SocialButton = ({
-  style, icon, iconStyle = {}, onClick = () => {},
-}) => (
-  <TouchableOpacity style={style} onPress={onClick}>
-    <Image
-      style={[styles.iconTemplate, iconStyle]}
-      resizeMode="contain"
-      source={icon}
-    />
-  </TouchableOpacity>
-);
+  style,
+  icon,
+  clickOpacity = 0.5,
+  iconStyle = {},
+  onClick = () => {},
+}) => {
+  if (clickOpacity === 2) {
+    return (
+      <View style={style}>
+        <Image
+          style={[styles.iconTemplate, iconStyle]}
+          resizeMode="contain"
+          source={icon}
+        />
+      </View>
+    );
+  }
+  return (
+    <TouchableOpacity
+      style={style}
+      activeOpacity={clickOpacity}
+      onPress={onClick}
+    >
+      <Image
+        style={[styles.iconTemplate, iconStyle]}
+        resizeMode="contain"
+        source={icon}
+      />
+    </TouchableOpacity>
+  );
+};
 
 export default SocialButton;
