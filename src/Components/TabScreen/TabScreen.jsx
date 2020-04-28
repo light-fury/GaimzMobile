@@ -68,7 +68,7 @@ class TabScreen extends Component {
           navigation.dispatch(StackActions.popToTop());
         }
       } catch (error) {
-        console.warn(error);
+        // continue regardless of error
       }
     }
   }
