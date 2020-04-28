@@ -18,6 +18,7 @@ import MatchErrorScreen from '../Containers/MainFlow/MatchFlow/MatchErrorScreen'
 // Home Flow
 import SettingMainScreen from '../Containers/MainFlow/SettingFlow/SettingMainScreen';
 import ConnectionSettingScreen from '../Containers/MainFlow/SettingFlow/ConnectionSettingScreen';
+import AccountSettingScreen from '../Containers/MainFlow/SettingFlow/AccountSettingScreen';
 import TabScreen from '../Components/TabScreen/TabScreen';
 import {colors} from '../Assets/config';
 
@@ -130,6 +131,12 @@ export const MainNavigator = createStackNavigator(
                 },
                 ConnectionSettingScreen: {
                   screen: ConnectionSettingScreen,
+                  navigationOptions: () => ({
+                    headerShown: false,
+                  }),
+                },
+                AccountSettingScreen: {
+                  screen: AccountSettingScreen,
                   navigationOptions: () => ({
                     headerShown: false,
                   }),
