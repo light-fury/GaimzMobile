@@ -1,5 +1,5 @@
 // @flow
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Alert,
   Text,
@@ -15,7 +15,6 @@ import SafeAreaView from 'react-native-safe-area-view';
 import SocialButton from '../../../../Components/SocialButton';
 import styles from './DashboardScreen.style';
 import {
-  templateImage,
   templateAvatar,
   eyeIcon,
   searchIcon,
@@ -23,37 +22,7 @@ import {
 } from '../../../../Assets';
 import { colors } from '../../../../Assets/config';
 import { UserContext } from '../../../../contexts';
-
-const listData = [
-  {
-    image: templateImage,
-    host: 'UserName1',
-    hostAvatar: templateAvatar,
-    gameTitle: 'Dota 2',
-    viewCount: 2500,
-  },
-  {
-    image: templateImage,
-    host: 'UserName2',
-    hostAvatar: templateAvatar,
-    gameTitle: 'Dota 2',
-    viewCount: 2500,
-  },
-  {
-    image: templateImage,
-    host: 'UserName3',
-    hostAvatar: templateAvatar,
-    gameTitle: 'Dota 2',
-    viewCount: 2500,
-  },
-  {
-    image: templateImage,
-    host: 'UserName4',
-    hostAvatar: templateAvatar,
-    gameTitle: 'Dota 2',
-    viewCount: 500,
-  },
-];
+import { getTwitchLives } from '../../../../api';
 
 const renderItem = ({ item, index }) => (
   <View key={index} style={styles.itemContainer}>
@@ -61,7 +30,7 @@ const renderItem = ({ item, index }) => (
       <ImageBackground
         style={styles.itemBackground}
         imageStyle={styles.itemImage}
-        source={item.image}
+        source={{ uri: item.twitchThumbnailUrl.replace('{width}', 512).replace('{height}', 287) }}
         resizeMode="cover"
       >
         <View style={styles.statusContainer}>
@@ -72,9 +41,9 @@ const renderItem = ({ item, index }) => (
           />
           <Text style={styles.statusText}>
             {`${
-              item.viewCount >= 1000
-                ? `${(item.viewCount / 1000).toFixed(1)}k`
-                : item.viewCount
+              item.twitchViewerCount >= 1000
+                ? `${(item.twitchViewerCount / 1000).toFixed(1)}k`
+                : item.twitchViewerCount
             } Viewers`}
           </Text>
         </View>
@@ -82,16 +51,16 @@ const renderItem = ({ item, index }) => (
     </TouchableOpacity>
     <View style={styles.itemHostContainer}>
       <Image
-        source={item.hostAvatar}
+        source={{ uri: item.userAvatarUrl }}
         resizeMode="cover"
         style={styles.hostAvatar}
       />
       <View style={styles.hostDetailsContainer}>
         <Text style={[styles.profileName, styles.hostNameText]}>
-          {item.host}
+          {item.twitchAccountName}
         </Text>
         <Text style={[styles.profileName, styles.gameTitleText]}>
-          {item.gameTitle}
+          {item.gameName}
         </Text>
       </View>
     </View>
@@ -100,6 +69,20 @@ const renderItem = ({ item, index }) => (
 
 const DashboardScreen = () => {
   const [user] = useContext(UserContext);
+  const [lives, setLives] = useState([]);
+
+  const initLives = async () => {
+    try {
+      const response = await getTwitchLives();
+      setLives(response);
+    } catch (err) {
+      // Ignore
+    }
+  };
+
+  useEffect(() => {
+    initLives();
+  }, []);
 
   return (
     <SafeAreaView
@@ -108,7 +91,7 @@ const DashboardScreen = () => {
     >
       <View style={styles.header}>
         <Image
-          source={templateImage}
+          source={templateAvatar}
           style={styles.avatarImage}
           resizeMode="cover"
         />
@@ -131,7 +114,7 @@ const DashboardScreen = () => {
       <FlatList
         style={[styles.flexContainer, { backgroundColor: colors.lightGray }]}
         contentContainerStyle={styles.scrollIntent}
-        data={listData}
+        data={lives}
         renderItem={renderItem}
         keyExtractor={(item, index) => `${item.host}-${index}`}
       />
