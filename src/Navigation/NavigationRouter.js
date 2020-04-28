@@ -3,14 +3,6 @@
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
-import React from 'react';
-import {
-  TouchableOpacity,
-  Dimensions,
-  Image,
-  Text,
-  Platform,
-} from 'react-native';
 // Auth Flow
 import WelcomeScreen from '../Containers/AuthFlow/WelcomeScreen';
 import SignUpScreen from '../Containers/AuthFlow/SignUpScreen';
@@ -21,10 +13,14 @@ import DashboardScreen from '../Containers/MainFlow/HomeFlow/DashboardScreen';
 // Match Flow
 import MatchMainScreen from '../Containers/MainFlow/MatchFlow/MatchMainScreen';
 import MatchSettingScreen from '../Containers/MainFlow/MatchFlow/MatchSettingScreen';
+import MatchPasswordScreen from '../Containers/MainFlow/MatchFlow/MatchPasswordScreen';
+import MatchErrorScreen from '../Containers/MainFlow/MatchFlow/MatchErrorScreen';
+// Home Flow
+import SettingMainScreen from '../Containers/MainFlow/SettingFlow/SettingMainScreen';
+import ConnectionSettingScreen from '../Containers/MainFlow/SettingFlow/ConnectionSettingScreen';
+import AccountSettingScreen from '../Containers/MainFlow/SettingFlow/AccountSettingScreen';
 import TabScreen from '../Components/TabScreen/TabScreen';
-import styles from './NavigationRouter.style';
-import {colors, calcReal} from '../Assets/config';
-import {store} from '../Containers/App';
+import {colors} from '../Assets/config';
 
 export const MainNavigator = createStackNavigator(
   {
@@ -61,7 +57,7 @@ export const MainNavigator = createStackNavigator(
               {
                 DashboardScreen: {
                   screen: DashboardScreen,
-                  navigationOptions: ({navigation}) => ({
+                  navigationOptions: () => ({
                     headerShown: false,
                   }),
                 },
@@ -86,13 +82,62 @@ export const MainNavigator = createStackNavigator(
               {
                 MatchMainScreen: {
                   screen: MatchMainScreen,
-                  navigationOptions: ({navigation}) => ({
+                  navigationOptions: () => ({
                     headerShown: false,
                   }),
                 },
                 MatchSettingScreen: {
                   screen: MatchSettingScreen,
-                  navigationOptions: ({navigation}) => ({
+                  navigationOptions: () => ({
+                    headerShown: false,
+                  }),
+                },
+                MatchPasswordScreen: {
+                  screen: MatchPasswordScreen,
+                  navigationOptions: () => ({
+                    headerShown: false,
+                  }),
+                },
+                MatchErrorScreen: {
+                  screen: MatchErrorScreen,
+                  navigationOptions: () => ({
+                    headerShown: false,
+                  }),
+                },
+              },
+              {
+                headerMode: 'screen',
+              },
+            ),
+            navigationOptions: ({navigation}) => {
+              let {routeName} = navigation.state.routes[navigation.state.index];
+              let navigationOptions = {
+                headerShown: false,
+              };
+              if (['ProfileDetailScreen'].indexOf(routeName) >= 0) {
+                navigationOptions.tabBarVisible = false;
+              }
+              return navigationOptions;
+            },
+          },
+          SettingFlow: {
+            screen: createStackNavigator(
+              {
+                SettingMainScreen: {
+                  screen: SettingMainScreen,
+                  navigationOptions: () => ({
+                    headerShown: false,
+                  }),
+                },
+                ConnectionSettingScreen: {
+                  screen: ConnectionSettingScreen,
+                  navigationOptions: () => ({
+                    headerShown: false,
+                  }),
+                },
+                AccountSettingScreen: {
+                  screen: AccountSettingScreen,
+                  navigationOptions: () => ({
                     headerShown: false,
                   }),
                 },

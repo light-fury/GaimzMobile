@@ -4,27 +4,19 @@ import React from 'react';
 import {
   Text,
   View,
-  TextInput,
   TouchableOpacity,
-  Image,
-  ScrollView,
   Dimensions,
   FlatList,
   ImageBackground,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import IIcon from 'react-native-vector-icons/Ionicons';
-import SplashScreen from 'react-native-splash-screen';
 import SafeAreaView from 'react-native-safe-area-view';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import Modal from 'react-native-modal';
 
 import ConfirmButton from '../../../../Components/ConfirmButton';
 import styles from './MatchMainScreen.style';
 import {colors, calcReal} from '../../../../Assets/config';
-import Axios from 'axios';
 
-const {width, height} = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 
 class MatchMainScreen extends React.PureComponent {
   static propTypes = {
@@ -39,9 +31,6 @@ class MatchMainScreen extends React.PureComponent {
 
   constructor(props) {
     super(props);
-    const {
-      Secrets: {secretsData},
-    } = props;
     this.state = {
       listData: [
         {
@@ -65,7 +54,7 @@ class MatchMainScreen extends React.PureComponent {
     };
   }
 
-  renderItem = ({item, index}) => {
+  renderItem = ({item}) => {
     return (
       <View style={styles.itemContainer}>
         <TouchableOpacity>
@@ -82,10 +71,7 @@ class MatchMainScreen extends React.PureComponent {
 
   render() {
     const {listData} = this.state;
-    const {
-      Secrets: {isFetching},
-      navigation,
-    } = this.props;
+    const {navigation} = this.props;
 
     return (
       <SafeAreaView

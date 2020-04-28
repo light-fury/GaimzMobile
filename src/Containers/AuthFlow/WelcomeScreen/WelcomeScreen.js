@@ -1,18 +1,8 @@
 /* eslint-disable react-native/no-inline-styles */
 // @flow
 import React from 'react';
-import {
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
-  ImageBackground,
-  Image,
-  Alert,
-  ActivityIndicator,
-} from 'react-native';
+import {Text, View, ImageBackground, Image} from 'react-native';
 import PropTypes from 'prop-types';
-import IIcon from 'react-native-vector-icons/Ionicons';
 import SplashScreen from 'react-native-splash-screen';
 import SafeAreaView from 'react-native-safe-area-view';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
@@ -23,7 +13,6 @@ import CustomInput from '../../../Components/CustomInput';
 
 import styles from './WelcomeScreen.style';
 import {colors, calcReal} from '../../../Assets/config';
-import Axios from 'axios';
 
 class WelcomeScreen extends React.PureComponent {
   static propTypes = {
@@ -54,11 +43,8 @@ class WelcomeScreen extends React.PureComponent {
   }
 
   render() {
-    const {email, password, passwordVisible, focused} = this.state;
-    const {
-      Secrets: {isFetching},
-      navigation,
-    } = this.props;
+    const {email, password, passwordVisible} = this.state;
+    const {navigation} = this.props;
 
     return (
       <SafeAreaView

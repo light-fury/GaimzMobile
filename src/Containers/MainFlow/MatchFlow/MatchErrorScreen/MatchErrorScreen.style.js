@@ -15,12 +15,14 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  padding0: {
-    padding: 0,
-    paddingBottom: calcReal(30),
+  flex2: {
+    flex: 2,
   },
   mh48: {
     marginHorizontal: calcReal(48),
+  },
+  disabledColor: {
+    backgroundColor: `${colors.loginColor}30`,
   },
   space: {
     height: calcReal(18),
@@ -35,32 +37,17 @@ export default StyleSheet.create({
     marginTop: calcReal(24),
     backgroundColor: colors.secondary,
     borderRadius: calcReal(12),
-    paddingHorizontal: calcReal(23),
+    paddingHorizontal: calcReal(38),
     paddingVertical: calcReal(12),
   },
   itemTitle: {
-    fontSize: calcReal(12),
-    lineHeight: calcReal(20),
+    fontSize: calcReal(18),
+    lineHeight: calcReal(23),
     fontWeight: 'bold',
     color: colors.white,
     textAlign: 'center',
-    textTransform: 'uppercase',
-  },
-  whiteColor: {
-    color: colors.white,
-    marginBottom: 0,
-  },
-  inputContainer: {
-    marginTop: calcReal(28),
   },
   flexContainer: {
     flex: 1,
-  },
-  rowContainer: {
-    marginTop: calcReal(6),
-    flexDirection: 'row',
-  },
-  ml20: {
-    marginLeft: calcReal(26),
   },
 });
