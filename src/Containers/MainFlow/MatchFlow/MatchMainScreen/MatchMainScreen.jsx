@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
 import {
-  Alert,
   Text,
   View,
   TouchableOpacity,
