@@ -78,7 +78,7 @@ const MatchMainScreen = ({ navigation }) => (
     <ConfirmButton
       color={colors.loginColor}
       label="FIND MATCH"
-      onClick={() => Alert.alert('Find Match')}
+      onClick={() => navigation.navigate('MatchTimerScreen')}
       fontStyle={styles.fontSpacing}
       containerStyle={styles.mh48}
     />

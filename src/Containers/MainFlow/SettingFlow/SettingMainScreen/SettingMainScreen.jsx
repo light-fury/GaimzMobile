@@ -87,7 +87,7 @@ const SettingMainScreen = ({ navigation }) => {
           style={styles.headerButton}
           iconStyle={styles.headerIcon}
           icon={settingsIcon}
-          onClick={() => Alert.alert('Bell Clicked')}
+          onClick={() => navigation.pop()}
         />
       </View>
       <Text style={styles.titleText}>Settings</Text>

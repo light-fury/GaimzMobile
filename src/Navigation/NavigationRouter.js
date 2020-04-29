@@ -15,10 +15,12 @@ import MatchMainScreen from '../Containers/MainFlow/MatchFlow/MatchMainScreen';
 import MatchSettingScreen from '../Containers/MainFlow/MatchFlow/MatchSettingScreen';
 import MatchPasswordScreen from '../Containers/MainFlow/MatchFlow/MatchPasswordScreen';
 import MatchErrorScreen from '../Containers/MainFlow/MatchFlow/MatchErrorScreen';
+import MatchTimerScreen from '../Containers/MainFlow/MatchFlow/MatchTimerScreen';
 // Home Flow
 import SettingMainScreen from '../Containers/MainFlow/SettingFlow/SettingMainScreen';
 import ConnectionSettingScreen from '../Containers/MainFlow/SettingFlow/ConnectionSettingScreen';
 import AccountSettingScreen from '../Containers/MainFlow/SettingFlow/AccountSettingScreen';
+import AccountScreen from '../Containers/MainFlow/SettingFlow/AccountScreen';
 import TabScreen from '../Components/TabScreen/TabScreen';
 import { colors } from '../Assets/config';
 
@@ -104,6 +106,12 @@ export const MainNavigator = createStackNavigator(
                     headerShown: false,
                   }),
                 },
+                MatchTimerScreen: {
+                  screen: MatchTimerScreen,
+                  navigationOptions: () => ({
+                    headerShown: false,
+                  }),
+                },
               },
               {
                 headerMode: 'screen',
@@ -123,6 +131,12 @@ export const MainNavigator = createStackNavigator(
           SettingFlow: {
             screen: createStackNavigator(
               {
+                AccountScreen: {
+                  screen: AccountScreen,
+                  navigationOptions: () => ({
+                    headerShown: false,
+                  }),
+                },
                 SettingMainScreen: {
                   screen: SettingMainScreen,
                   navigationOptions: () => ({

@@ -22,6 +22,7 @@ export const colors = {
   signUpColor: '#FA7267',
   yellow: '#FFFF82',
   green: '#4BDD08',
+  borderGreen: '#00FF29',
   red: '#FF3A3A',
   black: '#000000',
   grayBorder: '#DDDDDD',
