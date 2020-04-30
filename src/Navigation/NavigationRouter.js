@@ -10,6 +10,7 @@ import ForgotPasswordScreen from '../Containers/AuthFlow/ForgotPasswordScreen';
 // Main Flow
 // Home Flow
 import DashboardScreen from '../Containers/MainFlow/HomeFlow/DashboardScreen';
+import StreamDetailScreen from '../Containers/MainFlow/HomeFlow/StreamDetailScreen';
 // Match Flow
 import MatchMainScreen from '../Containers/MainFlow/MatchFlow/MatchMainScreen';
 import MatchSettingScreen from '../Containers/MainFlow/MatchFlow/MatchSettingScreen';
@@ -63,6 +64,12 @@ export const MainNavigator = createStackNavigator(
                     headerShown: false,
                   }),
                 },
+                StreamDetailScreen: {
+                  screen: StreamDetailScreen,
+                  navigationOptions: () => ({
+                    headerShown: false,
+                  }),
+                },
               },
               {
                 headerMode: 'screen',
@@ -73,7 +80,7 @@ export const MainNavigator = createStackNavigator(
               const navigationOptions = {
                 headerShown: false,
               };
-              if (['ProfileDetailScreen'].indexOf(routeName) >= 0) {
+              if (['StreamDetailScreen'].indexOf(routeName) >= 0) {
                 navigationOptions.tabBarVisible = false;
               }
               return navigationOptions;
