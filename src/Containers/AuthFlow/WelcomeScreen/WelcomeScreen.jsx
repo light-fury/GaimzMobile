@@ -78,6 +78,7 @@ const WelcomeScreen = ({ navigation }) => {
         enableOnAndroid
         style={styles.absoluteFill}
         contentContainerStyle={styles.scrollInner}
+        extraScrollHeight={calcReal(50)}
       >
         <Text style={styles.title}>Welcome Back!</Text>
         <Text style={styles.instructionText}>

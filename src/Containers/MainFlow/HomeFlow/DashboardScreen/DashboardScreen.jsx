@@ -10,6 +10,7 @@ import {
   ImageBackground,
 } from 'react-native';
 import PropTypes from 'prop-types';
+import { withNavigation } from 'react-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
 
 import SocialButton from '../../../../Components/SocialButton';
@@ -24,9 +25,9 @@ import { colors } from '../../../../Assets/config';
 import { UserContext } from '../../../../contexts';
 import { getTwitchLives } from '../../../../api';
 
-const renderItem = ({ item, index }) => (
+const renderItem = ({ item, index }, navigation) => (
   <View key={index} style={styles.itemContainer}>
-    <TouchableOpacity>
+    <TouchableOpacity onPress={() => navigation.navigate('StreamDetailScreen', { item })}>
       <ImageBackground
         style={styles.itemBackground}
         imageStyle={styles.itemImage}
@@ -67,7 +68,7 @@ const renderItem = ({ item, index }) => (
   </View>
 );
 
-const DashboardScreen = () => {
+const DashboardScreen = ({ navigation }) => {
   const [user] = useContext(UserContext);
   const [lives, setLives] = useState([]);
 
@@ -115,7 +116,7 @@ const DashboardScreen = () => {
         style={[styles.flexContainer, { backgroundColor: colors.lightGray }]}
         contentContainerStyle={styles.scrollIntent}
         data={lives}
-        renderItem={renderItem}
+        renderItem={(item) => renderItem(item, navigation)}
         keyExtractor={(item, index) => `${item.host}-${index}`}
       />
     </SafeAreaView>
@@ -128,6 +129,7 @@ DashboardScreen.propTypes = {
     secretsData: PropTypes.shape(),
     error: PropTypes.any,
   }).isRequired,
+  navigation: PropTypes.shape().isRequired,
 };
 
-export default DashboardScreen;
+export default withNavigation(DashboardScreen);
