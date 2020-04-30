@@ -6,6 +6,7 @@ import {
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
 
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import SocialButton from '../../../../Components/SocialButton';
 import CustomInput from '../../../../Components/CustomInput';
 import ConfirmButton from '../../../../Components/ConfirmButton';
@@ -18,7 +19,6 @@ import {
 import styles from './AccountSettingScreen.style';
 import { UserContext } from '../../../../contexts';
 import { deleteUser, updateUser } from '../../../../api';
-import { setApiClientHeader } from '../../../../constants/api-client';
 import { resetNavigation } from '../../../../helpers/navigation';
 
 const AccountSettingScreen = ({ navigation }) => {
@@ -35,7 +35,6 @@ const AccountSettingScreen = ({ navigation }) => {
       navigation.pop();
     } catch (err) {
       Alert.alert('Error', 'There was an error during your profile update');
-      //
     }
   };
 
@@ -51,8 +50,6 @@ const AccountSettingScreen = ({ navigation }) => {
             try {
               await deleteUser();
               resetNavigation(navigation, 'AuthFlow');
-              setUser();
-              setApiClientHeader('Authorization', undefined);
             } catch (err) {
               Alert.alert('Error', 'There was an error deleting your account');
             }
@@ -63,7 +60,6 @@ const AccountSettingScreen = ({ navigation }) => {
     );
   };
 
-
   return (
     <SafeAreaView
       forceInset={{ bottom: 'never', top: 'never' }}
@@ -73,7 +69,9 @@ const AccountSettingScreen = ({ navigation }) => {
         style={styles.scrollContainer}
         contentContainerStyle={styles.innerContainer}
       >
-        <Text style={styles.titleText}>Account Informations</Text>
+        <TouchableOpacity style={styles.backContainer} onPress={() => navigation.pop()}>
+          <Text style={styles.titleText}>◄ Account Informations</Text>
+        </TouchableOpacity>
         <View style={styles.rowContainer}>
           <SocialButton
             style={styles.headerButton}

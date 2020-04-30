@@ -1,4 +1,3 @@
-// @flow
 import React, { useContext, useState, useEffect } from 'react';
 import {
   Alert,
@@ -13,7 +12,6 @@ import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import AsyncStorage from '@react-native-community/async-storage';
-import { isEmpty } from 'lodash';
 import queryString from 'query-string';
 
 import SocialButton from '../../../Components/SocialButton';
@@ -29,16 +27,37 @@ import {
   eyeIcon,
 } from '../../../Assets';
 import { colors, calcReal } from '../../../Assets/config';
-import { signIn, signInWithTwitch } from '../../../api';
+import { signIn, signInWithTwitch, checkToken } from '../../../api';
 import { UserContext } from '../../../contexts';
 import { twitchSigninUrl } from '../../../constants/oauth';
 import { resetNavigation } from '../../../helpers/navigation';
+import { setApiClientHeader } from '../../../constants/api-client';
 
 const WelcomeScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [user, setUser] = useContext(UserContext);
+  const [, setUser] = useContext(UserContext);
+
+  const initUser = async () => {
+    try {
+      // To sign out while it isn't implemented
+      // await AsyncStorage.removeItem('AuthToken');
+      const token = await AsyncStorage.getItem('AuthToken');
+
+      if (token) {
+        setApiClientHeader('Authorization', `Bearer ${token}`);
+        const data = await checkToken();
+        console.warn(data);
+        setUser(data.user);
+        resetNavigation(navigation, 'MainFlow');
+      } else {
+        setUser({});
+      }
+    } catch (err) {
+      setUser({});
+    }
+  };
 
   const onSubmit = async () => {
     try {
@@ -49,6 +68,7 @@ const WelcomeScreen = ({ navigation }) => {
 
       AsyncStorage.setItem('AuthToken', response.authToken);
       setUser(response.user);
+      resetNavigation(navigation, 'MainFlow');
     } catch (err) {
       Alert.alert('Error', 'There was an error signing you in');
     }
@@ -66,6 +86,7 @@ const WelcomeScreen = ({ navigation }) => {
 
         AsyncStorage.setItem('AuthToken', apiResponse.authToken);
         setUser(apiResponse.user);
+        resetNavigation(navigation, 'MainFlow');
       } catch (err) {
         Alert.alert('Error', 'There was an error signing you in');
       }
@@ -84,10 +105,8 @@ const WelcomeScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
-    if (!isEmpty(user)) {
-      resetNavigation(navigation, 'MainFlow');
-    }
-  }, [user]);
+    initUser();
+  }, []);
 
   return (
     <SafeAreaView

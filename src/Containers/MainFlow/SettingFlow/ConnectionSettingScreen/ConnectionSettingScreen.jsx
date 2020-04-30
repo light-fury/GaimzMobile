@@ -1,24 +1,32 @@
 // @flow
 import React, { useContext } from 'react';
 import {
-  Alert, Text, View, TouchableOpacity, Image, FlatList,
+  Alert, Text, View, TouchableOpacity, Image, FlatList, Linking,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
-
+import { get } from 'lodash';
+import queryString from 'query-string';
 import {
   steamIcon,
   twitchIcon,
   checkWhiteIcon,
   arrowRight,
-  settingsIcon,
+  arrowLeft,
 } from '../../../../Assets';
 import SocialButton from '../../../../Components/SocialButton';
 import styles from './ConnectionSettingScreen.style';
 import { UserContext } from '../../../../contexts';
+import { twitchSigninUrl, steamSigninUrl } from '../../../../constants/oauth';
+import { signInWithTwitch } from '../../../../api';
 
 const renderItem = ({ item, index }) => (
-  <TouchableOpacity key={index} style={styles.itemContainer}>
+  <TouchableOpacity
+    key={index}
+    style={styles.itemContainer}
+    onPress={item.onPress}
+    disabled={item.connected}
+  >
     <SocialButton
       style={styles.itemButton}
       iconStyle={styles.itemIcon}
@@ -46,44 +54,81 @@ const renderItem = ({ item, index }) => (
   </TouchableOpacity>
 );
 
-const listData = [
-  {
-    image: steamIcon,
-    title: 'STEAM',
-    route: 'AccountSettingScreen',
-    connected: true,
-  },
-  {
-    image: twitchIcon,
-    title: 'TWITCH',
-    route: 'ConnectionSettingScreen',
-    connected: false,
-  },
-];
+const ConnectionSettingScreen = ({ navigation }) => {
+  const [user, setUser] = useContext(UserContext);
 
-const ConnectionSettingScreen = () => {
-  const [user] = useContext(UserContext);
+  const handleOpenURL = async (params) => {
+    if (params.url) {
+      const parsedParams = queryString.parse(params.url.split('?')[1]);
+      let apiResponse;
+
+      try {
+        if (params.url.includes('twitch')) {
+          apiResponse = await signInWithTwitch(parsedParams);
+        } else {
+          apiResponse = await signInWithTwitch(parsedParams);
+        }
+
+        console.warn(apiResponse);
+
+        setUser(apiResponse.user);
+      } catch (err) {
+        console.warn(err);
+        Alert.alert('Error', 'There was an error connecting the account');
+      }
+    }
+
+    Linking.removeAllListeners('url');
+  };
+
+  const connectTwitch = async () => {
+    Linking.addEventListener('url', handleOpenURL);
+    Linking.openURL(twitchSigninUrl);
+  };
+
+  const connectSteam = async () => {
+    Linking.addEventListener('url', handleOpenURL);
+    Linking.openURL(steamSigninUrl);
+  };
+
+  const listData = [
+    {
+      onPress: connectSteam,
+      image: steamIcon,
+      title: 'STEAM',
+      route: 'AccountSettingScreen',
+      connected: get(user, 'apps.steam', false),
+    },
+    {
+      onPress: connectTwitch,
+      image: twitchIcon,
+      title: 'TWITCH',
+      route: 'ConnectionSettingScreen',
+      connected: get(user, 'apps.twitch', false),
+    },
+  ];
+
   return (
     <SafeAreaView
       forceInset={{ bottom: 'never', top: 'never' }}
       style={styles.container}
     >
-      <View style={styles.header}>
+      <TouchableOpacity style={styles.header} onPress={() => navigation.pop()}>
         <Image
-          source={{ uri: user.userAvatarUrl }}
+          source={arrowLeft}
           style={styles.avatarImage}
           resizeMode="cover"
         />
         <Text style={[styles.flexContainer, styles.profileName]}>
-          {user.userName}
+          Connections
         </Text>
-        <SocialButton
+        {/* <SocialButton
           style={styles.headerButton}
           iconStyle={styles.headerIcon}
           icon={settingsIcon}
           onClick={() => Alert.alert('Bell Clicked')}
-        />
-      </View>
+        /> */}
+      </TouchableOpacity>
       <Text style={styles.titleText}>Connections</Text>
       <FlatList
         style={styles.flexContainer}

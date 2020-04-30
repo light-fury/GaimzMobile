@@ -88,7 +88,7 @@ const SignUpScreen = ({ navigation }) => {
   useEffect(() => {
     if (!isEmpty(user)) {
       if (user.hasTwitch && user.hasSteam) {
-        resetNavigation('MainFlow');
+        resetNavigation(navigation, 'MainFlow');
       } else {
         navigation.replace('SocialAccountsScreen');
       }

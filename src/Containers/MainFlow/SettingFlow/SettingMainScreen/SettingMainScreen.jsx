@@ -14,9 +14,7 @@ import SafeAreaView from 'react-native-safe-area-view';
 import {
   userIcon,
   connectionIcon,
-  helpIcon,
   arrowRight,
-  settingsIcon,
 } from '../../../../Assets';
 import SocialButton from '../../../../Components/SocialButton';
 import styles from './SettingMainScreen.style';
@@ -34,11 +32,11 @@ const listData = [
     title: 'Connection',
     route: 'ConnectionSettingScreen',
   },
-  {
-    image: helpIcon,
-    title: 'Help',
-    route: 'HelpSettingScreen',
-  },
+  // {
+  //   image: helpIcon,
+  //   title: 'Help',
+  //   route: 'HelpSettingScreen',
+  // },
 ];
 
 const SettingMainScreen = ({ navigation }) => {
@@ -83,12 +81,12 @@ const SettingMainScreen = ({ navigation }) => {
         <Text style={[styles.flexContainer, styles.profileName]}>
           {user.userName}
         </Text>
-        <SocialButton
+        {/* <SocialButton
           style={styles.headerButton}
           iconStyle={styles.headerIcon}
           icon={settingsIcon}
           onClick={() => navigation.pop()}
-        />
+        /> */}
       </View>
       <Text style={styles.titleText}>Settings</Text>
       <FlatList

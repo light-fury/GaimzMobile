@@ -85,6 +85,10 @@ const DashboardScreen = ({ navigation }) => {
     initLives();
   }, []);
 
+  if (!user) {
+    return <></>;
+  }
+
   return (
     <SafeAreaView
       forceInset={{ bottom: 'never', top: 'never' }}
