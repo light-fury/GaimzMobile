@@ -18,6 +18,8 @@ export default () => {
 
   const initUser = async () => {
     try {
+      // To sign out while it isn't implemented
+      // await AsyncStorage.removeItem('AuthToken');
       const token = await AsyncStorage.getItem('AuthToken');
 
       if (token) {

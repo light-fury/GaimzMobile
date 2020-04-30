@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
+  StatusBar,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
@@ -15,7 +16,6 @@ import {
   connectionIcon,
   helpIcon,
   arrowRight,
-  templateProfile,
   settingsIcon,
 } from '../../../../Assets';
 import SocialButton from '../../../../Components/SocialButton';
@@ -73,9 +73,10 @@ const SettingMainScreen = ({ navigation }) => {
       forceInset={{ bottom: 'never', top: 'never' }}
       style={styles.container}
     >
+      <StatusBar barStyle="light-content" />
       <View style={styles.header}>
         <Image
-          source={templateProfile}
+          source={{ uri: user.userAvatarUrl }}
           style={styles.avatarImage}
           resizeMode="cover"
         />

@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Alert, Text, View, TouchableOpacity, Image, FlatList,
 } from 'react-native';
@@ -11,11 +11,11 @@ import {
   twitchIcon,
   checkWhiteIcon,
   arrowRight,
-  templateProfile,
   settingsIcon,
 } from '../../../../Assets';
 import SocialButton from '../../../../Components/SocialButton';
 import styles from './ConnectionSettingScreen.style';
+import { UserContext } from '../../../../contexts';
 
 const renderItem = ({ item, index }) => (
   <TouchableOpacity key={index} style={styles.itemContainer}>
@@ -61,37 +61,40 @@ const listData = [
   },
 ];
 
-const ConnectionSettingScreen = () => (
-  <SafeAreaView
-    forceInset={{ bottom: 'never', top: 'never' }}
-    style={styles.container}
-  >
-    <View style={styles.header}>
-      <Image
-        source={templateProfile}
-        style={styles.avatarImage}
-        resizeMode="cover"
+const ConnectionSettingScreen = () => {
+  const [user] = useContext(UserContext);
+  return (
+    <SafeAreaView
+      forceInset={{ bottom: 'never', top: 'never' }}
+      style={styles.container}
+    >
+      <View style={styles.header}>
+        <Image
+          source={{ uri: user.userAvatarUrl }}
+          style={styles.avatarImage}
+          resizeMode="cover"
+        />
+        <Text style={[styles.flexContainer, styles.profileName]}>
+          {user.userName}
+        </Text>
+        <SocialButton
+          style={styles.headerButton}
+          iconStyle={styles.headerIcon}
+          icon={settingsIcon}
+          onClick={() => Alert.alert('Bell Clicked')}
+        />
+      </View>
+      <Text style={styles.titleText}>Connections</Text>
+      <FlatList
+        style={styles.flexContainer}
+        contentContainerStyle={styles.scrollIntent}
+        data={listData}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => `${item.host}-${index}`}
       />
-      <Text style={[styles.flexContainer, styles.profileName]}>
-        Aladin Ben
-      </Text>
-      <SocialButton
-        style={styles.headerButton}
-        iconStyle={styles.headerIcon}
-        icon={settingsIcon}
-        onClick={() => Alert.alert('Bell Clicked')}
-      />
-    </View>
-    <Text style={styles.titleText}>Connections</Text>
-    <FlatList
-      style={styles.flexContainer}
-      contentContainerStyle={styles.scrollIntent}
-      data={listData}
-      renderItem={renderItem}
-      keyExtractor={(item, index) => `${item.host}-${index}`}
-    />
-  </SafeAreaView>
-);
+    </SafeAreaView>
+  );
+};
 
 ConnectionSettingScreen.propTypes = {
   Secrets: PropTypes.shape({

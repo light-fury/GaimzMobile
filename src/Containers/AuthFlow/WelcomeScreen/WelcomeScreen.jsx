@@ -7,6 +7,7 @@ import {
   ImageBackground,
   Image,
   Linking,
+  StatusBar,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
@@ -23,15 +24,15 @@ import styles from './WelcomeScreen.style';
 import {
   splashBackground,
   appLogo,
-  facebookIcon,
   twitchIcon,
-  steamIcon,
   checkIcon,
   eyeIcon,
 } from '../../../Assets';
 import { colors, calcReal } from '../../../Assets/config';
 import { signIn, signInWithTwitch } from '../../../api';
 import { UserContext } from '../../../contexts';
+import { twitchSigninUrl } from '../../../constants/oauth';
+import { resetNavigation } from '../../../helpers/navigation';
 
 const WelcomeScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -59,9 +60,7 @@ const WelcomeScreen = ({ navigation }) => {
       let apiResponse;
 
       try {
-        if (params.url.includes('steam')) {
-          // TODO
-        } else if (params.url.includes('twitch')) {
+        if (params.url.includes('twitch')) {
           apiResponse = await signInWithTwitch(parsedParams);
         }
 
@@ -71,21 +70,14 @@ const WelcomeScreen = ({ navigation }) => {
         Alert.alert('Error', 'There was an error signing you in');
       }
     }
-  };
 
-  const steamSignin = async () => {
-    try {
-      Linking.addEventListener('url', handleOpenURL);
-      Linking.openURL('https://steamcommunity.com/openid/login?openid.claimed_id=http://specs.openid.net/auth/2.0/identifier_select&openid.identity=http://specs.openid.net/auth/2.0/identifier_select&openid.mode=checkid_setup&openid.ns=http://specs.openid.net/auth/2.0&openid.realm=https://gaimz.io&openid.return_to=https://gaimz.io');
-    } catch (err) {
-      console.warn(err);
-    }
+    Linking.removeAllListeners('url');
   };
 
   const twitchSignin = async () => {
     try {
       Linking.addEventListener('url', handleOpenURL);
-      Linking.openURL('https://id.twitch.tv/oauth2/authorize?client_id=z6yyt2tbn36fxromr8j4hbo626a329&redirect_uri=gaimz://twitch&response_type=code&scope=user_subscriptions+user_read');
+      Linking.openURL(twitchSigninUrl);
     } catch (err) {
       console.warn(err);
     }
@@ -93,7 +85,7 @@ const WelcomeScreen = ({ navigation }) => {
 
   useEffect(() => {
     if (!isEmpty(user)) {
-      navigation.dangerouslyGetParent().navigate('MainFlow');
+      resetNavigation(navigation, 'MainFlow');
     }
   }, [user]);
 
@@ -102,6 +94,7 @@ const WelcomeScreen = ({ navigation }) => {
       forceInset={{ bottom: 'never', top: 'never' }}
       style={styles.container}
     >
+      <StatusBar barStyle="light-content" />
       <ImageBackground
         style={styles.topContainer}
         source={splashBackground}
@@ -125,22 +118,17 @@ const WelcomeScreen = ({ navigation }) => {
           Login your account to continue
         </Text>
         <View style={styles.socialContainer}>
-          <SocialButton
+          {/* <SocialButton
             style={[styles.socialButton, { backgroundColor: colors.fbColor }]}
             icon={facebookIcon}
             onClick={() => {
               Alert.alert('FB Login');
             }}
-          />
+          /> */}
           <SocialButton
             style={[styles.socialButton, { backgroundColor: colors.lightGray }]}
             icon={twitchIcon}
             onClick={twitchSignin}
-          />
-          <SocialButton
-            style={[styles.socialButton, { backgroundColor: colors.secondary }]}
-            icon={steamIcon}
-            onClick={steamSignin}
           />
           <Text style={[styles.instructionText, { fontSize: calcReal(12) }]}>
             Or use your email account

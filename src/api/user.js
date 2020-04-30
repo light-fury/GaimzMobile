@@ -1,7 +1,5 @@
 import { apiClient } from '../constants/api-client';
 
-export const updateUser = (params) => apiClient.put('/user', params).then(({ data }) => data);
+export const updateUser = (params) => apiClient.patch('/user', params).then(({ data }) => data);
 
-export default {
-  updateUser,
-};
+export const deleteUser = () => apiClient.delete('/user').then(({ data }) => data);
