@@ -1,55 +1,19 @@
 // @flow
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
 import ProgressCircle from 'react-native-progress-circle';
-import BackgroundTimer from 'react-native-background-timer';
-import moment from 'moment';
 
 import ConfirmButton from '../../../../Components/ConfirmButton';
-import styles from './MatchReadyScreen.style';
+import styles from './LobbyStartScreen.style';
 import { colors, calcReal } from '../../../../Assets/config';
 
-const WAIT_TEXT = 'Failing to accept may result in a temporary match making ban';
-const TOTAL_CALL_DURATION = 60;
+const WAIT_TEXT = 'Double click the timer to hide the search and explore Gaimz. We will notify you when the match is found.';
+const TOTAL_CALL_DURATION = 30;
 
-const MatchReadyScreen = ({ navigation }) => {
-  const [currentTime, setCurrentTime] = useState(0);
-  const [startedTime] = useState(moment());
-
-  const runnable = () => {
-    BackgroundTimer.runBackgroundTimer(() => {
-      let diff = moment().diff(startedTime, 'second');
-      if (diff < TOTAL_CALL_DURATION) {
-        if (diff > TOTAL_CALL_DURATION) {
-          diff = TOTAL_CALL_DURATION;
-        } else if (diff < 0) {
-          diff = 0;
-        }
-        if (currentTime !== diff) {
-          setCurrentTime(diff);
-        }
-      } else {
-        BackgroundTimer.stopBackgroundTimer();
-        navigation.pop();
-      }
-      if (diff >= 5) {
-        BackgroundTimer.stopBackgroundTimer();
-        setTimeout(() => {
-          navigation.navigate('LobbyStartScreen');
-        }, 1000);
-      }
-    }, 1000);
-  };
-
-  useEffect(() => {
-    runnable();
-
-    return () => {
-      BackgroundTimer.stopBackgroundTimer();
-    };
-  }, []);
+const LobbyStartScreen = ({ navigation }) => {
+  const [currentTime] = useState(0);
 
   const calculateTime = (time) => `${(
     `${time % 60}`
@@ -62,7 +26,7 @@ const MatchReadyScreen = ({ navigation }) => {
     >
       <View style={styles.header} />
       <View style={styles.searchContainer}>
-        <Text style={styles.itemTitle}>Your Match is ready</Text>
+        <Text style={styles.itemTitle}>Finding Match...</Text>
         <ProgressCircle
           percent={(currentTime / TOTAL_CALL_DURATION) * 100}
           radius={calcReal(80)}
@@ -81,7 +45,7 @@ const MatchReadyScreen = ({ navigation }) => {
       </View>
       <ConfirmButton
         color={colors.loginColor}
-        label="ACCEPT"
+        label="CANCEL"
         onClick={() => navigation.pop()}
         fontStyle={styles.fontSpacing}
         containerStyle={styles.mh48}
@@ -100,8 +64,8 @@ const MatchReadyScreen = ({ navigation }) => {
   );
 };
 
-MatchReadyScreen.propTypes = {
+LobbyStartScreen.propTypes = {
   navigation: PropTypes.shape().isRequired,
 };
 
-export default MatchReadyScreen;
+export default LobbyStartScreen;

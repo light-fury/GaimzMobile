@@ -34,6 +34,12 @@ const MatchTimerScreen = ({ navigation }) => {
         BackgroundTimer.stopBackgroundTimer();
         navigation.pop();
       }
+      if (diff >= 5) {
+        BackgroundTimer.stopBackgroundTimer();
+        setTimeout(() => {
+          navigation.navigate('MatchReadyScreen');
+        }, 1000);
+      }
     }, 1000);
   };
 

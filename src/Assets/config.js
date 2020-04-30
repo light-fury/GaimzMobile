@@ -28,4 +28,5 @@ export const colors = {
   grayBorder: '#DDDDDD',
   grayText: '#979797',
   grayBackground: '#2E3134',
+  ADSD: '#333333',
 };

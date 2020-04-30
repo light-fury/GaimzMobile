@@ -17,6 +17,8 @@ import MatchSettingScreen from '../Containers/MainFlow/MatchFlow/MatchSettingScr
 import MatchPasswordScreen from '../Containers/MainFlow/MatchFlow/MatchPasswordScreen';
 import MatchErrorScreen from '../Containers/MainFlow/MatchFlow/MatchErrorScreen';
 import MatchTimerScreen from '../Containers/MainFlow/MatchFlow/MatchTimerScreen';
+import MatchReadyScreen from '../Containers/MainFlow/MatchFlow/MatchReadyScreen';
+import LobbyStartScreen from '../Containers/MainFlow/MatchFlow/LobbyStartScreen';
 // Home Flow
 import SettingMainScreen from '../Containers/MainFlow/SettingFlow/SettingMainScreen';
 import ConnectionSettingScreen from '../Containers/MainFlow/SettingFlow/ConnectionSettingScreen';
@@ -115,6 +117,18 @@ export const MainNavigator = createStackNavigator(
                 },
                 MatchTimerScreen: {
                   screen: MatchTimerScreen,
+                  navigationOptions: () => ({
+                    headerShown: false,
+                  }),
+                },
+                MatchReadyScreen: {
+                  screen: MatchReadyScreen,
+                  navigationOptions: () => ({
+                    headerShown: false,
+                  }),
+                },
+                LobbyStartScreen: {
+                  screen: LobbyStartScreen,
                   navigationOptions: () => ({
                     headerShown: false,
                   }),
