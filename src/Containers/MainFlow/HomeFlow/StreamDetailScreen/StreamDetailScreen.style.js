@@ -8,16 +8,19 @@ const { width } = Dimensions.get('window');
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
+    backgroundColor: colors.secondary,
   },
   flexContainer: {
-    flex: 1,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
   webView: {
     width,
     height: width / 1.4,
-    borderBottomLeftRadius: calcReal(12),
-    borderBottomRightRadius: calcReal(12),
+    backgroundColor: colors.transparent,
   },
   socialButton: {
     width: calcReal(38),
