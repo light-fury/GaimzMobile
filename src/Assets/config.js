@@ -20,6 +20,8 @@ export const colors = {
   fbColor: '#39579B',
   loginColor: '#613BFF',
   signUpColor: '#FA7267',
+  steamBlack: '#1E1F20',
+  twitchPurple: '#613BFF',
   yellow: '#FFFF82',
   green: '#4BDD08',
   borderGreen: '#00FF29',

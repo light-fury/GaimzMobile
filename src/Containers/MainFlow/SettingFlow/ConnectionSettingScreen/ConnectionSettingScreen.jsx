@@ -18,7 +18,7 @@ import SocialButton from '../../../../Components/SocialButton';
 import styles from './ConnectionSettingScreen.style';
 import { UserContext } from '../../../../contexts';
 import { twitchSigninUrl, steamSigninUrl } from '../../../../constants/oauth';
-import { signInWithTwitch } from '../../../../api';
+import { signInWithTwitch, signInWithSteam } from '../../../../api';
 
 const renderItem = ({ item, index }) => (
   <TouchableOpacity
@@ -66,14 +66,11 @@ const ConnectionSettingScreen = ({ navigation }) => {
         if (params.url.includes('twitch')) {
           apiResponse = await signInWithTwitch(parsedParams);
         } else {
-          apiResponse = await signInWithTwitch(parsedParams);
+          apiResponse = await signInWithSteam(parsedParams);
         }
-
-        console.warn(apiResponse);
 
         setUser(apiResponse.user);
       } catch (err) {
-        console.warn(err);
         Alert.alert('Error', 'There was an error connecting the account');
       }
     }

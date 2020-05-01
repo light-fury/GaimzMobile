@@ -81,13 +81,13 @@ const SignUpScreen = ({ navigation }) => {
       Linking.addEventListener('url', handleOpenURL);
       Linking.openURL(twitchSigninUrl);
     } catch (err) {
-      console.warn(err);
+      Alert.alert('Error', 'There was an error signing you up with Twitch');
     }
   };
 
   useEffect(() => {
     if (!isEmpty(user)) {
-      if (user.hasTwitch && user.hasSteam) {
+      if (user.hasTwitch || user.hasSteam) {
         resetNavigation(navigation, 'MainFlow');
       } else {
         navigation.replace('SocialAccountsScreen');
@@ -118,7 +118,7 @@ const SignUpScreen = ({ navigation }) => {
         contentContainerStyle={styles.scrollInner}
       >
         <Text style={styles.title}>Create an account</Text>
-        <Text style={styles.instructionText}>Sign in to continue</Text>
+        <Text style={styles.instructionText}>Sign up to continue</Text>
         <View style={styles.socialContainer}>
           {/* <SocialButton
             style={[styles.socialButton, { backgroundColor: colors.fbColor }]}

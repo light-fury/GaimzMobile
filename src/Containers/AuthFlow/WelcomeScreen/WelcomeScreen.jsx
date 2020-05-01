@@ -48,7 +48,6 @@ const WelcomeScreen = ({ navigation }) => {
       if (token) {
         setApiClientHeader('Authorization', `Bearer ${token}`);
         const data = await checkToken();
-        console.warn(data);
         setUser(data.user);
         resetNavigation(navigation, 'MainFlow');
       } else {
@@ -100,7 +99,7 @@ const WelcomeScreen = ({ navigation }) => {
       Linking.addEventListener('url', handleOpenURL);
       Linking.openURL(twitchSigninUrl);
     } catch (err) {
-      console.warn(err);
+      Alert.alert('Error', 'There was an error signing you in with Twitch');
     }
   };
 
