@@ -25,6 +25,7 @@ const ConfirmButton = ({
   fontStyle = {},
   containerStyle = {},
   onClick = () => {},
+  disabled,
 }) => (
   <TouchableOpacity
     style={[
@@ -35,6 +36,7 @@ const ConfirmButton = ({
       containerStyle,
     ]}
     onPress={onClick}
+    disabled={disabled}
   >
     <Text style={[styles.textStyle, { color: textColor }, fontStyle]}>
       {label}

@@ -22,7 +22,6 @@ export { default as searchIcon } from './search_icon.png';
 export { default as settingsIcon } from './settings_icon.png';
 export { default as splashBackground } from './splash_background.png';
 export { default as steamIcon } from './steam_icon.png';
-export { default as templateAvatar } from './template_avatar.png';
-export { default as templateProfile } from './template_profile.png';
+export { default as templateAvatar } from './twitch_icon.png';
 export { default as twitchIcon } from './twitch_icon.png';
 export { default as userIcon } from './user_icon.png';

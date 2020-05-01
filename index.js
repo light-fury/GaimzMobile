@@ -9,6 +9,6 @@ import {typography} from './src/Components/Typography';
 
 typography();
 
-console.disableYellowBox = true;
+// console.disableYellowBox = true;
 
 AppRegistry.registerComponent(appName, () => App);

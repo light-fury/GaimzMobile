@@ -8,6 +8,7 @@ import {
   Image,
   FlatList,
   ImageBackground,
+  StatusBar,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { withNavigation } from 'react-navigation';
@@ -16,7 +17,6 @@ import SafeAreaView from 'react-native-safe-area-view';
 import SocialButton from '../../../../Components/SocialButton';
 import styles from './DashboardScreen.style';
 import {
-  templateAvatar,
   eyeIcon,
   searchIcon,
   notificationIcon,
@@ -85,14 +85,19 @@ const DashboardScreen = ({ navigation }) => {
     initLives();
   }, []);
 
+  if (!user) {
+    return <></>;
+  }
+
   return (
     <SafeAreaView
       forceInset={{ bottom: 'never', top: 'never' }}
       style={styles.container}
     >
+      <StatusBar barStyle="dark-content" />
       <View style={styles.header}>
         <Image
-          source={templateAvatar}
+          source={{ uri: user.userAvatarUrl }}
           style={styles.avatarImage}
           resizeMode="cover"
         />
