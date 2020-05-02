@@ -244,22 +244,6 @@ const LobbyStartScreen = ({ navigation }) => {
           <Image source={arrowRight} style={styles.arrowImage} resizeMode="contain" />
         </TouchableOpacity>
       </View>
-      {/* <ConfirmButton
-        color={colors.loginColor}
-        label="CANCEL"
-        onClick={() => navigation.pop()}
-        fontStyle={styles.fontSpacing}
-        containerStyle={styles.mh48}
-      />
-      <View style={styles.space} />
-      <ConfirmButton
-        borderColor={colors.secondaryOpacity}
-        textColor={colors.grayText}
-        label="SETTINGS"
-        onClick={() => navigation.popToTop()}
-        fontStyle={styles.fontSpacing}
-        containerStyle={styles.mh48}
-      /> */}
     </SafeAreaView>
   );
 };
