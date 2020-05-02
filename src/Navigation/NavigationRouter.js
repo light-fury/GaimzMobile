@@ -13,8 +13,8 @@ import SocialAccountsScreen from '../Containers/AuthFlow/SocialAccountsScreen';
 import DashboardScreen from '../Containers/MainFlow/HomeFlow/DashboardScreen';
 import StreamDetailScreen from '../Containers/MainFlow/HomeFlow/StreamDetailScreen';
 // Match Flow
-import MatchMainScreen from '../Containers/MainFlow/MatchFlow/MatchMainScreen';
 import MatchSettingScreen from '../Containers/MainFlow/MatchFlow/MatchSettingScreen';
+import MatchSearchScreen from '../Containers/MainFlow/MatchFlow/MatchSearchScreen';
 import MatchPasswordScreen from '../Containers/MainFlow/MatchFlow/MatchPasswordScreen';
 import MatchErrorScreen from '../Containers/MainFlow/MatchFlow/MatchErrorScreen';
 import MatchTimerScreen from '../Containers/MainFlow/MatchFlow/MatchTimerScreen';
@@ -98,14 +98,14 @@ export const MainNavigator = createStackNavigator(
           MatchFlow: {
             screen: createStackNavigator(
               {
-                MatchMainScreen: {
-                  screen: MatchMainScreen,
+                MatchSettingScreen: {
+                  screen: MatchSettingScreen,
                   navigationOptions: () => ({
                     headerShown: false,
                   }),
                 },
-                MatchSettingScreen: {
-                  screen: MatchSettingScreen,
+                MatchSearchScreen: {
+                  screen: MatchSearchScreen,
                   navigationOptions: () => ({
                     headerShown: false,
                   }),

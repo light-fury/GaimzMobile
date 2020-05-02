@@ -2,7 +2,7 @@
 
 import { connect } from 'react-redux';
 
-import MatchMainScreen from './MatchMainScreen';
+import MatchSearchScreen from './MatchSearchScreen';
 import { createSecretsData } from '../../../../State/Secrets/Actions';
 
 const mapStateToProps = (state) => ({
@@ -15,4 +15,4 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(MatchMainScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(MatchSearchScreen);
