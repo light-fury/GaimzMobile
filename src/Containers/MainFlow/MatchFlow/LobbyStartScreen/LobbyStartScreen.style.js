@@ -11,9 +11,7 @@ export default StyleSheet.create({
   },
   header: {
     paddingTop: getStatusBarHeight(false),
-    height: getStatusBarHeight(false) + calcReal(50),
-    alignItems: 'center',
-    justifyContent: 'center',
+    height: getStatusBarHeight(false) + calcReal(320),
   },
   flex2: {
     flex: 2,
@@ -59,5 +57,10 @@ export default StyleSheet.create({
   },
   flexContainer: {
     flex: 1,
+  },
+  headerInnerContainer: {
+    paddingHorizontal: calcReal(24),
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });

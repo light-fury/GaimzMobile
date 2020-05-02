@@ -18,8 +18,9 @@ const MatchReadyScreen = ({ navigation }) => {
   const [currentTime, setCurrentTime] = useState(0);
   const [startedTime] = useState(moment());
 
-  const runnable = () => {
-    BackgroundTimer.runBackgroundTimer(() => {
+  useEffect(() => {
+    BackgroundTimer.start();
+    const intervalId = setInterval(() => {
       let diff = moment().diff(startedTime, 'second');
       if (diff < TOTAL_CALL_DURATION) {
         if (diff > TOTAL_CALL_DURATION) {
@@ -31,23 +32,19 @@ const MatchReadyScreen = ({ navigation }) => {
           setCurrentTime(diff);
         }
       } else {
-        BackgroundTimer.stopBackgroundTimer();
-        navigation.pop();
+        clearInterval(intervalId);
+        navigation.pop(2);
       }
       if (diff >= 5) {
-        BackgroundTimer.stopBackgroundTimer();
+        clearInterval(intervalId);
         setTimeout(() => {
           navigation.navigate('LobbyStartScreen');
         }, 1000);
       }
     }, 1000);
-  };
-
-  useEffect(() => {
-    runnable();
-
+    BackgroundTimer.stop();
     return () => {
-      BackgroundTimer.stopBackgroundTimer();
+      clearInterval(intervalId);
     };
   }, []);
 
