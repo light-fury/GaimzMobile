@@ -44,7 +44,9 @@ const MatchTimerScreen = ({ navigation }) => {
     }, 1000);
     BackgroundTimer.stop();
     return () => {
-      clearInterval(intervalId);
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
     };
   }, []);
 

@@ -16,11 +16,12 @@ const TOTAL_CALL_DURATION = 60;
 
 const MatchReadyScreen = ({ navigation }) => {
   const [currentTime, setCurrentTime] = useState(0);
+  const [intervalId, setIntervalId] = useState(null);
   const [startedTime] = useState(moment());
 
   useEffect(() => {
     BackgroundTimer.start();
-    const intervalId = setInterval(() => {
+    const interval = setInterval(() => {
       let diff = moment().diff(startedTime, 'second');
       if (diff < TOTAL_CALL_DURATION) {
         if (diff > TOTAL_CALL_DURATION) {
@@ -32,21 +33,31 @@ const MatchReadyScreen = ({ navigation }) => {
           setCurrentTime(diff);
         }
       } else {
-        clearInterval(intervalId);
+        clearInterval(interval);
         navigation.pop(2);
       }
       if (diff >= 5) {
-        clearInterval(intervalId);
+        clearInterval(interval);
         setTimeout(() => {
           navigation.navigate('LobbyStartScreen');
         }, 1000);
       }
     }, 1000);
+    setIntervalId(interval);
     BackgroundTimer.stop();
     return () => {
-      clearInterval(intervalId);
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
     };
   }, []);
+
+  const endTimer = () => {
+    if (intervalId) {
+      clearInterval(intervalId);
+    }
+    navigation.navigate('LobbyStartScreen');
+  };
 
   const calculateTime = (time) => `${(
     `${time % 60}`
@@ -79,7 +90,7 @@ const MatchReadyScreen = ({ navigation }) => {
       <ConfirmButton
         color={colors.loginColor}
         label="ACCEPT"
-        onClick={() => navigation.pop()}
+        onClick={endTimer}
         fontStyle={styles.fontSpacing}
         containerStyle={styles.mh48}
       />
