@@ -18,8 +18,9 @@ const MatchTimerScreen = ({ navigation }) => {
   const [currentTime, setCurrentTime] = useState(0);
   const [startedTime] = useState(moment());
 
-  const runnable = () => {
-    BackgroundTimer.runBackgroundTimer(() => {
+  useEffect(() => {
+    BackgroundTimer.start();
+    const intervalId = setInterval(() => {
       let diff = moment().diff(startedTime, 'second');
       if (diff < TOTAL_CALL_DURATION) {
         if (diff > TOTAL_CALL_DURATION) {
@@ -31,17 +32,21 @@ const MatchTimerScreen = ({ navigation }) => {
           setCurrentTime(diff);
         }
       } else {
-        BackgroundTimer.stopBackgroundTimer();
+        clearInterval(intervalId);
         navigation.pop();
       }
+      if (diff >= 5) {
+        clearInterval(intervalId);
+        setTimeout(() => {
+          navigation.navigate('MatchReadyScreen');
+        }, 1000);
+      }
     }, 1000);
-  };
-
-  useEffect(() => {
-    runnable();
-
+    BackgroundTimer.stop();
     return () => {
-      BackgroundTimer.stopBackgroundTimer();
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
     };
   }, []);
 

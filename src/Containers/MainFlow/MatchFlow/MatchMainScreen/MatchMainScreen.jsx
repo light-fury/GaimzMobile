@@ -95,11 +95,6 @@ const MatchMainScreen = ({ navigation }) => (
 );
 
 MatchMainScreen.propTypes = {
-  Secrets: PropTypes.shape({
-    isFetching: PropTypes.bool.isRequired,
-    secretsData: PropTypes.shape(),
-    error: PropTypes.any,
-  }).isRequired,
   navigation: PropTypes.shape().isRequired,
 };
 

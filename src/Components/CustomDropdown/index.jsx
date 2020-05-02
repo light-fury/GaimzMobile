@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     lineHeight: calcReal(20),
     textAlignVertical: 'center',
     fontWeight: '300',
-    color: `${colors.white}A`,
+    color: `${colors.white}A0`,
     padding: 0,
     marginRight: 'auto',
   },

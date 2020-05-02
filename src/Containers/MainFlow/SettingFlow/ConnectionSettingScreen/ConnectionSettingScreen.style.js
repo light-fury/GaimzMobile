@@ -51,7 +51,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: calcReal(12),
-    backgroundColor: `${colors.white}3`,
+    backgroundColor: `${colors.white}30`,
   },
   itemIcon: {
     width: calcReal(36),

@@ -11,7 +11,7 @@ export const colors = {
   primaryOpacity: '#11ABDFA8',
   secondary: '#1E1F20',
   secondaryOpacity: '#1E1F2030',
-  white: '#FFF',
+  white: '#FFFFFF',
   gray: '#8F92A1',
   darkGray: '#474747',
   grayOpacity: '#8F92A130',
@@ -30,4 +30,5 @@ export const colors = {
   grayBorder: '#DDDDDD',
   grayText: '#979797',
   grayBackground: '#2E3134',
+  ADSD: '#333333',
 };
