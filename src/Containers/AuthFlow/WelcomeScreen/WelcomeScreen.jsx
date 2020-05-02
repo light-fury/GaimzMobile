@@ -1,4 +1,3 @@
-// @flow
 import React, { useContext, useState, useEffect } from 'react';
 import {
   Alert,
@@ -6,12 +5,14 @@ import {
   View,
   ImageBackground,
   Image,
+  Linking,
+  StatusBar,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import AsyncStorage from '@react-native-community/async-storage';
-import { isEmpty } from 'lodash';
+import queryString from 'query-string';
 
 import SocialButton from '../../../Components/SocialButton';
 import ConfirmButton from '../../../Components/ConfirmButton';
@@ -21,21 +22,41 @@ import styles from './WelcomeScreen.style';
 import {
   splashBackground,
   appLogo,
-  facebookIcon,
   twitchIcon,
-  steamIcon,
   checkIcon,
   eyeIcon,
 } from '../../../Assets';
 import { colors, calcReal } from '../../../Assets/config';
-import { signIn } from '../../../api';
+import { signIn, signInWithTwitch, checkToken } from '../../../api';
 import { UserContext } from '../../../contexts';
+import { twitchSigninUrl } from '../../../constants/oauth';
+import { resetNavigation } from '../../../helpers/navigation';
+import { setApiClientHeader } from '../../../constants/api-client';
 
 const WelcomeScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [user, setUser] = useContext(UserContext);
+  const [, setUser] = useContext(UserContext);
+
+  const initUser = async () => {
+    try {
+      // To sign out while it isn't implemented
+      // await AsyncStorage.removeItem('AuthToken');
+      const token = await AsyncStorage.getItem('AuthToken');
+
+      if (token) {
+        setApiClientHeader('Authorization', `Bearer ${token}`);
+        const data = await checkToken();
+        setUser(data.user);
+        resetNavigation(navigation, 'MainFlow');
+      } else {
+        setUser({});
+      }
+    } catch (err) {
+      setUser({});
+    }
+  };
 
   const onSubmit = async () => {
     try {
@@ -46,22 +67,52 @@ const WelcomeScreen = ({ navigation }) => {
 
       AsyncStorage.setItem('AuthToken', response.authToken);
       setUser(response.user);
+      resetNavigation(navigation, 'MainFlow');
     } catch (err) {
       Alert.alert('Error', 'There was an error signing you in');
     }
   };
 
-  useEffect(() => {
-    if (!isEmpty(user)) {
-      navigation.dangerouslyGetParent().navigate('MainFlow');
+  const handleOpenURL = async (params) => {
+    if (params.url) {
+      const parsedParams = queryString.parse(params.url.split('?')[1]);
+      let apiResponse;
+
+      try {
+        if (params.url.includes('twitch')) {
+          apiResponse = await signInWithTwitch(parsedParams);
+        }
+
+        AsyncStorage.setItem('AuthToken', apiResponse.authToken);
+        setUser(apiResponse.user);
+        resetNavigation(navigation, 'MainFlow');
+      } catch (err) {
+        Alert.alert('Error', 'There was an error signing you in');
+      }
     }
-  }, [user]);
+
+    Linking.removeAllListeners('url');
+  };
+
+  const twitchSignin = async () => {
+    try {
+      Linking.addEventListener('url', handleOpenURL);
+      Linking.openURL(twitchSigninUrl);
+    } catch (err) {
+      Alert.alert('Error', 'There was an error signing you in with Twitch');
+    }
+  };
+
+  useEffect(() => {
+    initUser();
+  }, []);
 
   return (
     <SafeAreaView
       forceInset={{ bottom: 'never', top: 'never' }}
       style={styles.container}
     >
+      <StatusBar barStyle="light-content" />
       <ImageBackground
         style={styles.topContainer}
         source={splashBackground}
@@ -85,26 +136,17 @@ const WelcomeScreen = ({ navigation }) => {
           Login your account to continue
         </Text>
         <View style={styles.socialContainer}>
-          <SocialButton
+          {/* <SocialButton
             style={[styles.socialButton, { backgroundColor: colors.fbColor }]}
             icon={facebookIcon}
             onClick={() => {
               Alert.alert('FB Login');
             }}
-          />
+          /> */}
           <SocialButton
             style={[styles.socialButton, { backgroundColor: colors.lightGray }]}
             icon={twitchIcon}
-            onClick={() => {
-              Alert.alert('Twitch Login');
-            }}
-          />
-          <SocialButton
-            style={[styles.socialButton, { backgroundColor: colors.secondary }]}
-            icon={steamIcon}
-            onClick={() => {
-              Alert.alert('Steam Login');
-            }}
+            onClick={twitchSignin}
           />
           <Text style={[styles.instructionText, { fontSize: calcReal(12) }]}>
             Or use your email account

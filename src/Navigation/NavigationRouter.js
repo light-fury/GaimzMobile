@@ -7,6 +7,7 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 import WelcomeScreen from '../Containers/AuthFlow/WelcomeScreen';
 import SignUpScreen from '../Containers/AuthFlow/SignUpScreen';
 import ForgotPasswordScreen from '../Containers/AuthFlow/ForgotPasswordScreen';
+import SocialAccountsScreen from '../Containers/AuthFlow/SocialAccountsScreen';
 // Main Flow
 // Home Flow
 import DashboardScreen from '../Containers/MainFlow/HomeFlow/DashboardScreen';
@@ -39,6 +40,12 @@ export const MainNavigator = createStackNavigator(
         },
         SignUpScreen: {
           screen: SignUpScreen,
+          navigationOptions: () => ({
+            headerShown: false,
+          }),
+        },
+        SocialAccountsScreen: {
+          screen: SocialAccountsScreen,
           navigationOptions: () => ({
             headerShown: false,
           }),

@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
+  StatusBar,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
@@ -13,10 +14,7 @@ import SafeAreaView from 'react-native-safe-area-view';
 import {
   userIcon,
   connectionIcon,
-  helpIcon,
   arrowRight,
-  templateProfile,
-  settingsIcon,
 } from '../../../../Assets';
 import SocialButton from '../../../../Components/SocialButton';
 import styles from './SettingMainScreen.style';
@@ -34,11 +32,11 @@ const listData = [
     title: 'Connection',
     route: 'ConnectionSettingScreen',
   },
-  {
-    image: helpIcon,
-    title: 'Help',
-    route: 'HelpSettingScreen',
-  },
+  // {
+  //   image: helpIcon,
+  //   title: 'Help',
+  //   route: 'HelpSettingScreen',
+  // },
 ];
 
 const SettingMainScreen = ({ navigation }) => {
@@ -73,21 +71,22 @@ const SettingMainScreen = ({ navigation }) => {
       forceInset={{ bottom: 'never', top: 'never' }}
       style={styles.container}
     >
+      <StatusBar barStyle="light-content" />
       <View style={styles.header}>
         <Image
-          source={templateProfile}
+          source={{ uri: user.userAvatarUrl }}
           style={styles.avatarImage}
           resizeMode="cover"
         />
         <Text style={[styles.flexContainer, styles.profileName]}>
           {user.userName}
         </Text>
-        <SocialButton
+        {/* <SocialButton
           style={styles.headerButton}
           iconStyle={styles.headerIcon}
           icon={settingsIcon}
           onClick={() => navigation.pop()}
-        />
+        /> */}
       </View>
       <Text style={styles.titleText}>Settings</Text>
       <FlatList

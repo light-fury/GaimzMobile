@@ -13,7 +13,6 @@ import SafeAreaView from 'react-native-safe-area-view';
 
 import {
   templateAvatar,
-  templateProfile,
   settingsIcon,
   dotaBackground,
 } from '../../../../Assets';
@@ -81,7 +80,7 @@ const AccountScreen = ({ navigation }) => {
     >
       <View style={styles.header}>
         <Image
-          source={templateProfile}
+          source={{ uri: user.userAvatarUrl }}
           style={styles.avatarImage}
           resizeMode="cover"
         />
