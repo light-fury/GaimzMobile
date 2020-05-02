@@ -7,62 +7,21 @@ import {
 import BackgroundTimer from 'react-native-background-timer';
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
-import ProgressCircle from 'react-native-progress-circle';
 import moment from 'moment';
 
-import ConfirmButton from '../../../../Components/ConfirmButton';
+import ProfileComponent from './ProfileScreen';
+import PageScreen from './PageScreen';
 import styles from './LobbyStartScreen.style';
-import { colors, calcReal } from '../../../../Assets/config';
 import {
-  lobbyBgDota, profileTempDota,
-  arrowRight, heroTemplate,
+  lobbyBgDota, arrowRight, heroTemplate,
 } from '../../../../Assets';
 
 const { width } = Dimensions.get('window');
 
 const WAIT_TEXT = 'GAIMZ BOT PREPARING LOBBY';
-const INVITE_TEXT = 'INVITE SEND\nYOU ARE DIRE';
+const INVITE_TEXT = 'INVITE SEND\nYOU ARE ';
 const PREPARE_TEXT = 'GETTING\nMATCH DATA';
 const TOTAL_CALL_DURATION = 60;
-
-const ProfileComponent = ({ item }) => (
-  <View style={styles.itemContainer}>
-    <Text style={styles.profileText}>{item.team}</Text>
-    <Image source={profileTempDota} style={styles.profileImage} resizeMode="cover" />
-    <Text style={[styles.profileText, styles.mt8]}>{item.username}</Text>
-  </View>
-);
-
-const PageScreen = ({
-  currentTime, navigation, pageText, buttonVisible,
-}) => (
-  <View style={styles.individualPage}>
-    <View style={[styles.itemContainer, !buttonVisible && styles.hideConfirm]}>
-      <ProgressCircle
-        percent={(currentTime / TOTAL_CALL_DURATION) * 100}
-        radius={calcReal(85)}
-        borderWidth={calcReal(6)}
-        color={colors.loginColor}
-        shadowColor={colors.grayBackground}
-        bgColor={colors.secondary}
-      >
-        <Text style={[styles.profileText, styles.progressText]}>
-          {pageText}
-        </Text>
-      </ProgressCircle>
-    </View>
-    {buttonVisible && (
-    <ConfirmButton
-      color={colors.loginColor}
-      label="SEND INVITE AGAIN"
-      onClick={() => navigation.pop()}
-      fontStyle={styles.fontSpacing}
-      containerStyle={styles.mh70}
-    />
-    )}
-
-  </View>
-);
 
 const LobbyStartScreen = ({ navigation }) => {
   const [currentTime, setCurrentTime] = useState(0);
@@ -118,19 +77,27 @@ const LobbyStartScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
+    // Start Timer for preparing lobby
     startTimer();
 
+    // To navigate to the Next Page (Invite sent screen)
+    // We need to remove that in the real version
     setTimeout(() => {
       onPageChanged(1);
     }, 5000);
 
+    // To navigate to the Next Page (Getting Match data screen)
+    // We need to remove that in the real version
     setTimeout(() => {
       onPageChanged(1);
     }, 10000);
 
+    // To navigate to the Next Page (Match status screen)
+    // We need to remove that in the real version
     setTimeout(() => {
       onPageChanged(1);
     }, 15000);
+
     return () => {
       if (intervalId) {
         clearInterval(intervalId);
@@ -180,7 +147,7 @@ const LobbyStartScreen = ({ navigation }) => {
           <PageScreen
             currentTime={currentTime}
             navigation={navigation}
-            pageText={INVITE_TEXT}
+            pageText={`${INVITE_TEXT}${'RADIANT'}`}
             buttonVisible
           />
           <PageScreen
