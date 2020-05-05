@@ -3,10 +3,11 @@ import React, {
   useContext, useCallback, useState, useEffect,
 } from 'react';
 import {
-  Text, View, ScrollView, Alert,
+  Text, View, ScrollView,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
+import AsyncStorage from '@react-native-community/async-storage';
 import {
   find, get, map,
 } from 'lodash';
@@ -15,9 +16,9 @@ import ConfirmButton from '../../../../Components/ConfirmButton';
 import CustomDropdown from '../../../../Components/CustomDropdown';
 import styles from './MatchSettingScreen.style';
 import { colors } from '../../../../Assets/config';
-import { MatchContext } from '../../../../contexts';
-import { getGames } from '../../../../api';
-import { createMatch } from '../../../../api/matchmaking';
+import { MatchContext, UserContext } from '../../../../contexts';
+import { getGames, checkToken, createMatch } from '../../../../api';
+import { setApiClientHeader } from '../../../../constants/api-client';
 
 const restrictionLevels = [
   'Everyone',
@@ -28,6 +29,7 @@ const restrictionLevels = [
 
 const MatchSettingScreen = ({ navigation }) => {
   const [match, setMatch] = useContext(MatchContext);
+  const [, setUser] = useContext(UserContext);
   const [games, setGames] = useState([]);
 
   const initData = useCallback(async () => {
@@ -40,7 +42,22 @@ const MatchSettingScreen = ({ navigation }) => {
   });
 
   const sendMatch = useCallback(async () => {
-    createMatch(match);
+    try {
+      const data = await checkToken();
+      setUser(data.user);
+      setApiClientHeader('Authorization', `Bearer ${data.authToken}`);
+      await AsyncStorage.setItem('AuthToken', data.authToken);
+      const response = await createMatch(match);
+      if (response && response.matchStatus === 'match_requested') {
+        setMatch({
+          ...match,
+          match: response,
+        });
+        navigation.navigate('MatchTimerScreen');
+      }
+    } catch (err) {
+      //
+    }
   }, [match]);
 
   useEffect(() => { initData(); }, []);

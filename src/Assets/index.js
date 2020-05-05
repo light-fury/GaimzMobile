@@ -28,3 +28,4 @@ export { default as userIcon } from './user_icon.png';
 export { default as lobbyBgDota } from './lobby_bg_dota.png';
 export { default as profileTempDota } from './profile_temp_dota.png';
 export { default as heroTemplate } from './hero_template.png';
+export { default as logoutIcon } from './logout_icon.png';

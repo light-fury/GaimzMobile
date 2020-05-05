@@ -1,9 +1,9 @@
 // @flow
 
-import { AsyncStorage } from 'react-native';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import createSagaMiddleware from 'redux-saga';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default (rootReducer, rootSaga) => {
   /* ------------- Redux Configuration ------------- */

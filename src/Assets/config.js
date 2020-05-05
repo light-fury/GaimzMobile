@@ -1,10 +1,14 @@
 import { Dimensions } from 'react-native';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 export const baseUrl = 'https://sheets.googleapis.com/';
 
-export const calcReal = (number) => (width > 450 || width < 400 ? (width / 420) * number : number);
+export const calcReal = (number) => {
+  const widthValue = width > 450 || width < 400 ? (width / 420) * number : number;
+  const heightValue = height > 900 || height < 850 ? (height / 900) * number : number;
+  return widthValue > heightValue ? heightValue : widthValue;
+};
 
 export const colors = {
   primary: '#119DCD',

@@ -23,5 +23,5 @@ apiClient.interceptors.response.use(
 );
 
 export const setApiClientHeader = (name, value) => {
-  apiClient.defaults.headers[name] = value;
+  apiClient.defaults.headers.common[name] = value;
 };

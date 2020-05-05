@@ -8,8 +8,18 @@ export const createMatch = (match) => {
     gameMode: get(match, 'gameMode'),
     gameType: get(match, 'gameType.type'),
     restriction: get(match, 'restrictionLevel'),
-    password: get(match, 'password'),
+    password: get(match, 'password', ''),
   };
+  return apiClient.post('/match', params, { baseURL: 'https://mmapi.gaimz.com' }).then(({ data }) => data);
+};
 
-  return apiClient.post('https://mmapi.gaimz.com/match', params).then(({ data }) => data);
+export const getMatchStatus = (matchId) => apiClient.get(`/match/${matchId}`, { baseURL: 'https://mmapi.gaimz.com' }).then(({ data }) => data);
+
+export const lobbyInvite = (params) => apiClient.post('/lobby/invite', params, { baseURL: 'https://mmapi.gaimz.com' }).then(({ data }) => data);
+
+export const updateMatchStatus = (matchId, params) => apiClient.put(`/match/${matchId}`, params, { baseURL: 'https://mmapi.gaimz.com' }).then(({ data }) => data);
+
+export default {
+  createMatch,
+  getMatchStatus,
 };

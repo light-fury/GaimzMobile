@@ -1,26 +1,70 @@
 // @flow
-import React, { useState, useEffect } from 'react';
+import React, {
+  useState, useEffect, useCallback, useContext,
+} from 'react';
 import { Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
 import ProgressCircle from 'react-native-progress-circle';
 import BackgroundTimer from 'react-native-background-timer';
 import moment from 'moment';
+import {
+  get,
+} from 'lodash';
 
 import ConfirmButton from '../../../../Components/ConfirmButton';
 import styles from './MatchTimerScreen.style';
+import { getMatchStatus, updateMatchStatus } from '../../../../api';
+import { MatchContext } from '../../../../contexts';
 import { colors, calcReal } from '../../../../Assets/config';
 
 const WAIT_TEXT = 'Double click the timer to hide the search and explore Gaimz. We will notify you when the match is found.';
-const TOTAL_CALL_DURATION = 30;
+const TOTAL_CALL_DURATION = 600;
 
 const MatchTimerScreen = ({ navigation }) => {
+  const [match, setMatch] = useContext(MatchContext);
   const [currentTime, setCurrentTime] = useState(0);
   const [startedTime] = useState(moment());
 
+  const checkMatchStatus = useCallback(async () => {
+    try {
+      const response = await getMatchStatus(get(match, 'match.matchId'));
+      if (response && response.matchStatus === 'players_found') {
+        BackgroundTimer.stopBackgroundTimer();
+        setMatch({
+          ...match,
+          match: response,
+        });
+        setTimeout(() => {
+          navigation.navigate('MatchReadyScreen');
+        }, 1000);
+      }
+    } catch (err) {
+      //
+    }
+  });
+
+  const cancelMatchRequest = useCallback(async () => {
+    try {
+      const params = {
+        acceptMatch: false,
+      };
+      await updateMatchStatus(get(match, 'match.matchId'), params);
+      setMatch({
+        ...match,
+        match: {},
+      });
+      BackgroundTimer.stopBackgroundTimer();
+      setTimeout(() => {
+        navigation.pop();
+      }, 1000);
+    } catch (error) {
+      //
+    }
+  });
+
   useEffect(() => {
-    BackgroundTimer.start();
-    const intervalId = setInterval(() => {
+    BackgroundTimer.runBackgroundTimer(() => {
       let diff = moment().diff(startedTime, 'second');
       if (diff < TOTAL_CALL_DURATION) {
         if (diff > TOTAL_CALL_DURATION) {
@@ -30,29 +74,25 @@ const MatchTimerScreen = ({ navigation }) => {
         }
         if (currentTime !== diff) {
           setCurrentTime(diff);
+          checkMatchStatus();
         }
       } else {
-        clearInterval(intervalId);
-        navigation.pop();
-      }
-      if (diff >= 5) {
-        clearInterval(intervalId);
-        setTimeout(() => {
-          navigation.navigate('MatchReadyScreen');
-        }, 1000);
+        cancelMatchRequest();
       }
     }, 1000);
-    BackgroundTimer.stop();
     return () => {
-      if (intervalId) {
-        clearInterval(intervalId);
-      }
+      BackgroundTimer.stopBackgroundTimer();
     };
   }, []);
 
-  const calculateTime = (time) => `${(
-    `${time % 60}`
-  ).slice(-2)} sec`;
+  const calculateTime = (time) => {
+    const minutes = Math.floor(time / 60);
+    let str = '';
+    if (minutes > 0) {
+      str = `${minutes} min `;
+    }
+    return `${str} ${(`${time % 60}`).slice(-2)} sec`;
+  };
 
   return (
     <SafeAreaView
@@ -81,7 +121,7 @@ const MatchTimerScreen = ({ navigation }) => {
       <ConfirmButton
         color={colors.loginColor}
         label="CANCEL"
-        onClick={() => navigation.pop()}
+        onClick={() => cancelMatchRequest()}
         fontStyle={styles.fontSpacing}
         containerStyle={styles.mh48}
       />

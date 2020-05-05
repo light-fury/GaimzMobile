@@ -9,7 +9,7 @@ import {
 import { createReducer } from '../CreateReducer';
 
 const INITIAL_STATE = {
-  secretsData: [],
+  secretsData: {},
   isFetching: false,
   error: null,
 };

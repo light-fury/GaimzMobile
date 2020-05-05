@@ -1,7 +1,9 @@
 // @flow
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { colors, calcReal } from '../../../../Assets/config';
+
+const { width, height } = Dimensions.get('window');
 
 export default StyleSheet.create({
   container: {
@@ -9,15 +11,24 @@ export default StyleSheet.create({
     backgroundColor: colors.white,
     paddingBottom: calcReal(100),
   },
+  flexContainer: {
+    flex: 1,
+    paddingHorizontal: calcReal(48),
+  },
   header: {
     paddingTop: getStatusBarHeight(false),
     height: getStatusBarHeight(false) + calcReal(50),
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: colors.signUpColor,
   },
-  padding0: {
-    padding: 0,
-    paddingBottom: calcReal(30),
+  profileName: {
+    fontSize: calcReal(16),
+    lineHeight: calcReal(22),
+    fontWeight: 'bold',
+    color: colors.white,
+    textAlign: 'center',
+    textTransform: 'uppercase',
   },
   mh48: {
     marginHorizontal: calcReal(48),
@@ -28,39 +39,23 @@ export default StyleSheet.create({
   fontSpacing: {
     letterSpacing: calcReal(1),
   },
-  searchContainer: {
+  scrollIntent: {
+    paddingBottom: calcReal(32),
+    paddingTop: calcReal(24),
+  },
+  itemContainer: {
+    marginRight: calcReal(96),
+  },
+  itemBackground: {
+    width: width - calcReal(96),
+    height: height - calcReal(358) - getStatusBarHeight(false),
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-start',
+  },
+  itemImage: {
     flex: 1,
-    marginHorizontal: calcReal(48),
-    marginBottom: calcReal(32),
-    marginTop: calcReal(24),
-    backgroundColor: colors.secondary,
     borderRadius: calcReal(12),
-    paddingHorizontal: calcReal(23),
-    paddingVertical: calcReal(12),
-  },
-  itemTitle: {
-    fontSize: calcReal(12),
-    lineHeight: calcReal(20),
-    fontWeight: 'bold',
-    color: colors.white,
-    textAlign: 'center',
-    textTransform: 'uppercase',
-  },
-  whiteColor: {
-    color: colors.white,
-    marginBottom: 0,
-  },
-  inputContainer: {
-    marginTop: calcReal(28),
-  },
-  flexContainer: {
-    flex: 1,
-  },
-  rowContainer: {
-    marginTop: calcReal(6),
-    flexDirection: 'row',
-  },
-  ml20: {
-    marginLeft: calcReal(26),
+    backgroundColor: colors.primary,
   },
 });
