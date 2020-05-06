@@ -1,5 +1,7 @@
 // @flow
-import React, { useState, useRef, useEffect } from 'react';
+import React, {
+  useState, useRef, useEffect, useCallback, useContext,
+} from 'react';
 import {
   Text, View, ImageBackground, StatusBar,
   Image, TouchableOpacity, ScrollView, Dimensions,
@@ -8,7 +10,12 @@ import BackgroundTimer from 'react-native-background-timer';
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
 import moment from 'moment';
+import {
+  get,
+} from 'lodash';
 
+import { updateMatchStatus, getMatchStatus, lobbyInvite } from '../../../../api';
+import { MatchContext, UserContext } from '../../../../contexts';
 import ProfileComponent from './ProfileScreen';
 import PageScreen from './PageScreen';
 import styles from './LobbyStartScreen.style';
@@ -21,15 +28,23 @@ const { width } = Dimensions.get('window');
 const WAIT_TEXT = 'GAIMZ BOT PREPARING LOBBY';
 const INVITE_TEXT = 'INVITE SEND\nYOU ARE ';
 const PREPARE_TEXT = 'GETTING\nMATCH DATA';
-const TOTAL_CALL_DURATION = 60;
+const TOTAL_CALL_DURATION = 600;
+const targetMatchStatus = [
+  'match_accepted',
+  'invites_sent',
+  'match_started',
+  'match_started',
+  'match_ended',
+];
 
 const LobbyStartScreen = ({ navigation }) => {
+  const [match, setMatch] = useContext(MatchContext);
+  const [user] = useContext(UserContext);
   const [currentTime, setCurrentTime] = useState(0);
-  const [intervalId, setIntervalId] = useState(null);
   const [startedTime, setStartTime] = useState(moment());
   const [currentPage, setCurrentPage] = useState(0);
-  const scrollViewRef = useRef();
   const currentPageRef = useRef();
+  const scrollViewRef = useRef();
   const startedTimeRef = useRef();
   const currentTimeRef = useRef();
   currentPageRef.current = currentPage;
@@ -37,24 +52,79 @@ const LobbyStartScreen = ({ navigation }) => {
   currentTimeRef.current = currentTime;
 
   const onPageChanged = (offset) => {
-    if (currentPageRef.current === 0 && offset === -1) {
-      navigation.popToTop();
-    } else {
-      if (scrollViewRef.current) {
-        scrollViewRef.current.scrollTo({ x: width * (currentPageRef.current + offset), y: 0 });
-      }
-      setCurrentPage(currentPageRef.current + offset);
-      setStartTime(moment());
-      setCurrentTime(0);
-      if (currentPage.current === 2 && offset === 1) {
-        clearInterval(intervalId);
-      }
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollTo({ x: width * offset, y: 0 });
     }
+    setCurrentPage(offset);
+    setStartTime(moment());
+    setCurrentTime(0);
   };
 
+  const acceptMatchRequest = useCallback(async () => {
+    try {
+      const params = {
+        matchId: get(match, 'match.matchId'),
+      };
+      await lobbyInvite(params);
+    } catch (err) {
+      //
+    }
+  });
+
+  const cancelMatchRequest = useCallback(async () => {
+    try {
+      const params = {
+        acceptMatch: false,
+      };
+      await updateMatchStatus(get(match, 'match.matchId'), params);
+      setMatch({
+        ...match,
+        match: {},
+      });
+      BackgroundTimer.stopBackgroundTimer();
+      setTimeout(() => {
+        navigation.pop(3);
+      }, 1000);
+    } catch (error) {
+      //
+    }
+  });
+
+  const checkMatchStatus = useCallback(async () => {
+    try {
+      const response = await getMatchStatus(get(match, 'match.matchId'));
+      if (response && response.matchStatus === 'match_cancelled') {
+        cancelMatchRequest();
+        return;
+      }
+      if (response) {
+        const offset = targetMatchStatus.findIndex((item) => item === response.matchStatus);
+        if (offset < 0) {
+          cancelMatchRequest();
+          return;
+        }
+        setMatch({
+          ...match,
+          match: response,
+        });
+        if (currentPageRef.current === offset) {
+          return;
+        }
+        if (offset !== 2 && offset !== 3) {
+          onPageChanged(offset);
+        } else if (response.player_data) {
+          onPageChanged(3);
+        } else {
+          onPageChanged(2);
+        }
+      }
+    } catch (err) {
+      //
+    }
+  });
+
   const startTimer = () => {
-    BackgroundTimer.start();
-    const interval = setInterval(() => {
+    BackgroundTimer.runBackgroundTimer(() => {
       let diff = moment().diff(startedTimeRef.current, 'second');
       if (diff < TOTAL_CALL_DURATION) {
         if (diff > TOTAL_CALL_DURATION) {
@@ -64,44 +134,20 @@ const LobbyStartScreen = ({ navigation }) => {
         }
         if (currentTimeRef.current !== diff) {
           setCurrentTime(diff);
+          checkMatchStatus();
         }
       } else {
-        onPageChanged(-1);
-      }
-      if (diff >= 60) {
-        onPageChanged(-1);
+        cancelMatchRequest();
       }
     }, 1000);
-    setIntervalId(interval);
-    BackgroundTimer.stop();
   };
 
   useEffect(() => {
     // Start Timer for preparing lobby
     startTimer();
 
-    // To navigate to the Next Page (Invite sent screen)
-    // We need to remove that in the real version
-    setTimeout(() => {
-      onPageChanged(1);
-    }, 5000);
-
-    // To navigate to the Next Page (Getting Match data screen)
-    // We need to remove that in the real version
-    setTimeout(() => {
-      onPageChanged(1);
-    }, 10000);
-
-    // To navigate to the Next Page (Match status screen)
-    // We need to remove that in the real version
-    setTimeout(() => {
-      onPageChanged(1);
-    }, 15000);
-
     return () => {
-      if (intervalId) {
-        clearInterval(intervalId);
-      }
+      BackgroundTimer.stopBackgroundTimer();
     };
   }, []);
 
@@ -117,11 +163,11 @@ const LobbyStartScreen = ({ navigation }) => {
           imageStyle={styles.itemContainer}
           source={lobbyBgDota}
         >
-          <ProfileComponent item={{ username: 'USERNAME', team: 'DIRE' }} />
+          <ProfileComponent item={{ username: user.userName, team: 'DIRE', avatar: user.userAvatarUrl }} />
           <View style={styles.itemContainer}>
             <Text style={[styles.profileText, styles.fontBig]}>VS</Text>
           </View>
-          <ProfileComponent item={{ username: 'USERNAME', team: 'RADIANT' }} />
+          <ProfileComponent item={{ username: get(match, 'opponent.userName'), avatar: get(match, 'opponent.userAvatarUrl'), team: 'RADIANT' }} />
         </ImageBackground>
         <Text style={[styles.profileText, styles.fontBig, styles.absoluteOne]}>
           DIRE WON
@@ -149,6 +195,7 @@ const LobbyStartScreen = ({ navigation }) => {
             navigation={navigation}
             pageText={`${INVITE_TEXT}${'RADIANT'}`}
             buttonVisible
+            sendInviteAgain={acceptMatchRequest}
           />
           <PageScreen
             currentTime={currentTime}

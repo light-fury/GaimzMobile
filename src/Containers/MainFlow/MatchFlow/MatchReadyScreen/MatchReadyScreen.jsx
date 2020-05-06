@@ -1,27 +1,90 @@
 // @flow
-import React, { useState, useEffect } from 'react';
+import React, {
+  useState, useEffect, useCallback, useContext,
+} from 'react';
 import { Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
 import ProgressCircle from 'react-native-progress-circle';
 import BackgroundTimer from 'react-native-background-timer';
 import moment from 'moment';
+import {
+  get,
+} from 'lodash';
 
 import ConfirmButton from '../../../../Components/ConfirmButton';
+import { updateMatchStatus, getMatchStatus, getUserById } from '../../../../api';
+import { MatchContext, UserContext } from '../../../../contexts';
 import styles from './MatchReadyScreen.style';
-import { colors, calcReal } from '../../../../Assets/config';
+import { colors, calcReal, calculateTime } from '../../../../Assets/config';
 
 const WAIT_TEXT = 'Failing to accept may result in a temporary match making ban';
-const TOTAL_CALL_DURATION = 60;
+const TOTAL_CALL_DURATION = 600;
 
 const MatchReadyScreen = ({ navigation }) => {
+  const [match, setMatch] = useContext(MatchContext);
+  const [user] = useContext(UserContext);
   const [currentTime, setCurrentTime] = useState(0);
-  const [intervalId, setIntervalId] = useState(null);
   const [startedTime] = useState(moment());
 
+  const checkMatchStatus = useCallback(async () => {
+    try {
+      const response = await getMatchStatus(get(match, 'match.matchId'));
+      if (response && response.players && response.matchStatus === 'match_accepted') {
+        const acceptedMatches = response.players.filter((item) => item.playerStatus === 'match_accepted');
+        if (acceptedMatches && acceptedMatches.length === 2) {
+          BackgroundTimer.stopBackgroundTimer();
+          const targetUser = response.players.find((item) => item.userId !== user.userId);
+          const opponent = await getUserById(targetUser.userId);
+          if (opponent && opponent.user) {
+            setMatch({
+              ...match,
+              match: response,
+              opponent: opponent.user,
+            });
+            setTimeout(() => {
+              navigation.navigate('LobbyStartScreen');
+            }, 1000);
+          }
+        }
+      }
+    } catch (err) {
+      //
+    }
+  });
+
+  const acceptMatchRequest = useCallback(async () => {
+    try {
+      const params = {
+        acceptMatch: true,
+      };
+      await updateMatchStatus(get(match, 'match.matchId'), params);
+    } catch (err) {
+      //
+    }
+  });
+
+  const cancelMatchRequest = useCallback(async () => {
+    try {
+      const params = {
+        acceptMatch: false,
+      };
+      await updateMatchStatus(get(match, 'match.matchId'), params);
+      setMatch({
+        ...match,
+        match: {},
+      });
+      BackgroundTimer.stopBackgroundTimer();
+      setTimeout(() => {
+        navigation.pop(2);
+      }, 1000);
+    } catch (error) {
+      //
+    }
+  });
+
   useEffect(() => {
-    BackgroundTimer.start();
-    const interval = setInterval(() => {
+    BackgroundTimer.runBackgroundTimer(() => {
       let diff = moment().diff(startedTime, 'second');
       if (diff < TOTAL_CALL_DURATION) {
         if (diff > TOTAL_CALL_DURATION) {
@@ -31,37 +94,16 @@ const MatchReadyScreen = ({ navigation }) => {
         }
         if (currentTime !== diff) {
           setCurrentTime(diff);
+          checkMatchStatus();
         }
       } else {
-        clearInterval(interval);
-        navigation.pop(2);
-      }
-      if (diff >= 5) {
-        clearInterval(interval);
-        setTimeout(() => {
-          navigation.navigate('LobbyStartScreen');
-        }, 1000);
+        cancelMatchRequest();
       }
     }, 1000);
-    setIntervalId(interval);
-    BackgroundTimer.stop();
     return () => {
-      if (intervalId) {
-        clearInterval(intervalId);
-      }
+      BackgroundTimer.stopBackgroundTimer();
     };
   }, []);
-
-  const endTimer = () => {
-    if (intervalId) {
-      clearInterval(intervalId);
-    }
-    navigation.navigate('LobbyStartScreen');
-  };
-
-  const calculateTime = (time) => `${(
-    `${time % 60}`
-  ).slice(-2)} sec`;
 
   return (
     <SafeAreaView
@@ -90,7 +132,7 @@ const MatchReadyScreen = ({ navigation }) => {
       <ConfirmButton
         color={colors.loginColor}
         label="ACCEPT"
-        onClick={endTimer}
+        onClick={acceptMatchRequest}
         fontStyle={styles.fontSpacing}
         containerStyle={styles.mh48}
       />
@@ -98,8 +140,8 @@ const MatchReadyScreen = ({ navigation }) => {
       <ConfirmButton
         borderColor={colors.secondaryOpacity}
         textColor={colors.grayText}
-        label="SETTINGS"
-        onClick={() => navigation.popToTop()}
+        label="CANCEL"
+        onClick={() => cancelMatchRequest()}
         fontStyle={styles.fontSpacing}
         containerStyle={styles.mh48}
       />

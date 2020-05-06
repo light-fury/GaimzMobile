@@ -1,40 +1,39 @@
 // @flow
 import { StyleSheet } from 'react-native';
-import { colors } from '../Assets/config';
+import { colors, calcReal } from '../Assets/config';
 
 export default StyleSheet.create({
   headerRightButton: {
-    paddingHorizontal: 20,
-    width: 60,
+    paddingHorizontal: calcReal(20),
+    width: calcReal(60),
     justifyContent: 'center',
     alignItems: 'center',
   },
   mh10: {
-    marginHorizontal: 10,
+    marginHorizontal: calcReal(10),
   },
   imageStyle: {
-    width: 22,
-    height: 22,
+    width: calcReal(22),
+    height: calcReal(22),
   },
   headerTextButton: {
-    width: 100,
+    width: calcReal(100),
     justifyContent: 'center',
   },
   headerLeftTextStyle: {
-    marginLeft: 20,
-
-    fontSize: 16,
-    lineHeight: 22,
-    letterSpacing: 1,
+    marginLeft: calcReal(20),
+    fontSize: calcReal(16),
+    lineHeight: calcReal(22),
+    letterSpacing: calcReal(1),
     color: colors.white,
     textAlign: 'left',
   },
   headerRightTextStyle: {
-    marginRight: 20,
+    marginRight: calcReal(20),
 
-    fontSize: 16,
-    lineHeight: 18,
-    letterSpacing: 1,
+    fontSize: calcReal(16),
+    lineHeight: calcReal(18),
+    letterSpacing: calcReal(1),
     color: colors.white,
     textAlign: 'right',
   },

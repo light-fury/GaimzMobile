@@ -1,5 +1,5 @@
 // @flow
-import React, { useContext } from 'react';
+import React, { useContext, useCallback } from 'react';
 import {
   Text,
   View,
@@ -10,15 +10,18 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import {
   userIcon,
   connectionIcon,
   arrowRight,
+  logoutIcon,
 } from '../../../../Assets';
 import SocialButton from '../../../../Components/SocialButton';
 import styles from './SettingMainScreen.style';
 import { UserContext } from '../../../../contexts';
+import { resetNavigation } from '../../../../helpers/navigation';
 
 
 const listData = [
@@ -32,20 +35,30 @@ const listData = [
     title: 'Connection',
     route: 'ConnectionSettingScreen',
   },
-  // {
-  //   image: helpIcon,
-  //   title: 'Help',
-  //   route: 'HelpSettingScreen',
-  // },
+  {
+    image: logoutIcon,
+    title: 'Logout',
+    route: 'Logout',
+  },
 ];
 
 const SettingMainScreen = ({ navigation }) => {
-  const [user] = useContext(UserContext);
+  const [user, setUser] = useContext(UserContext);
+
+  const handleNavigation = useCallback(async (route) => {
+    if (route === 'Logout') {
+      await AsyncStorage.removeItem('AuthToken');
+      setUser({});
+      resetNavigation(navigation, 'AuthFlow');
+    } else {
+      navigation.navigate(route);
+    }
+  });
 
   const renderItem = ({ item, index }) => (
     <TouchableOpacity
       key={index}
-      onPress={() => navigation.navigate(item.route)}
+      onPress={() => handleNavigation(item.route)}
       style={styles.itemContainer}
     >
       <SocialButton
@@ -57,11 +70,13 @@ const SettingMainScreen = ({ navigation }) => {
       <Text style={[styles.profileName, styles.flexContainer]}>
         {item.title}
       </Text>
-      <Image
-        source={arrowRight}
-        resizeMode="contain"
-        style={styles.arrowIcon}
-      />
+      {item.title !== 'Logout' && (
+        <Image
+          source={arrowRight}
+          resizeMode="contain"
+          style={styles.arrowIcon}
+        />
+      )}
     </TouchableOpacity>
   );
 

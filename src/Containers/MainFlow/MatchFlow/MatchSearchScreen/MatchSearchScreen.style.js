@@ -56,5 +56,6 @@ export default StyleSheet.create({
   itemImage: {
     flex: 1,
     borderRadius: calcReal(12),
+    backgroundColor: colors.primary,
   },
 });

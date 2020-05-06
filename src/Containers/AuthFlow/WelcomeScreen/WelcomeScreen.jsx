@@ -44,11 +44,12 @@ const WelcomeScreen = ({ navigation }) => {
       // To sign out while it isn't implemented
       // await AsyncStorage.removeItem('AuthToken');
       const token = await AsyncStorage.getItem('AuthToken');
-
       if (token) {
         setApiClientHeader('Authorization', `Bearer ${token}`);
         const data = await checkToken();
         setUser(data.user);
+        setApiClientHeader('Authorization', `Bearer ${data.authToken}`);
+        await AsyncStorage.setItem('AuthToken', data.authToken);
         resetNavigation(navigation, 'MainFlow');
       } else {
         setUser({});
@@ -61,8 +62,8 @@ const WelcomeScreen = ({ navigation }) => {
   const onSubmit = async () => {
     try {
       const response = await signIn({
-        userEmail: email,
-        userPassword: password,
+        user_email: email,
+        user_password: password,
       });
 
       AsyncStorage.setItem('AuthToken', response.authToken);
@@ -154,7 +155,7 @@ const WelcomeScreen = ({ navigation }) => {
         </View>
         <CustomInput
           autoCorrect={false}
-          autoCapitalize={false}
+          autoCapitalize="none"
           autoCompleteType="email"
           label="Email"
           value={email}

@@ -10,10 +10,10 @@ import ConfirmButton from '../../../../Components/ConfirmButton';
 import styles from './LobbyStartScreen.style';
 import { colors, calcReal } from '../../../../Assets/config';
 
-const TOTAL_CALL_DURATION = 60;
+const TOTAL_CALL_DURATION = 600;
 
 const PageScreen = ({
-  currentTime, navigation, pageText, buttonVisible,
+  currentTime, pageText, buttonVisible, sendInviteAgain,
 }) => (
   <View style={styles.individualPage}>
     <View style={[styles.itemContainer, !buttonVisible && styles.hideConfirm]}>
@@ -34,7 +34,7 @@ const PageScreen = ({
     <ConfirmButton
       color={colors.loginColor}
       label="SEND INVITE AGAIN"
-      onClick={() => navigation.pop()}
+      onClick={sendInviteAgain}
       fontStyle={styles.fontSpacing}
       containerStyle={styles.mh70}
     />
@@ -44,9 +44,13 @@ const PageScreen = ({
 
 PageScreen.propTypes = {
   currentTime: PropTypes.number.isRequired,
-  navigation: PropTypes.shape().isRequired,
+  sendInviteAgain: PropTypes.func,
   pageText: PropTypes.string.isRequired,
   buttonVisible: PropTypes.bool.isRequired,
+};
+
+PageScreen.defaultProps = {
+  sendInviteAgain: () => {},
 };
 
 export default PageScreen;

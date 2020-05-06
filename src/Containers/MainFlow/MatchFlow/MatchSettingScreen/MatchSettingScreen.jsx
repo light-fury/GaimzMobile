@@ -1,136 +1,165 @@
 // @flow
-import React from 'react';
+import React, {
+  useContext, useCallback, useState, useEffect,
+} from 'react';
 import {
-  Text, View, ScrollView, Alert,
+  Text, View, ScrollView,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
+import AsyncStorage from '@react-native-community/async-storage';
+import {
+  find, get, map,
+} from 'lodash';
 
 import ConfirmButton from '../../../../Components/ConfirmButton';
 import CustomDropdown from '../../../../Components/CustomDropdown';
 import styles from './MatchSettingScreen.style';
 import { colors } from '../../../../Assets/config';
+import { MatchContext, UserContext } from '../../../../contexts';
+import { getGames, checkToken, createMatch } from '../../../../api';
+import { setApiClientHeader } from '../../../../constants/api-client';
 
-class MatchSettingScreen extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      gameTypeOption: ['1 Versus 1', '5 Versus 5'],
-      gameType: '1 Versus 1',
-      gameModeOption: ['All Pick'],
-      gameMode: 'All Pick',
-      regionOption: ['Automatic'],
-      region: 'Automatic',
-      streamerOptions: ['User1', 'User2', 'User3'],
-      streamer: 'User1',
-      matchOptions: [
-        'Free Mode',
-        'Subscriber Only',
-        'Follower Only',
-        'Password',
-      ],
-      match: 'Free Mode',
-    };
-  }
+const restrictionLevels = [
+  'Everyone',
+  'FollowersOnly',
+  'SubsOnly',
+  'PasswordProtected',
+];
 
-  render() {
-    const {
-      gameTypeOption,
-      gameType,
-      gameModeOption,
-      gameMode,
-      regionOption,
-      region,
-      streamerOptions,
-      streamer,
-      matchOptions,
-      match,
-    } = this.state;
-    const { navigation } = this.props;
+const MatchSettingScreen = ({ navigation }) => {
+  const [match, setMatch] = useContext(MatchContext);
+  const [, setUser] = useContext(UserContext);
+  const [games, setGames] = useState([]);
 
-    return (
-      <SafeAreaView
-        forceInset={{ bottom: 'never', top: 'never' }}
-        style={styles.container}
+  const initData = useCallback(async () => {
+    try {
+      const apiGames = await getGames();
+      setGames(apiGames);
+    } catch (err) {
+      //
+    }
+  });
+
+  const sendMatch = useCallback(async () => {
+    try {
+      const data = await checkToken();
+      setUser(data.user);
+      setApiClientHeader('Authorization', `Bearer ${data.authToken}`);
+      await AsyncStorage.setItem('AuthToken', data.authToken);
+      const response = await createMatch(match);
+      if (response && response.matchStatus === 'match_requested') {
+        setMatch({
+          ...match,
+          match: response,
+        });
+        navigation.navigate('MatchTimerScreen');
+      }
+    } catch (err) {
+      //
+    }
+  }, [match]);
+
+  useEffect(() => { initData(); }, []);
+
+  return (
+    <SafeAreaView
+      forceInset={{ bottom: 'never', top: 'never' }}
+      style={styles.container}
+    >
+      <View style={styles.header} />
+      <ScrollView
+        style={styles.searchContainer}
+        contentContainerStyle={styles.padding0}
       >
-        <View style={styles.header} />
-        <ScrollView
-          style={styles.searchContainer}
-          contentContainerStyle={styles.padding0}
-        >
-          <Text style={[styles.itemTitle, styles.fontSpacing]}>
-            SEARCH SETTINGS
-          </Text>
+        <Text style={[styles.itemTitle, styles.fontSpacing]}>
+          GAME SETTINGS
+        </Text>
+        <CustomDropdown
+          label="GAME"
+          labelStyle={styles.whiteColor}
+          containerStyle={styles.inputContainer}
+          options={map(games, (storeGame) => storeGame.gameName)}
+          value={get(match, 'game.gameName', '')}
+          onUpdateValue={(value) => setMatch({
+            ...match,
+            game: find(games, (storeGame) => storeGame.gameName === value),
+          })}
+        />
+        <CustomDropdown
+          label="GAME TYPE"
+          labelStyle={styles.whiteColor}
+          containerStyle={styles.inputContainer}
+          options={map(get(match, 'game.gameTypes'), (gameType) => gameType.type)}
+          value={get(match, 'gameType.type')}
+          onUpdateValue={(value) => setMatch({
+            ...match,
+            gameType: find(get(match, 'game.gameTypes'), (gameType) => gameType.type === value),
+            gameMode: undefined,
+          })}
+        />
+        <View style={styles.rowContainer}>
           <CustomDropdown
-            label="GAME TYPE"
+            label="GAME MODE"
             labelStyle={styles.whiteColor}
-            containerStyle={styles.inputContainer}
-            options={gameTypeOption}
-            value={gameType}
-            onUpdateValue={(val) => this.setState({ gameType: val })}
+            containerStyle={styles.flexContainer}
+            options={get(match, 'gameType.gameModes', [])}
+            value={get(match, 'gameMode')}
+            onUpdateValue={(val) => setMatch({ ...match, gameMode: val })}
           />
-          <View style={styles.rowContainer}>
-            <CustomDropdown
-              label="GAME MODE"
-              labelStyle={styles.whiteColor}
-              containerStyle={styles.flexContainer}
-              options={gameModeOption}
-              value={gameMode}
-              onUpdateValue={(val) => this.setState({ gameMode: val })}
-            />
-            <CustomDropdown
+          {/* <CustomDropdown
               label="REGION"
               labelStyle={styles.whiteColor}
               containerStyle={[styles.flexContainer, styles.ml20]}
               options={regionOption}
               value={region}
               onUpdateValue={(val) => this.setState({ region: val })}
-            />
-          </View>
-          <CustomDropdown
+            /> */}
+        </View>
+        {/* <CustomDropdown
             label="SELECT STREAMER"
             labelStyle={styles.whiteColor}
             containerStyle={styles.inputContainer}
             options={streamerOptions}
             value={streamer}
             onUpdateValue={(val) => this.setState({ streamer: val })}
-          />
-          <CustomDropdown
-            label="CREATE MATCH"
-            labelStyle={styles.whiteColor}
-            containerStyle={styles.inputContainer}
-            options={matchOptions}
-            value={match}
-            onUpdateValue={(val) => this.setState({ match: val })}
-          />
-        </ScrollView>
+          /> */}
+        <CustomDropdown
+          label="CREATE MATCH"
+          labelStyle={styles.whiteColor}
+          containerStyle={styles.inputContainer}
+          options={restrictionLevels}
+          value={match.restrictionLevel}
+          onUpdateValue={(val) => setMatch({ ...match, restrictionLevel: val })}
+        />
+        <View style={styles.space} />
         <ConfirmButton
           color={colors.loginColor}
-          label="FIND MATCH"
+          label="MATCH UP"
           onClick={() => {
-            if (match === 'Password') {
+            if (match.restrictionLevel === 'PasswordProtected') {
               navigation.navigate('MatchPasswordScreen');
             } else {
-              Alert.alert('Match Screen');
+              sendMatch();
             }
           }}
           fontStyle={styles.fontSpacing}
           containerStyle={styles.mh48}
         />
-        <View style={styles.space} />
-        <ConfirmButton
-          borderColor={colors.secondaryOpacity}
-          textColor={colors.grayText}
-          label="SETTINGS"
-          onClick={() => navigation.popToTop()}
-          fontStyle={styles.fontSpacing}
-          containerStyle={styles.mh48}
-        />
-        <View style={styles.space} />
-      </SafeAreaView>
-    );
-  }
-}
+      </ScrollView>
+      <View style={styles.space} />
+      <ConfirmButton
+        borderColor={colors.secondaryOpacity}
+        textColor={colors.grayText}
+        label="SEARCH GAME"
+        onClick={() => navigation.replace('MatchSearchScreen')}
+        fontStyle={styles.fontSpacing}
+        containerStyle={styles.mh48}
+      />
+      <View style={styles.space} />
+    </SafeAreaView>
+  );
+};
 
 MatchSettingScreen.propTypes = {
   Secrets: PropTypes.shape({

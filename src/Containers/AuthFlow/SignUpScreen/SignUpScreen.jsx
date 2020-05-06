@@ -32,6 +32,7 @@ import { signUp, signInWithTwitch } from '../../../api';
 import { UserContext } from '../../../contexts';
 import { twitchSigninUrl } from '../../../constants/oauth';
 import { resetNavigation } from '../../../helpers/navigation';
+import { setApiClientHeader } from '../../../constants/api-client';
 
 const SignUpScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -50,6 +51,7 @@ const SignUpScreen = ({ navigation }) => {
         userPasswordConfirm: password,
       });
       AsyncStorage.setItem('AuthToken', response.authToken);
+      setApiClientHeader('Authorization', `Bearer ${response.authToken}`);
       setUser(response.user);
     } catch (err) {
       Alert.alert('Error', 'There was an error signing you up');
@@ -149,7 +151,7 @@ const SignUpScreen = ({ navigation }) => {
         <CustomInput
           autoCompleteType="email"
           autoCorrect={false}
-          autoCapitalize={false}
+          autoCapitalize="none"
           label="Email"
           value={email}
           onUpdateValue={setEmail}

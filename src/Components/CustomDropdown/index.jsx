@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   TouchableOpacity, Image, StyleSheet, Text, View,
 } from 'react-native';
+import { get, isEmpty } from 'lodash';
 
 import { colors, calcReal } from '../../Assets/config';
 import { arrowUp, arrowDown } from '../../Assets';
@@ -52,6 +53,12 @@ const CustomDropdown = ({
 }) => {
   const [dropDownVisible, setDropDownVisible] = useState(false);
 
+  useEffect(() => {
+    if (!value && !isEmpty(options)) {
+      onUpdateValue(options[0]);
+    }
+  }, [options, value]);
+
   return (
     <View style={containerStyle}>
       <Text style={[styles.labelInnerStyle, labelStyle]}>{label}</Text>
@@ -66,7 +73,7 @@ const CustomDropdown = ({
           onPress={() => options.length > 1 && setDropDownVisible(!dropDownVisible)}
           style={styles.itemContainer}
         >
-          <Text style={styles.itemText}>{value}</Text>
+          <Text style={styles.itemText}>{value || get(options, '[0]', '')}</Text>
           {options.length > 1 && (
             <Image
               style={styles.iconStyle}
