@@ -188,15 +188,13 @@ const MatchSettingScreen = ({ navigation }) => {
           </>
         )
         : (
-          <>
-            <ConfirmButton
-              color={colors.loginColor}
-              label="CONNECT STEAM"
-              onClick={connectSteam}
-              fontStyle={styles.fontSpacing}
-              containerStyle={styles.mh48}
-            />
-          </>
+          <ConfirmButton
+            color={colors.loginColor}
+            label="CONNECT STEAM"
+            onClick={connectSteam}
+            fontStyle={styles.fontSpacing}
+            containerStyle={styles.mh48}
+          />
         )}
       <View style={styles.space} />
     </SafeAreaView>
