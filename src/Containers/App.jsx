@@ -15,11 +15,10 @@ export default () => {
 
   const initMatches = useCallback(async () => {
     try {
-      // const storage = await AsyncStorage.getItem('MatchSettings');
-
-      // if (storage) {
-      // setMatch(JSON.parse(storage));
-      // }
+      const storage = await AsyncStorage.getItem('MatchSettings');
+      if (storage) {
+        setMatch(JSON.parse(storage));
+      }
     } catch (err) {
       //
     }

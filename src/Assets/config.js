@@ -10,6 +10,15 @@ export const calcReal = (number) => {
   return widthValue > heightValue ? heightValue : widthValue;
 };
 
+export const calculateTime = (time) => {
+  const minutes = Math.floor(time / 60);
+  let str = '';
+  if (minutes > 0) {
+    str = `${minutes} min `;
+  }
+  return `${str} ${(`${time % 60}`).slice(-2)} sec`;
+};
+
 export const colors = {
   primary: '#119DCD',
   primaryOpacity: '#11ABDFA8',

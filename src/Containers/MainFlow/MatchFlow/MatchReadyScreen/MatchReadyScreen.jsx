@@ -16,7 +16,7 @@ import ConfirmButton from '../../../../Components/ConfirmButton';
 import { updateMatchStatus, getMatchStatus, getUserById } from '../../../../api';
 import { MatchContext, UserContext } from '../../../../contexts';
 import styles from './MatchReadyScreen.style';
-import { colors, calcReal } from '../../../../Assets/config';
+import { colors, calcReal, calculateTime } from '../../../../Assets/config';
 
 const WAIT_TEXT = 'Failing to accept may result in a temporary match making ban';
 const TOTAL_CALL_DURATION = 600;
@@ -104,15 +104,6 @@ const MatchReadyScreen = ({ navigation }) => {
       BackgroundTimer.stopBackgroundTimer();
     };
   }, []);
-
-  const calculateTime = (time) => {
-    const minutes = Math.floor(time / 60);
-    let str = '';
-    if (minutes > 0) {
-      str = `${minutes} min `;
-    }
-    return `${str} ${(`${time % 60}`).slice(-2)} sec`;
-  };
 
   return (
     <SafeAreaView

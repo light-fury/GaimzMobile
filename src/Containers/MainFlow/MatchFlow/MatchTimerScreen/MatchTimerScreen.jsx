@@ -16,7 +16,7 @@ import ConfirmButton from '../../../../Components/ConfirmButton';
 import styles from './MatchTimerScreen.style';
 import { getMatchStatus, updateMatchStatus } from '../../../../api';
 import { MatchContext } from '../../../../contexts';
-import { colors, calcReal } from '../../../../Assets/config';
+import { colors, calcReal, calculateTime } from '../../../../Assets/config';
 
 const WAIT_TEXT = 'Double click the timer to hide the search and explore Gaimz. We will notify you when the match is found.';
 const TOTAL_CALL_DURATION = 600;
@@ -84,15 +84,6 @@ const MatchTimerScreen = ({ navigation }) => {
       BackgroundTimer.stopBackgroundTimer();
     };
   }, []);
-
-  const calculateTime = (time) => {
-    const minutes = Math.floor(time / 60);
-    let str = '';
-    if (minutes > 0) {
-      str = `${minutes} min `;
-    }
-    return `${str} ${(`${time % 60}`).slice(-2)} sec`;
-  };
 
   return (
     <SafeAreaView
