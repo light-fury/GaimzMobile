@@ -15,6 +15,8 @@ export const createMatch = (match) => {
 
 export const getMatchStatus = (matchId) => apiClient.get(`/match/${matchId}`, { baseURL: 'https://mmapi.gaimz.com' }).then(({ data }) => data);
 
+export const getMatchList = (gameId) => apiClient.get(`/match/list/${gameId}`, { baseURL: 'https://mmapi.gaimz.com' }).then(({ data }) => data);
+
 export const lobbyInvite = (params) => apiClient.post('/lobby/invite', params, { baseURL: 'https://mmapi.gaimz.com' }).then(({ data }) => data);
 
 export const updateMatchStatus = (matchId, params) => apiClient.put(`/match/${matchId}`, params, { baseURL: 'https://mmapi.gaimz.com' }).then(({ data }) => data);
@@ -22,4 +24,6 @@ export const updateMatchStatus = (matchId, params) => apiClient.put(`/match/${ma
 export default {
   createMatch,
   getMatchStatus,
+  getMatchList,
+  lobbyInvite,
 };

@@ -22,6 +22,19 @@ export default StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: colors.signUpColor,
   },
+  padding0: {
+    padding: 0,
+    paddingBottom: calcReal(30),
+  },
+  searchContainer: {
+    flex: 1,
+    marginHorizontal: calcReal(48),
+    marginTop: calcReal(24),
+    backgroundColor: colors.secondary,
+    borderRadius: calcReal(12),
+    paddingHorizontal: calcReal(23),
+    paddingVertical: calcReal(12),
+  },
   profileName: {
     fontSize: calcReal(16),
     lineHeight: calcReal(22),

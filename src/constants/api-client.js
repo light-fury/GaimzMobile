@@ -3,7 +3,7 @@ import { decamelizeKeys, camelizeKeys } from 'humps';
 
 export const apiClient = axios.create({
   baseURL: 'https://basicapi.gaimz.com',
-  timeout: 10000,
+  timeout: 20000,
 });
 
 apiClient.interceptors.request.use(

@@ -133,22 +133,22 @@ const MatchSettingScreen = ({ navigation }) => {
                   onUpdateValue={(val) => setMatch({ ...match, gameMode: val })}
                 />
                 {/* <CustomDropdown
-              label="REGION"
-              labelStyle={styles.whiteColor}
-              containerStyle={[styles.flexContainer, styles.ml20]}
-              options={regionOption}
-              value={region}
-              onUpdateValue={(val) => this.setState({ region: val })}
-            /> */}
+                    label="REGION"
+                    labelStyle={styles.whiteColor}
+                    containerStyle={[styles.flexContainer, styles.ml20]}
+                    options={regionOption}
+                    value={region}
+                    onUpdateValue={(val) => this.setState({ region: val })}
+                  /> */}
               </View>
               {/* <CustomDropdown
-            label="SELECT STREAMER"
-            labelStyle={styles.whiteColor}
-            containerStyle={styles.inputContainer}
-            options={streamerOptions}
-            value={streamer}
-            onUpdateValue={(val) => this.setState({ streamer: val })}
-          /> */}
+                  label="SELECT STREAMER"
+                  labelStyle={styles.whiteColor}
+                  containerStyle={styles.inputContainer}
+                  options={streamerOptions}
+                  value={streamer}
+                  onUpdateValue={(val) => this.setState({ streamer: val })}
+                /> */}
               <CustomDropdown
                 label="CREATE MATCH"
                 labelStyle={styles.whiteColor}
@@ -172,13 +172,12 @@ const MatchSettingScreen = ({ navigation }) => {
                       }
                     }}
                     fontStyle={styles.fontSpacing}
-                    containerStyle={styles.mh48}
                   />
                 )}
             </ScrollView>
-            <View style={styles.space} />
+            <Text style={styles.orText}>OR</Text>
             <ConfirmButton
-              borderColor={colors.secondaryOpacity}
+              borderColor={colors.secondary}
               textColor={colors.grayText}
               label="SEARCH GAME"
               onClick={() => navigation.replace('MatchSearchScreen')}

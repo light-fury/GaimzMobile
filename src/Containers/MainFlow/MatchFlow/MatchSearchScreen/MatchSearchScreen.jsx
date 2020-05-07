@@ -3,7 +3,7 @@ import React, {
   useContext, useCallback, useState, useEffect,
 } from 'react';
 import {
-  View, FlatList, Dimensions, TouchableOpacity, ImageBackground,
+  View, ScrollView, Dimensions, TouchableOpacity, ImageBackground,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
@@ -13,7 +13,9 @@ import ConfirmButton from '../../../../Components/ConfirmButton';
 import styles from './MatchSearchScreen.style';
 import { colors, calcReal } from '../../../../Assets/config';
 import { MatchContext, UserContext } from '../../../../contexts';
-import { getGames, createMatch, checkToken } from '../../../../api';
+import {
+  getGames, createMatch, checkToken, getMatchList,
+} from '../../../../api';
 import { setApiClientHeader } from '../../../../constants/api-client';
 import { dotaBackground } from '../../../../Assets';
 
@@ -23,13 +25,22 @@ const MatchSearchScreen = ({ navigation }) => {
   const [match, setMatch] = useContext(MatchContext);
   const [, setUser] = useContext(UserContext);
   const [games, setGames] = useState([]);
+  const [matchList, setMatchList] = useState([]);
 
   const initData = useCallback(async () => {
     try {
       const apiGames = await getGames();
       setGames(apiGames);
+      if (apiGames.length < 1) {
+        return;
+      }
+      console.log(apiGames);
+      const matches = await getMatchList(apiGames[0].gameId);
+      setMatchList(matches);
+      console.log(matches);
     } catch (err) {
       //
+      console.log(JSON.stringify(err));
     }
   });
 
@@ -81,7 +92,11 @@ const MatchSearchScreen = ({ navigation }) => {
       style={styles.container}
     >
       <View style={styles.header} />
-      <FlatList
+      <ScrollView
+        style={styles.searchContainer}
+        contentContainerStyle={styles.padding0}
+      />
+      {/* <FlatList
         style={styles.flexContainer}
         contentContainerStyle={styles.scrollIntent}
         data={games}
@@ -94,7 +109,7 @@ const MatchSearchScreen = ({ navigation }) => {
         })}
         renderItem={renderItem}
         keyExtractor={(item, index) => `${item.gameName}-${index}`}
-      />
+      /> */}
 
       <View style={styles.space} />
       <ConfirmButton
