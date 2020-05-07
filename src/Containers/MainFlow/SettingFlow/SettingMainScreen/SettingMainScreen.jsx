@@ -20,7 +20,7 @@ import {
 } from '../../../../Assets';
 import SocialButton from '../../../../Components/SocialButton';
 import styles from './SettingMainScreen.style';
-import { UserContext } from '../../../../contexts';
+import { UserContext, MatchContext } from '../../../../contexts';
 import { resetNavigation } from '../../../../helpers/navigation';
 
 
@@ -44,11 +44,14 @@ const listData = [
 
 const SettingMainScreen = ({ navigation }) => {
   const [user, setUser] = useContext(UserContext);
+  const [, setMatch] = useContext(MatchContext);
 
   const handleNavigation = useCallback(async (route) => {
     if (route === 'Logout') {
       await AsyncStorage.removeItem('AuthToken');
+      await AsyncStorage.removeItem('MatchSettings');
       setUser({});
+      setMatch({});
       resetNavigation(navigation, 'AuthFlow');
     } else {
       navigation.navigate(route);

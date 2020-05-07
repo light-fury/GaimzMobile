@@ -19,6 +19,12 @@ export const calculateTime = (time) => {
   return `${str} ${(`${time % 60}`).slice(-2)} sec`;
 };
 
+export const validateEmail = (email) => {
+  // eslint-disable-next-line no-useless-escape
+  const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(email);
+};
+
 export const colors = {
   primary: '#119DCD',
   primaryOpacity: '#11ABDFA8',

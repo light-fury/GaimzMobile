@@ -90,6 +90,8 @@ lint/intermediates/
 lint/generated/
 lint/outputs/
 lint/tmp/
+src/.scannerwork
+.scannerwork
 # lint/reports/
 
 ### ReactNative.Linux Stack ###
