@@ -11,6 +11,7 @@ import {
   find, get, map,
 } from 'lodash';
 import queryString from 'query-string';
+import AsyncStorage from '@react-native-community/async-storage';
 import ConfirmButton from '../../../../Components/ConfirmButton';
 import CustomDropdown from '../../../../Components/CustomDropdown';
 import styles from './MatchSettingScreen.style';
@@ -20,6 +21,7 @@ import {
   getGames, createMatch, signInWithSteam,
 } from '../../../../api';
 import { steamSigninUrl } from '../../../../constants/oauth';
+import { setApiClientHeader } from '../../../../constants/api-client';
 
 const restrictionLevels = [
   'Everyone',
@@ -45,12 +47,13 @@ const MatchSettingScreen = ({ navigation }) => {
 
   const handleOpenURL = useCallback(async (params) => {
     if (params.url) {
-      const parsedParams = queryString.parse(params.url.split('?')[1]);
+      const parsedParams = queryString.parse(params.url.split('?')[1].replace(/(openid)(.)([a-z_]+)(=)/g, '$1_$3$4'));
       let apiResponse;
 
       try {
         apiResponse = await signInWithSteam(parsedParams);
-
+        setApiClientHeader('Authorization', `Bearer ${apiResponse.authToken}`);
+        await AsyncStorage.setItem('AuthToken', apiResponse.authToken);
         setUser(apiResponse.user);
       } catch (err) {
         Alert.alert('Error', 'There was an error connecting the account');
@@ -69,12 +72,27 @@ const MatchSettingScreen = ({ navigation }) => {
     setLoading(true);
     try {
       const response = await createMatch(match);
-      if (response && response.matchStatus === 'match_requested') {
+
+      if (response) {
         setMatch({
           ...match,
           match: response,
         });
-        navigation.navigate('MatchTimerScreen');
+
+        switch (response.matchStatus) {
+          case 'match_requested':
+            navigation.navigate('MatchTimerScreen');
+            break;
+          case 'match_accepted':
+          case 'invites_sent':
+            navigation.navigate('LobbyStartScreen');
+            break;
+          case 'players_found':
+            navigation.navigate('MatchReadyScreen');
+            break;
+          default:
+            break;
+        }
       }
     } catch (err) {
       Alert.alert('Error', 'There was an error creating your game');

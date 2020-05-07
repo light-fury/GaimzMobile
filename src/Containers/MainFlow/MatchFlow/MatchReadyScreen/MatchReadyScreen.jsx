@@ -2,7 +2,9 @@
 import React, {
   useState, useEffect, useCallback, useContext,
 } from 'react';
-import { Text, View } from 'react-native';
+import {
+  Text, View, ActivityIndicator, Alert,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
 import ProgressCircle from 'react-native-progress-circle';
@@ -19,13 +21,13 @@ import styles from './MatchReadyScreen.style';
 import { colors, calcReal, calculateTime } from '../../../../Assets/config';
 
 const WAIT_TEXT = 'Failing to accept may result in a temporary match making ban';
-const TOTAL_CALL_DURATION = 600;
 
 const MatchReadyScreen = ({ navigation }) => {
   const [match, setMatch] = useContext(MatchContext);
   const [user] = useContext(UserContext);
   const [currentTime, setCurrentTime] = useState(0);
-  const [startedTime] = useState(moment());
+  const [startedTime] = useState(moment().add(30, 'seconds'));
+  const [accepted, setAccepted] = useState(false);
 
   const checkMatchStatus = useCallback(async () => {
     try {
@@ -59,8 +61,9 @@ const MatchReadyScreen = ({ navigation }) => {
         acceptMatch: true,
       };
       await updateMatchStatus(get(match, 'match.matchId'), params);
+      setAccepted(true);
     } catch (err) {
-      //
+      Alert.alert('Error', 'There was an error while accepting the match. Please try again.');
     }
   });
 
@@ -85,19 +88,12 @@ const MatchReadyScreen = ({ navigation }) => {
 
   useEffect(() => {
     BackgroundTimer.runBackgroundTimer(() => {
-      let diff = moment().diff(startedTime, 'second');
-      if (diff < TOTAL_CALL_DURATION) {
-        if (diff > TOTAL_CALL_DURATION) {
-          diff = TOTAL_CALL_DURATION;
-        } else if (diff < 0) {
-          diff = 0;
-        }
-        if (currentTime !== diff) {
-          setCurrentTime(diff);
-          checkMatchStatus();
-        }
-      } else {
+      const diff = moment().diff(startedTime, 'second');
+      if (diff >= 0) {
         cancelMatchRequest();
+      } else {
+        setCurrentTime(diff);
+        checkMatchStatus();
       }
     }, 1000);
     return () => {
@@ -114,7 +110,7 @@ const MatchReadyScreen = ({ navigation }) => {
       <View style={styles.searchContainer}>
         <Text style={styles.itemTitle}>Your Match is ready</Text>
         <ProgressCircle
-          percent={(currentTime / TOTAL_CALL_DURATION) * 100}
+          percent={-currentTime / 0.3}
           radius={calcReal(80)}
           borderWidth={calcReal(6)}
           color={colors.loginColor}
@@ -122,20 +118,24 @@ const MatchReadyScreen = ({ navigation }) => {
           bgColor={colors.secondary}
         >
           <Text style={styles.itemTitle}>
-            {calculateTime(currentTime)}
+            {calculateTime(-currentTime)}
           </Text>
         </ProgressCircle>
         <Text style={styles.itemText}>
           {WAIT_TEXT}
         </Text>
       </View>
-      <ConfirmButton
-        color={colors.loginColor}
-        label="ACCEPT"
-        onClick={acceptMatchRequest}
-        fontStyle={styles.fontSpacing}
-        containerStyle={styles.mh48}
-      />
+      {accepted
+        ? (<ActivityIndicator color={colors.loginColor} />)
+        : (
+          <ConfirmButton
+            color={colors.loginColor}
+            label="ACCEPT"
+            onClick={acceptMatchRequest}
+            fontStyle={styles.fontSpacing}
+            containerStyle={styles.mh48}
+          />
+        )}
       <View style={styles.space} />
       <ConfirmButton
         borderColor={colors.secondaryOpacity}

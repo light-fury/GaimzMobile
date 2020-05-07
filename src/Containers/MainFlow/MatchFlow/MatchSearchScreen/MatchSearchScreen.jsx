@@ -1,4 +1,4 @@
-// @flow
+/* eslint-disable */
 import React, {
   useContext, useCallback, useState, useEffect,
 } from 'react';
