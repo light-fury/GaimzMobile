@@ -59,7 +59,7 @@ const ConnectionSettingScreen = ({ navigation }) => {
 
   const handleOpenURL = async (params) => {
     if (params.url) {
-      const parsedParams = queryString.parse(params.url.split('?')[1]);
+      const parsedParams = queryString.parse(params.url.split('?')[1].replace(/(openid)(.)([a-z_]+)(=)/g, '$1_$3$4'));
       let apiResponse;
 
       try {
