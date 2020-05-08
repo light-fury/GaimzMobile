@@ -1,9 +1,6 @@
 // @flow
-import { StyleSheet, Dimensions } from 'react-native';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
+import { StyleSheet } from 'react-native';
 import { colors, calcReal } from '../../../../Assets/config';
-
-const { width, height } = Dimensions.get('window');
 
 export default StyleSheet.create({
   container: {
@@ -11,24 +8,37 @@ export default StyleSheet.create({
     backgroundColor: colors.white,
     paddingBottom: calcReal(100),
   },
+  header: {
+    height: calcReal(30),
+  },
   flexContainer: {
     flex: 1,
-    paddingHorizontal: calcReal(48),
   },
-  header: {
-    paddingTop: getStatusBarHeight(false),
-    height: getStatusBarHeight(false) + calcReal(50),
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: colors.signUpColor,
-  },
-  profileName: {
-    fontSize: calcReal(16),
-    lineHeight: calcReal(22),
+  itemTitle: {
+    fontSize: calcReal(12),
+    lineHeight: calcReal(20),
+    letterSpacing: calcReal(1),
     fontWeight: 'bold',
     color: colors.white,
     textAlign: 'center',
     textTransform: 'uppercase',
+  },
+  orText: {
+    lineHeight: calcReal(58),
+    fontSize: calcReal(14),
+    fontWeight: 'bold',
+    letterSpacing: calcReal(1),
+    textAlign: 'center',
+  },
+  rowContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  profileName: {
+    fontSize: calcReal(18),
+    lineHeight: calcReal(22),
+    fontWeight: 'bold',
+    color: colors.white,
   },
   mh48: {
     marginHorizontal: calcReal(48),
@@ -39,23 +49,45 @@ export default StyleSheet.create({
   fontSpacing: {
     letterSpacing: calcReal(1),
   },
-  scrollIntent: {
-    paddingBottom: calcReal(32),
-    paddingTop: calcReal(24),
-  },
   itemContainer: {
-    marginRight: calcReal(96),
+    marginTop: calcReal(23),
   },
   itemBackground: {
-    width: width - calcReal(96),
-    height: height - calcReal(358) - getStatusBarHeight(false),
+    width: calcReal(48),
+    height: calcReal(48),
     flexDirection: 'column',
     justifyContent: 'flex-end',
-    alignItems: 'flex-start',
+    alignItems: 'flex-end',
+  },
+  lockImage: {
+    width: calcReal(20),
+    height: calcReal(20),
   },
   itemImage: {
     flex: 1,
     borderRadius: calcReal(12),
-    backgroundColor: colors.primary,
+    backgroundColor: colors.grayBackground,
+  },
+  padding0: {
+    paddingHorizontal: calcReal(40),
+    paddingBottom: calcReal(30),
+  },
+  searchContainer: {
+    flex: 1,
+    marginHorizontal: calcReal(48),
+    backgroundColor: colors.secondary,
+    borderRadius: calcReal(12),
+    paddingTop: calcReal(30),
+  },
+  ph12: {
+    paddingHorizontal: calcReal(12),
+  },
+  gameDetails: {
+    fontSize: calcReal(14),
+    lineHeight: calcReal(20),
+    fontWeight: 'bold',
+    color: `${colors.white}50`,
+    letterSpacing: calcReal(1),
+    textTransform: 'uppercase',
   },
 });

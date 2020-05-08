@@ -17,6 +17,7 @@ import queryString from 'query-string';
 import SocialButton from '../../../Components/SocialButton';
 import ConfirmButton from '../../../Components/ConfirmButton';
 import CustomInput from '../../../Components/CustomInput';
+import LoadingComponent from '../../../Components/LoadingComponent';
 
 import styles from './SignUpScreen.style';
 import {
@@ -24,10 +25,10 @@ import {
   appLogo,
   twitchIcon,
   checkIcon,
-  closeIcon,
   eyeIcon,
+  closeIcon,
 } from '../../../Assets';
-import { colors, calcReal } from '../../../Assets/config';
+import { colors, calcReal, validateEmail } from '../../../Assets/config';
 import { signUp, signInWithTwitch } from '../../../api';
 import { UserContext } from '../../../contexts';
 import { twitchSigninUrl } from '../../../constants/oauth';
@@ -35,6 +36,7 @@ import { resetNavigation } from '../../../helpers/navigation';
 import { setApiClientHeader } from '../../../constants/api-client';
 
 const SignUpScreen = ({ navigation }) => {
+  const [isLoading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -43,6 +45,7 @@ const SignUpScreen = ({ navigation }) => {
 
   const onSubmit = async () => {
     try {
+      setLoading(true);
       const response = await signUp({
         captcha: 'lol',
         userName: username,
@@ -55,6 +58,8 @@ const SignUpScreen = ({ navigation }) => {
       setUser(response.user);
     } catch (err) {
       Alert.alert('Error', 'There was an error signing you up');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -62,7 +67,7 @@ const SignUpScreen = ({ navigation }) => {
     if (params.url) {
       const parsedParams = queryString.parse(params.url.split('?')[1]);
       let apiResponse;
-
+      setLoading(true);
       try {
         if (params.url.includes('twitch')) {
           apiResponse = await signInWithTwitch(parsedParams);
@@ -72,6 +77,8 @@ const SignUpScreen = ({ navigation }) => {
         setUser(apiResponse.user);
       } catch (err) {
         Alert.alert('Error', 'There was an error signing you in');
+      } finally {
+        setLoading(false);
       }
     }
 
@@ -155,10 +162,11 @@ const SignUpScreen = ({ navigation }) => {
           label="Email"
           value={email}
           onUpdateValue={setEmail}
-          icon={closeIcon}
+          icon={validateEmail(email) ? checkIcon : closeIcon}
           iconVisible={email.length > 0}
-          borderColor={email.length > 0 ? colors.red : colors.grayOpacity}
+          borderColor={email.length > 0 && !validateEmail(email) ? colors.red : colors.grayOpacity}
           containerStyle={styles.inputContainer}
+          onClick={() => !validateEmail(email) && setEmail('')}
         />
         <CustomInput
           label="Password"
@@ -168,6 +176,7 @@ const SignUpScreen = ({ navigation }) => {
           iconVisible={password.length > 0}
           onUpdateValue={setPassword}
           onClick={() => setPasswordVisible(!passwordVisible)}
+          borderColor={password.length > 0 && password.length < 8 ? colors.red : colors.grayOpacity}
           containerStyle={styles.inputContainer}
         />
         <View style={styles.space} />
@@ -175,6 +184,13 @@ const SignUpScreen = ({ navigation }) => {
           color={colors.signUpColor}
           label="Sign Up"
           onClick={onSubmit}
+          disabled={
+            isLoading
+            || email.length === 0
+            || username.length === 0
+            || password.length < 8
+            || !validateEmail(email)
+          }
           containerStyle={styles.mh20}
         />
         <ConfirmButton
@@ -185,6 +201,9 @@ const SignUpScreen = ({ navigation }) => {
           fontStyle={styles.lightFont}
         />
       </KeyboardAwareScrollView>
+      {isLoading && (
+        <LoadingComponent />
+      )}
     </SafeAreaView>
   );
 };

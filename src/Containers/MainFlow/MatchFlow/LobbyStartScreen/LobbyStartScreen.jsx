@@ -169,9 +169,11 @@ const LobbyStartScreen = ({ navigation }) => {
           </View>
           <ProfileComponent item={{ username: get(match, 'opponent.userName'), avatar: get(match, 'opponent.userAvatarUrl'), team: 'RADIANT' }} />
         </ImageBackground>
-        <Text style={[styles.profileText, styles.fontBig, styles.absoluteOne]}>
-          DIRE WON
-        </Text>
+        {get(match, 'match.matchStatus') === 'match_ended' && (
+          <Text style={[styles.profileText, styles.fontBig, styles.absoluteOne]}>
+            DIRE WON
+          </Text>
+        )}
       </View>
       <View style={styles.searchContainer}>
         <Text style={[styles.profileText, styles.description]}>#GMZLOBBY2973</Text>

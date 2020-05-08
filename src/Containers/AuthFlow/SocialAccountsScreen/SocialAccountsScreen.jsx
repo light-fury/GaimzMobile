@@ -1,5 +1,5 @@
 // @flow
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Text,
   View,
@@ -15,6 +15,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import queryString from 'query-string';
 
 import ConfirmButton from '../../../Components/ConfirmButton';
+import LoadingComponent from '../../../Components/LoadingComponent';
 
 import styles from './SocialAccountsScreen.style';
 import {
@@ -28,12 +29,13 @@ import { twitchSigninUrl, steamSigninUrl } from '../../../constants/oauth';
 
 const SocialAccountsScreen = ({ navigation }) => {
   const [user, setUser] = useContext(UserContext);
+  const [isLoading, setLoading] = useState(false);
 
   const handleOpenURL = async (params) => {
     if (params.url) {
-      const parsedParams = queryString.parse(params.url.split('?')[1]);
+      const parsedParams = queryString.parse(params.url.split('?')[1].replace(/(openid)(.)([a-z_]+)(=)/g, '$1_$3$4'));
       let apiResponse;
-
+      setLoading(true);
       try {
         if (params.url.includes('twitch')) {
           apiResponse = await signInWithTwitch(parsedParams);
@@ -44,6 +46,8 @@ const SocialAccountsScreen = ({ navigation }) => {
         setUser(apiResponse.user);
       } catch (err) {
         Alert.alert('Error', 'There was an error connecting the account');
+      } finally {
+        setLoading(false);
       }
     }
 
@@ -120,6 +124,9 @@ const SocialAccountsScreen = ({ navigation }) => {
           />
         )}
       </KeyboardAwareScrollView>
+      {isLoading && (
+        <LoadingComponent />
+      )}
     </SafeAreaView>
   );
 };

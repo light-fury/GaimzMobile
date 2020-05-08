@@ -31,7 +31,6 @@ export default StyleSheet.create({
   searchContainer: {
     flex: 1,
     marginHorizontal: calcReal(48),
-    marginBottom: calcReal(32),
     marginTop: calcReal(24),
     backgroundColor: colors.secondary,
     borderRadius: calcReal(12),
@@ -51,7 +50,7 @@ export default StyleSheet.create({
     marginBottom: 0,
   },
   inputContainer: {
-    marginTop: calcReal(28),
+    marginTop: calcReal(12),
   },
   flexContainer: {
     flex: 1,
@@ -62,5 +61,12 @@ export default StyleSheet.create({
   },
   ml20: {
     marginLeft: calcReal(26),
+  },
+  orText: {
+    lineHeight: calcReal(58),
+    fontSize: calcReal(14),
+    fontWeight: 'bold',
+    letterSpacing: calcReal(1),
+    textAlign: 'center',
   },
 });
