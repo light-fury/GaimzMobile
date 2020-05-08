@@ -198,7 +198,7 @@ const LobbyStartScreen = ({ navigation }) => {
                 borderWidth: (matchType || !selectedTeam) ? 0 : calcReal(4),
                 borderColor: '#6320EE',
               }}
-              onClick={setSelectedTeam(true)}
+              onClick={() => setSelectedTeam(true)}
             />
             <View style={styles.itemContainer}>
               <Text style={[styles.profileText, styles.fontBig]}>VS</Text>
@@ -211,7 +211,7 @@ const LobbyStartScreen = ({ navigation }) => {
                 borderWidth: (matchType || selectedTeam) ? 0 : calcReal(4),
                 borderColor: '#6320EE',
               }}
-              onClick={setSelectedTeam(false)}
+              onClick={() => setSelectedTeam(false)}
             />
           </View>
           {!matchType && (
