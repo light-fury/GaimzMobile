@@ -3,7 +3,7 @@ import React, {
   useContext, useCallback, useState, useEffect,
 } from 'react';
 import {
-  Text, View, ScrollView, ActivityIndicator, Linking, Alert,
+  Text, View, ScrollView, Linking, Alert,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
@@ -14,6 +14,7 @@ import queryString from 'query-string';
 import AsyncStorage from '@react-native-community/async-storage';
 import ConfirmButton from '../../../../Components/ConfirmButton';
 import CustomDropdown from '../../../../Components/CustomDropdown';
+import LoadingComponent from '../../../../Components/LoadingComponent';
 import styles from './MatchSettingScreen.style';
 import { colors } from '../../../../Assets/config';
 import { MatchContext, UserContext } from '../../../../contexts';
@@ -176,22 +177,19 @@ const MatchSettingScreen = ({ navigation }) => {
                 onUpdateValue={(val) => setMatch({ ...match, restrictionLevel: val })}
               />
               <View style={styles.space} />
-              {loading
-                ? (<ActivityIndicator color={colors.loginColor} size="large" />)
-                : (
-                  <ConfirmButton
-                    color={colors.loginColor}
-                    label="MATCH UP"
-                    onClick={() => {
-                      if (match.restrictionLevel === 'PasswordProtected') {
-                        navigation.navigate('MatchPasswordScreen');
-                      } else {
-                        sendMatch();
-                      }
-                    }}
-                    fontStyle={styles.fontSpacing}
-                  />
-                )}
+              <ConfirmButton
+                color={colors.loginColor}
+                label="MATCH UP"
+                onClick={() => {
+                  if (match.restrictionLevel === 'PasswordProtected') {
+                    navigation.navigate('MatchPasswordScreen');
+                  } else {
+                    sendMatch();
+                  }
+                }}
+                fontStyle={styles.fontSpacing}
+                disabled={loading}
+              />
             </ScrollView>
             <Text style={styles.orText}>OR</Text>
             <ConfirmButton
@@ -214,6 +212,9 @@ const MatchSettingScreen = ({ navigation }) => {
           />
         )}
       <View style={styles.space} />
+      {loading && (
+        <LoadingComponent />
+      )}
     </SafeAreaView>
   );
 };

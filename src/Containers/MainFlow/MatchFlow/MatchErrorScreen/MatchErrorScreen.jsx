@@ -1,19 +1,20 @@
 // @flow
 import React from 'react';
-import { Alert, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
 
 import ConfirmButton from '../../../../Components/ConfirmButton';
 import styles from './MatchErrorScreen.style';
 import { colors } from '../../../../Assets/config';
+import { resetNavigation } from '../../../../helpers/navigation';
 
 class MatchErrorScreen extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       errorMessage:
-        'You need to subscribe to *Username* before you can match with him on Gaimz',
+        props.navigation.getParam('errorMessage', ''),
     };
   }
 
@@ -43,7 +44,7 @@ class MatchErrorScreen extends React.PureComponent {
         <ConfirmButton
           color={colors.loginColor}
           label="FIND MATCH"
-          onClick={() => Alert.alert('Find Match')}
+          onClick={() => resetNavigation(navigation, 'MatchSearchScreen')}
           fontStyle={styles.fontSpacing}
           containerStyle={styles.mh48}
         />
@@ -52,7 +53,7 @@ class MatchErrorScreen extends React.PureComponent {
           borderColor={colors.secondaryOpacity}
           textColor={colors.grayText}
           label="SETTINGS"
-          onClick={() => navigation.popToTop()}
+          onClick={() => resetNavigation(navigation, 'MatchSettingScreen')}
           fontStyle={styles.fontSpacing}
           containerStyle={styles.mh48}
         />
