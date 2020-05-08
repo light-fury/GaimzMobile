@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { NavigationActions, StackActions } from 'react-navigation';
+import { NavigationActions } from 'react-navigation';
 import PropTypes from 'prop-types';
 import {
   TouchableOpacity,
