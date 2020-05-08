@@ -1,6 +1,5 @@
 // @flow
 import React, { useState } from 'react';
-import { ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
 import { withNavigation } from 'react-navigation';
@@ -11,13 +10,9 @@ import styles from './StreamDetailScreen.style';
 import {
   arrowLeft,
 } from '../../../../Assets';
-import {
-  colors,
-} from '../../../../Assets/config';
 
 const StreamDetailScreen = ({ navigation }) => {
   const [currentLive] = useState(navigation.getParam('item', {}));
-  const [loading, setLoading] = useState(true);
 
   return (
     <SafeAreaView
@@ -25,20 +20,11 @@ const StreamDetailScreen = ({ navigation }) => {
       style={styles.container}
     >
       <WebView
-        onLoad={() => setLoading(false)}
         source={{ uri: `https://www.twitch.tv/${currentLive.twitchAccountName || ''}` }}
         style={styles.webView}
         allowsInlineMediaPlayback
         mediaPlaybackRequiresUserAction={false}
-      >
-        {loading && (
-          <ActivityIndicator
-            style={styles.flexContainer}
-            size="large"
-            color={colors.white}
-          />
-        )}
-      </WebView>
+      />
       <SocialButton
         style={styles.socialButton}
         icon={arrowLeft}
