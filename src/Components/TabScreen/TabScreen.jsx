@@ -57,20 +57,6 @@ class TabScreen extends Component {
       routeName: route,
     });
     navigation.dispatch(navigateAction);
-    if (route === 'ExploreFlow') {
-      try {
-        const mainRoutes = navigation.state.routes;
-        if (
-          mainRoutes[0].index !== 0
-          && mainRoutes[0].routes
-          && mainRoutes[0].routes.length > 1
-        ) {
-          navigation.dispatch(StackActions.popToTop());
-        }
-      } catch (error) {
-        // continue regardless of error
-      }
-    }
   }
 
   render() {

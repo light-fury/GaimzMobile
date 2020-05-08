@@ -22,70 +22,21 @@ import {
 import { setApiClientHeader } from '../../../../constants/api-client';
 import { lockIcon, profileTempDota } from '../../../../Assets';
 
-const tempMatches = [
-  {
-    matchId: '84',
-    gameId: '1',
-    startTime: '2020-05-08T02:12:06.369Z',
-    endTime: '2020-05-08T02:22:06.369Z',
-    bet: 0,
-    matchStatus: 'match_requested',
-    gameMode: 'All Pick',
-    gameType: '1v1',
-    restriction: 'FollowersOnly',
-    players: [{
-      userId: '42074',
-      playerStatus: 'match_requested',
-      user: {
-        userId: '42074', userName: 'Blueshark', userAvatarUrl: 'https://api.adorable.io/avatars/face/eyes1/nose5/mouth10/8806c0', userEmail: 'pituhin98@gmail.com', userRole: 'Gaimer',
-      },
-    }],
-    game: {
-      gameId: '1', gameName: 'DOTA 2', gamePictureUrl: 'http://cdn.dota2.com/apps/dota2/images/nav/logo.png', gameTypes: [{ type: '1v1', gameModes: ['Solo Mid'], nrOfPlayers: 2 }, { type: '5v5', gameModes: ['All Pick'], nrOfPlayers: 10 }], success: true,
-    },
-  },
-  {
-    matchId: '84',
-    gameId: '1',
-    startTime: '2020-05-08T02:12:06.369Z',
-    endTime: '2020-05-08T02:22:06.369Z',
-    bet: 0,
-    matchStatus: 'match_requested',
-    gameMode: 'Solo Mid',
-    gameType: '1v1',
-    restriction: 'SubsOnly',
-    players: [{
-      userId: '42074',
-      playerStatus: 'match_requested',
-      user: {
-        userId: '42074', userName: 'Blueshark', userAvatarUrl: 'https://api.adorable.io/avatars/face/eyes1/nose5/mouth10/8806c0', userEmail: 'pituhin98@gmail.com', userRole: 'Gaimer',
-      },
-    }],
-    game: {
-      gameId: '1', gameName: 'DOTA 2', gamePictureUrl: 'http://cdn.dota2.com/apps/dota2/images/nav/logo.png', gameTypes: [{ type: '1v1', gameModes: ['Solo Mid'], nrOfPlayers: 2 }, { type: '5v5', gameModes: ['All Pick'], nrOfPlayers: 10 }], success: true,
-    },
-  },
-];
 
 const MatchSearchScreen = ({ navigation }) => {
   const [match, setMatch] = useContext(MatchContext);
   const [, setUser] = useContext(UserContext);
   const [loading, setLoading] = useState(false);
-  const [matchList, setMatchList] = useState(tempMatches);
+  const [matchList, setMatchList] = useState([]);
 
   const fetchMatchFromGame = useCallback(async (targetGame) => {
     try {
       const matches = await getMatchList(targetGame.gameId);
       if (matches.length > 0) {
         return matches
-          .filter((item) => (item.gameType !== '1v1' || item.players.length === 1)
-            && (item.gameType !== '5v5' || (item.players.length <= 9 && item.players.length > 0)))
           .map((item) => ({
             ...item,
-            game: {
-              ...targetGame,
-              gameType: targetGame.gameTypes.find((subType) => subType.type === item.type),
-            },
+            game: targetGame,
           }));
       }
     } catch (err) {
@@ -118,18 +69,27 @@ const MatchSearchScreen = ({ navigation }) => {
   const sendMatch = useCallback(async (item) => {
     try {
       if (item.restriction === 'FollowersOnly') {
-        navigation.navigate('MatchErrorScreen', { errorMessage: `You need to follow to ${item.players[0].user.userName} before you can match with him on Gaimz` });
+        navigation.navigate('MatchErrorScreen', { errorMessage: `You need to follow to ${item.username} before you can match with him on Gaimz` });
         return;
       }
       if (item.restriction === 'SubsOnly') {
-        navigation.navigate('MatchErrorScreen', { errorMessage: `You need to subscribe to ${item.players[0].user.userName} before you can match with him on Gaimz` });
+        navigation.navigate('MatchErrorScreen', { errorMessage: `You need to subscribe to ${item.username} before you can match with him on Gaimz` });
+        return;
+      }
+      if (item.restriction === 'PasswordProtected') {
+        setMatch({
+          ...item,
+          gameType: find(get(item, 'game.gameTypes'), (gameType) => gameType.type === item.gameType),
+          restrictionLevel: item.restriction,
+        });
+        navigation.navigate('MatchPasswordScreen');
         return;
       }
       setLoading(true);
       setMatch({
         ...item,
         gameType: find(get(item, 'game.gameTypes'), (gameType) => gameType.type === item.gameType),
-        restrictionLevel: 'Everyone',
+        restrictionLevel: item.restriction,
       });
       const data = await checkToken();
       setUser(data.user);
@@ -159,7 +119,7 @@ const MatchSearchScreen = ({ navigation }) => {
           style={styles.itemBackground}
           imageStyle={styles.itemImage}
           defaultSource={profileTempDota}
-          source={{ uri: item.players[0].user.userAvatarUrl || '' }}
+          source={{ uri: item.avatarUrl || '' }}
           resizeMode="cover"
         >
           {item.restriction === 'PasswordProtected' && (
@@ -167,7 +127,7 @@ const MatchSearchScreen = ({ navigation }) => {
           )}
         </ImageBackground>
         <View style={styles.ph12}>
-          <Text style={styles.profileName}>{item.players[0].user.userName}</Text>
+          <Text style={styles.profileName}>{item.username}</Text>
           <Text style={styles.gameDetails}>{`${item.gameType} - ${item.gameMode}`}</Text>
         </View>
       </TouchableOpacity>
@@ -200,7 +160,7 @@ const MatchSearchScreen = ({ navigation }) => {
         borderColor={colors.secondaryOpacity}
         textColor={colors.grayText}
         label="CREATE GAME"
-        onClick={() => navigation.replace('MatchSettingScreen')}
+        onClick={() => navigation.replace({ key: 'MatchSearchScreen', newKey: 'MatchSettingScreen', routeName: 'MatchSettingScreen' })}
         fontStyle={styles.fontSpacing}
         containerStyle={styles.mh48}
         disabled={loading}
@@ -216,7 +176,6 @@ const MatchSearchScreen = ({ navigation }) => {
 MatchSearchScreen.propTypes = {
   Secrets: PropTypes.shape({
     isFetching: PropTypes.bool.isRequired,
-    secretsData: PropTypes.shape(),
     error: PropTypes.any,
   }).isRequired,
   navigation: PropTypes.shape().isRequired,

@@ -5,13 +5,6 @@ export const resetNavigation = (navigation, routeName) => navigation.dispatch(St
   actions: [NavigationActions.navigate({ routeName })],
 }));
 
-export const resetStackNavigation = (navigation, routeName) => navigation.dispatch(
-  StackActions.popToTop({
-    actions: [StackActions.replace({ routeName })],
-  }),
-);
-
 export default {
   resetNavigation,
-  resetStackNavigation,
 };

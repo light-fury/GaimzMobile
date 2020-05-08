@@ -143,6 +143,8 @@ export const MainNavigator = createStackNavigator(
               },
               {
                 headerMode: 'screen',
+                initialRouteKey: 'MatchSettingScreen',
+                initialRouteName: 'MatchSettingScreen',
               },
             ),
             navigationOptions: ({ navigation }) => {

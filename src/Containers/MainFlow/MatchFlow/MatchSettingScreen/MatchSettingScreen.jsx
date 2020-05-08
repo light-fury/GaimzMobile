@@ -39,6 +39,25 @@ const MatchSettingScreen = ({ navigation }) => {
 
   const initData = useCallback(async () => {
     try {
+      const realMatch = get(match, 'match');
+      if (realMatch && realMatch.matchStatus && realMatch.matchStatus !== 'match_ended') {
+        switch (realMatch.matchStatus) {
+          case 'match_requested':
+            navigation.navigate('MatchTimerScreen');
+            break;
+          case 'match_accepted':
+          case 'invites_sent':
+          case 'match_started':
+            navigation.navigate('LobbyStartScreen');
+            break;
+          case 'players_found':
+            navigation.navigate('MatchReadyScreen');
+            break;
+          default:
+            break;
+        }
+        return;
+      }
       const apiGames = await getGames();
       setGames(apiGames);
     } catch (err) {
@@ -196,7 +215,7 @@ const MatchSettingScreen = ({ navigation }) => {
               borderColor={colors.secondary}
               textColor={colors.grayText}
               label="SEARCH GAME"
-              onClick={() => navigation.replace('MatchSearchScreen')}
+              onClick={() => navigation.replace({ key: 'MatchSettingScreen', newKey: 'MatchSearchScreen', routeName: 'MatchSearchScreen' })}
               fontStyle={styles.fontSpacing}
               containerStyle={styles.mh48}
             />
