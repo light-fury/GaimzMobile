@@ -1,8 +1,8 @@
-import { StackActions, NavigationActions } from 'react-navigation';
+import { StackActions } from 'react-navigation';
 
 export const resetNavigation = (navigation, routeName) => navigation.dispatch(
   StackActions.popToTop({
-    actions: [NavigationActions.navigate({ routeName })],
+    actions: [StackActions.replace({ routeName })],
   }),
 );
 
