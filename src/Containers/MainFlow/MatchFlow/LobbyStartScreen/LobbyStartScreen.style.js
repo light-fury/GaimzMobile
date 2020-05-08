@@ -19,6 +19,9 @@ export default StyleSheet.create({
   flex2: {
     flex: 2,
   },
+  flex3: {
+    flex: 3,
+  },
   mh70: {
     marginHorizontal: calcReal(97),
     height: calcReal(39),
@@ -49,6 +52,10 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
+  },
+  teamItemContainer: {
+    flex: 1,
+    paddingHorizontal: calcReal(34),
   },
   profileText: {
     fontSize: calcReal(14),
@@ -99,7 +106,7 @@ export default StyleSheet.create({
     height: calcReal(16),
   },
   description: {
-    marginHorizontal: calcReal(17),
+    marginHorizontal: calcReal(20),
   },
   individualPage: {
     width,
@@ -124,7 +131,7 @@ export default StyleSheet.create({
   heroImage: {
     width: calcReal(76),
     height: calcReal(34),
-    borderWidth: 2,
+    borderWidth: calcReal(2),
     borderColor: colors.lightGray,
   },
   absoluteOne: {
@@ -133,5 +140,59 @@ export default StyleSheet.create({
     left: width / 4,
     right: width / 4,
     textAlign: 'center',
+  },
+  rowContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  mb4: {
+    marginBottom: calcReal(4),
+  },
+  heroItemImage: {
+    width: calcReal(15),
+    height: calcReal(15),
+    borderWidth: calcReal(1),
+    borderColor: `${colors.white}B0`,
+    marginHorizontal: calcReal(4),
+  },
+  teamDetailHeader: {
+    height: calcReal(24),
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  teamDetailHeaderText: {
+    fontSize: calcReal(12),
+    lineHeight: calcReal(20),
+    letterSpacing: calcReal(1),
+    textTransform: 'uppercase',
+    fontWeight: 'bold',
+    color: colors.white,
+    textAlign: 'center',
+  },
+  memberContainer: {
+    height: calcReal(70),
+    alignItems: 'center',
+    flexDirection: 'row',
+    borderRadius: calcReal(8),
+    backgroundColor: colors.white,
+    marginBottom: calcReal(6),
+  },
+  memberHeroImage: {
+    borderRadius: calcReal(12),
+    height: calcReal(40),
+    width: calcReal(70),
+  },
+  memberDetailText: {
+    fontSize: calcReal(12),
+    lineHeight: calcReal(20),
+    color: colors.gray,
+    textAlign: 'center',
+  },
+  memberItemImage: {
+    width: calcReal(12),
+    height: calcReal(12),
+    borderWidth: calcReal(1),
+    borderColor: `${colors.white}B0`,
+    marginHorizontal: calcReal(3),
   },
 });
