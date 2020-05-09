@@ -100,6 +100,26 @@ const LobbyStartScreen = ({ navigation }) => {
     }
   });
 
+  const updateTeamMembers = useCallback((players, teamName) => {
+    if (players && players.length > 0) {
+      if (teamName === 'dire') {
+        setDireTeam(players);
+        if (find(players, (subPlayer) => subPlayer.userId === user.userId)) {
+          setDirePlayer(user);
+        } else {
+          setDirePlayer(get(match, 'opponent'));
+        }
+      } else {
+        setRadiantTeam(players);
+        if (find(players, (subPlayer) => subPlayer.userId === user.userId)) {
+          setRadiantPlayer(user);
+        } else {
+          setRadiantPlayer(get(match, 'opponent'));
+        }
+      }
+    }
+  });
+
   const checkMatchStatus = useCallback(async () => {
     try {
       const response = await getMatchStatus(get(match, 'match.matchId'));
@@ -118,22 +138,8 @@ const LobbyStartScreen = ({ navigation }) => {
           match: response,
         });
         setMatchType(get(response, 'gameType') === '1v1');
-        if (get(response, 'dire.players')) {
-          setDireTeam(get(response, 'dire.players'));
-          if (find(get(response, 'dire.players'), (subPlayer) => subPlayer.userId === user.userId)) {
-            setDirePlayer(user);
-          } else {
-            setDirePlayer(get(match, 'opponent'));
-          }
-        }
-        if (get(response, 'radiant.players')) {
-          setRadiantTeam(get(response, 'radiant.players'));
-          if (find(get(response, 'radiant.players'), (subPlayer) => subPlayer.userId === user.userId)) {
-            setRadiantPlayer(user);
-          } else {
-            setRadiantPlayer(get(match, 'opponent'));
-          }
-        }
+        updateTeamMembers(get(response, 'dire.players'), 'dire');
+        updateTeamMembers(get(response, 'radiant.players'), 'radiant');
         if (currentPageRef.current === offset) {
           return;
         }
