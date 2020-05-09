@@ -70,7 +70,7 @@ const AccountSettingScreen = ({ navigation }) => {
         contentContainerStyle={styles.innerContainer}
       >
         <TouchableOpacity style={styles.backContainer} onPress={() => navigation.pop()}>
-          <Text style={styles.titleText}>◄ Account Informations</Text>
+          <Text style={styles.titleText}>&lt;  Back</Text>
         </TouchableOpacity>
         <View style={styles.rowContainer}>
           <SocialButton

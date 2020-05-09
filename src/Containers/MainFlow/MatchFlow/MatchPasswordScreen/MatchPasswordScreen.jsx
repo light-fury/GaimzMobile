@@ -12,24 +12,25 @@ import CustomInput from '../../../../Components/CustomInput';
 
 import styles from './MatchPasswordScreen.style';
 import { colors } from '../../../../Assets/config';
-import { MatchContext } from '../../../../contexts';
+import { LobbyContext, MatchContext } from '../../../../contexts';
 import {
-  createMatch,
+  joinLobby,
 } from '../../../../api';
 import {
   eyeIcon,
 } from '../../../../Assets';
 
 const MatchPasswordScreen = ({ navigation }) => {
+  const [lobby, setLobby] = useContext(LobbyContext);
   const [match, setMatch] = useContext(MatchContext);
   const [loading, setLoading] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
 
-  const sendMatch = useCallback(async () => {
+  const sendLobby = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await createMatch(match);
-      if (response && response.matchStatus === 'match_requested') {
+      const response = await joinLobby(lobby);
+      if (response) {
         setMatch({
           ...match,
           match: response,
@@ -40,7 +41,7 @@ const MatchPasswordScreen = ({ navigation }) => {
       Alert.alert('Error', 'There was an error creating your game');
     }
     setLoading(false);
-  }, [match]);
+  }, [lobby]);
 
   return (
     <SafeAreaView
@@ -60,12 +61,12 @@ const MatchPasswordScreen = ({ navigation }) => {
           secureTextEntry={!passwordVisible}
           labelStyle={styles.whiteColor}
           containerStyle={styles.inputContainer}
-          value={match.password || ''}
+          value={lobby.password || ''}
           icon={eyeIcon}
-          iconVisible={(match.password || '').length > 0}
+          iconVisible={(lobby.password || '').length > 0}
           onClick={() => setPasswordVisible(!passwordVisible)}
-          onUpdateValue={(val) => setMatch({ ...match, password: val })}
-          borderColor={(match.password || '').length === 0 ? colors.red : colors.grayOpacity}
+          onUpdateValue={(val) => setLobby({ ...lobby, password: val })}
+          borderColor={(lobby.password || '').length === 0 ? colors.red : colors.grayOpacity}
         />
         {loading
           ? (<ActivityIndicator color={colors.loginColor} size="large" />)
@@ -73,10 +74,10 @@ const MatchPasswordScreen = ({ navigation }) => {
             <ConfirmButton
               color={colors.loginColor}
               label="ENTER"
-              onClick={() => sendMatch()}
+              onClick={() => sendLobby()}
               fontStyle={styles.fontSpacing}
               containerStyle={styles.mh16}
-              disabled={(match.password || '').length === 0}
+              disabled={(lobby.password || '').length === 0}
             />
           )}
         <Text style={styles.descriptionText}>

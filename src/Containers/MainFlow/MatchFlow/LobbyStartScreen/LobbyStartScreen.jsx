@@ -32,7 +32,6 @@ const { width } = Dimensions.get('window');
 const WAIT_TEXT = 'GAIMZ BOT PREPARING LOBBY';
 const INVITE_TEXT = 'INVITE SEND\nYOU ARE ';
 const PREPARE_TEXT = 'GETTING\nMATCH DATA';
-const TOTAL_CALL_DURATION = 600;
 const targetMatchStatus = [
   'match_accepted',
   'invites_sent',
@@ -158,21 +157,9 @@ const LobbyStartScreen = ({ navigation }) => {
 
   const startTimer = () => {
     BackgroundTimer.runBackgroundTimer(() => {
-      let diff = moment().diff(startedTimeRef.current, 'second');
-      if (diff < TOTAL_CALL_DURATION) {
-        if (diff > TOTAL_CALL_DURATION) {
-          diff = TOTAL_CALL_DURATION;
-        } else if (diff < 0) {
-          diff = 0;
-        }
-        if (currentTimeRef.current !== diff) {
-          setCurrentTime(diff);
-          checkMatchStatus();
-        }
-      } else {
-        cancelMatchRequest();
-      }
-    }, 1000);
+      checkMatchStatus();
+      cancelMatchRequest();
+    }, 5000);
   };
 
   useEffect(() => {
@@ -246,14 +233,17 @@ const LobbyStartScreen = ({ navigation }) => {
             currentTime={currentTime}
             navigation={navigation}
             pageText={WAIT_TEXT}
-            buttonVisible={false}
+            buttonText="CANCEL MATCH"
+            buttonVisible
+            clicked={cancelMatchRequest}
           />
           <PageScreen
             currentTime={currentTime}
             navigation={navigation}
             pageText={`${INVITE_TEXT}${'RADIANT'}`}
             buttonVisible
-            sendInviteAgain={acceptMatchRequest}
+            buttonText="SEND INVITE AGAIN"
+            clicked={acceptMatchRequest}
           />
           <PageScreen
             currentTime={currentTime}

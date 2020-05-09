@@ -24,7 +24,6 @@ import LobbyStartScreen from '../Containers/MainFlow/MatchFlow/LobbyStartScreen'
 import SettingMainScreen from '../Containers/MainFlow/SettingFlow/SettingMainScreen';
 import ConnectionSettingScreen from '../Containers/MainFlow/SettingFlow/ConnectionSettingScreen';
 import AccountSettingScreen from '../Containers/MainFlow/SettingFlow/AccountSettingScreen';
-import AccountScreen from '../Containers/MainFlow/SettingFlow/AccountScreen';
 import TabScreen from '../Components/TabScreen/TabScreen';
 import { colors } from '../Assets/config';
 
@@ -161,12 +160,6 @@ export const MainNavigator = createStackNavigator(
           SettingFlow: {
             screen: createStackNavigator(
               {
-                AccountScreen: {
-                  screen: AccountScreen,
-                  navigationOptions: () => ({
-                    headerShown: false,
-                  }),
-                },
                 SettingMainScreen: {
                   screen: SettingMainScreen,
                   navigationOptions: () => ({

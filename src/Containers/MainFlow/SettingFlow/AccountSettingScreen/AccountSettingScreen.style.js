@@ -55,7 +55,7 @@ export default StyleSheet.create({
     height: calcReal(22),
   },
   titleText: {
-    fontSize: calcReal(16),
+    fontSize: calcReal(20),
     lineHeight: calcReal(20),
     fontWeight: 'bold',
     color: colors.secondary,
