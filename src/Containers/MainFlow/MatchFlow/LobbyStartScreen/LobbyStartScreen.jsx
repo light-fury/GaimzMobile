@@ -80,20 +80,20 @@ const LobbyStartScreen = ({ navigation }) => {
     }
   });
 
-  const cancelMatchRequest = useCallback(async () => {
+  const cancelMatchRequest = useCallback(async (updateApi) => {
     try {
-      const params = {
-        acceptMatch: false,
-      };
-      await updateMatchStatus(get(match, 'match.matchId'), params);
-      setMatch({
-        ...match,
-        match: {},
-      });
+      if (updateApi) {
+        const params = {
+          acceptMatch: false,
+        };
+        await updateMatchStatus(get(match, 'match.matchId'), params);
+      }
+
+      setMatch({});
       BackgroundTimer.stopBackgroundTimer();
       setTimeout(() => {
         navigation.pop(3);
-      }, 1000);
+      }, 250);
     } catch (error) {
       //
     }
@@ -123,13 +123,13 @@ const LobbyStartScreen = ({ navigation }) => {
     try {
       const response = await getMatchStatus(get(match, 'match.matchId'));
       if (response && response.matchStatus === 'match_cancelled') {
-        cancelMatchRequest();
+        cancelMatchRequest(false);
         return;
       }
       if (response) {
         const offset = targetMatchStatus.findIndex((item) => item === response.matchStatus);
         if (offset < 0) {
-          cancelMatchRequest();
+          cancelMatchRequest(true);
           return;
         }
         setMatch({
@@ -234,7 +234,7 @@ const LobbyStartScreen = ({ navigation }) => {
             pageText={WAIT_TEXT}
             buttonText="CANCEL MATCH"
             buttonVisible
-            clicked={cancelMatchRequest}
+            clicked={() => cancelMatchRequest(true)}
           />
           <PageScreen
             currentTime={currentTime}
