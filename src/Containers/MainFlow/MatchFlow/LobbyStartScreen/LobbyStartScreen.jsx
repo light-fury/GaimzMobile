@@ -89,14 +89,11 @@ const LobbyStartScreen = ({ navigation }) => {
         await updateMatchStatus(get(match, 'match.matchId'), params);
       }
 
-      setMatch({
-        ...match,
-        match: {},
-      });
+      setMatch({});
       BackgroundTimer.stopBackgroundTimer();
       setTimeout(() => {
         navigation.pop(3);
-      }, 1000);
+      }, 250);
     } catch (error) {
       //
     }
