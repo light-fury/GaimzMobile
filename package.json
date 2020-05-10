@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
+    "android:prod": "react-native run-android --variant=release",
     "ios": "react-native run-ios",
     "postinstall": "(cd ios && pod install) || exit 0",
     "start": "react-native start",

@@ -13,6 +13,8 @@ __generated__
 *.apk
 *.ap_
 *.aab
+*.keystore
+
 
 # Files for the ART/Dalvik VM
 *.dex
@@ -297,5 +299,3 @@ tmp/
 temp/
 
 Pods
-
-# End of https://www.gitignore.io/api/reactnative
