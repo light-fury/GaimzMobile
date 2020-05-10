@@ -158,7 +158,6 @@ const LobbyStartScreen = ({ navigation }) => {
   const startTimer = () => {
     BackgroundTimer.runBackgroundTimer(() => {
       checkMatchStatus();
-      cancelMatchRequest();
     }, 5000);
   };
 
