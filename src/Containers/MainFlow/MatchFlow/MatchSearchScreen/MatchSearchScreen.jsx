@@ -4,40 +4,31 @@ import React, {
 import {
   View, Image, TouchableOpacity, ImageBackground, Text, FlatList, Alert,
 } from 'react-native';
-import {
-  find, get,
-} from 'lodash';
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
-import AsyncStorage from '@react-native-community/async-storage';
 
 import ConfirmButton from '../../../../Components/ConfirmButton';
 import LoadingComponent from '../../../../Components/LoadingComponent';
 import styles from './MatchSearchScreen.style';
 import { colors } from '../../../../Assets/config';
-import { MatchContext, UserContext } from '../../../../contexts';
+import { LobbyContext, MatchContext } from '../../../../contexts';
 import {
-  getGames, createMatch, checkToken, getMatchList,
+  getGames, getMatchList, joinLobby,
 } from '../../../../api';
-import { setApiClientHeader } from '../../../../constants/api-client';
 import { lockIcon, profileTempDota } from '../../../../Assets';
 
 
 const MatchSearchScreen = ({ navigation }) => {
-  const [match, setMatch] = useContext(MatchContext);
-  const [, setUser] = useContext(UserContext);
+  const [, setMatch] = useContext(MatchContext);
   const [loading, setLoading] = useState(false);
-  const [matchList, setMatchList] = useState([]);
+  const [lobbyList, setLobbyList] = useState([]);
+  const [, setLobby] = useContext(LobbyContext);
 
-  const fetchMatchFromGame = useCallback(async (targetGame) => {
+  const fetchLobbiesFromGame = useCallback(async (targetGame) => {
     try {
-      const matches = await getMatchList(targetGame.gameId);
-      if (matches.length > 0) {
-        return matches
-          .map((item) => ({
-            ...item,
-            game: targetGame,
-          }));
+      const lobbies = await getMatchList(targetGame.gameId);
+      if (lobbies.length > 0) {
+        return lobbies;
       }
     } catch (err) {
       //
@@ -53,11 +44,12 @@ const MatchSearchScreen = ({ navigation }) => {
         return;
       }
       const promises = [];
-      apiGames.map((item) => promises.push(fetchMatchFromGame(item)));
+      // TODO: this will pull all the lobbies from all the games, only current game should be pulled
+      apiGames.map((item) => promises.push(fetchLobbiesFromGame(item)));
       const apiResult = await Promise.all(promises);
       const resultList = [].concat(...apiResult);
       if (resultList.length > 0) {
-        setMatchList(resultList);
+        setLobbyList(resultList);
       }
     } catch (err) {
       //
@@ -66,42 +58,34 @@ const MatchSearchScreen = ({ navigation }) => {
     }
   });
 
-  const sendMatch = useCallback(async (item) => {
+  const sendLobby = useCallback(async (item) => {
+    setLoading(true);
+
     try {
-      if (item.restriction === 'FollowersOnly') {
-        navigation.navigate('MatchErrorScreen', { errorMessage: `You need to follow to ${item.username} before you can match with him on Gaimz` });
-        return;
-      }
-      if (item.restriction === 'SubsOnly') {
-        navigation.navigate('MatchErrorScreen', { errorMessage: `You need to subscribe to ${item.username} before you can match with him on Gaimz` });
-        return;
-      }
       if (item.restriction === 'PasswordProtected') {
-        setMatch({
-          ...item,
-          gameType: find(get(item, 'game.gameTypes'), (gameType) => gameType.type === item.gameType),
-          restrictionLevel: item.restriction,
-        });
+        setLobby({ matchId: item.matchId });
         navigation.navigate('MatchPasswordScreen');
         return;
       }
-      setLoading(true);
-      setMatch({
-        ...item,
-        gameType: find(get(item, 'game.gameTypes'), (gameType) => gameType.type === item.gameType),
-        restrictionLevel: item.restriction,
-      });
-      const data = await checkToken();
-      setUser(data.user);
-      setApiClientHeader('Authorization', `Bearer ${data.authToken}`);
-      await AsyncStorage.setItem('AuthToken', data.authToken);
-      const response = await createMatch(match);
-      if (response && response.matchStatus === 'match_requested') {
+      if (item.restriction === 'Everyone') {
+        throw new Error('How did you get here?');
+      }
+
+      const response = await joinLobby({ matchId: item.matchId });
+      if (response) {
         setMatch({
-          ...match,
           match: response,
         });
         navigation.navigate('MatchTimerScreen');
+      } else {
+        if (item.restriction === 'FollowersOnly') {
+          navigation.navigate('MatchErrorScreen', { errorMessage: `You need to follow to ${item.username} before you can match with him on Gaimz` });
+          return;
+        }
+        if (item.restriction === 'SubsOnly') {
+          navigation.navigate('MatchErrorScreen', { errorMessage: `You need to subscribe to ${item.username} before you can match with him on Gaimz` });
+          return;
+        }
       }
     } catch (err) {
       Alert.alert('Error', 'There was an error creating your game');
@@ -114,7 +98,7 @@ const MatchSearchScreen = ({ navigation }) => {
 
   const renderItem = ({ item }) => (
     <View style={styles.itemContainer}>
-      <TouchableOpacity style={styles.rowContainer} onPress={() => sendMatch(item)}>
+      <TouchableOpacity style={styles.rowContainer} onPress={() => sendLobby(item)}>
         <ImageBackground
           style={styles.itemBackground}
           imageStyle={styles.itemImage}
@@ -150,7 +134,7 @@ const MatchSearchScreen = ({ navigation }) => {
         <FlatList
           style={styles.flexContainer}
           contentContainerStyle={styles.padding0}
-          data={matchList}
+          data={lobbyList}
           renderItem={renderItem}
           keyExtractor={(item, index) => `${item.gameName}-${index}`}
         />

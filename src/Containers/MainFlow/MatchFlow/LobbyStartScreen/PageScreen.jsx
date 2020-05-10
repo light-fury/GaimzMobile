@@ -13,7 +13,7 @@ import { colors, calcReal } from '../../../../Assets/config';
 const TOTAL_CALL_DURATION = 600;
 
 const PageScreen = ({
-  currentTime, pageText, buttonVisible, sendInviteAgain,
+  currentTime, pageText, buttonVisible, clicked, buttonText,
 }) => (
   <View style={styles.individualPage}>
     <View style={[styles.itemContainer, !buttonVisible && styles.hideConfirm]}>
@@ -33,8 +33,8 @@ const PageScreen = ({
     {buttonVisible && (
     <ConfirmButton
       color={colors.loginColor}
-      label="SEND INVITE AGAIN"
-      onClick={sendInviteAgain}
+      label={buttonText}
+      onClick={clicked}
       fontStyle={styles.fontSpacing}
       containerStyle={styles.mh70}
     />
@@ -44,13 +44,15 @@ const PageScreen = ({
 
 PageScreen.propTypes = {
   currentTime: PropTypes.number.isRequired,
-  sendInviteAgain: PropTypes.func,
+  clicked: PropTypes.func,
+  buttonText: PropTypes.string,
   pageText: PropTypes.string.isRequired,
   buttonVisible: PropTypes.bool.isRequired,
 };
 
 PageScreen.defaultProps = {
-  sendInviteAgain: () => {},
+  clicked: () => {},
+  buttonText: 'CLICK ME',
 };
 
 export default PageScreen;

@@ -14,6 +14,7 @@ import queryString from 'query-string';
 import AsyncStorage from '@react-native-community/async-storage';
 import ConfirmButton from '../../../../Components/ConfirmButton';
 import CustomDropdown from '../../../../Components/CustomDropdown';
+import CustomInput from '../../../../Components/CustomInput';
 import LoadingComponent from '../../../../Components/LoadingComponent';
 import styles from './MatchSettingScreen.style';
 import { colors } from '../../../../Assets/config';
@@ -195,17 +196,24 @@ const MatchSettingScreen = ({ navigation }) => {
                 value={match.restrictionLevel}
                 onUpdateValue={(val) => setMatch({ ...match, restrictionLevel: val })}
               />
+              {get(match, 'restrictionLevel') === 'PasswordProtected' && (
+                <CustomInput
+                  label="Password"
+                  labelStyle={styles.whiteColor}
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  value={get(match, 'password')}
+                  onUpdateValue={(val) => setMatch({ ...match, password: val })}
+                  borderColor={(match.password || '').length === 0 ? colors.red : colors.grayOpacity}
+                  containerStyle={styles.inputContainer}
+                />
+              )}
+
               <View style={styles.space} />
               <ConfirmButton
                 color={colors.loginColor}
                 label="MATCH UP"
-                onClick={() => {
-                  if (match.restrictionLevel === 'PasswordProtected') {
-                    navigation.navigate('MatchPasswordScreen');
-                  } else {
-                    sendMatch();
-                  }
-                }}
+                onClick={() => { sendMatch(); }}
                 fontStyle={styles.fontSpacing}
                 disabled={loading}
               />

@@ -13,6 +13,14 @@ export const createMatch = (match) => {
   return apiClient.post('/match', params, { baseURL: 'https://mmapi.gaimz.com' }).then(({ data }) => data);
 };
 
+export const joinLobby = (lobby) => {
+  const params = {
+    matchId: get(lobby, 'matchId'),
+    password: get(lobby, 'password'),
+  };
+  return apiClient.post('/match/lobby', params, { baseURL: 'https://mmapi.gaimz.com' }).then(({ data }) => data);
+};
+
 export const getMatchStatus = (matchId) => apiClient.get(`/match/${matchId}`, { baseURL: 'https://mmapi.gaimz.com' }).then(({ data }) => data);
 
 export const getMatchList = (gameId) => apiClient.get(`/match/list/${gameId}`, { baseURL: 'https://mmapi.gaimz.com' }).then(({ data }) => data);

@@ -117,7 +117,7 @@ const ConnectionSettingScreen = ({ navigation }) => {
           resizeMode="cover"
         />
         <Text style={[styles.flexContainer, styles.profileName]}>
-          Connections
+          Back
         </Text>
         {/* <SocialButton
           style={styles.headerButton}

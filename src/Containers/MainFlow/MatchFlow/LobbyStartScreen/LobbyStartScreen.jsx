@@ -11,24 +11,27 @@ import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
 import moment from 'moment';
 import {
-  get,
+  get, find,
 } from 'lodash';
 
 import { updateMatchStatus, getMatchStatus, lobbyInvite } from '../../../../api';
 import { MatchContext, UserContext } from '../../../../contexts';
 import ProfileComponent from './ProfileScreen';
 import PageScreen from './PageScreen';
+import MatchSummaryComponent from './MatchSummaryComponent';
 import styles from './LobbyStartScreen.style';
 import {
-  lobbyBgDota, arrowRight, heroTemplate,
+  lobbyBgDota, arrowRight, radiantIcon, direIcon,
 } from '../../../../Assets';
+import MatchOneDetailComponent from './MatchOneDetailComponent';
+import MatchTeamDetailComponent from './MatchTeamDetailComponent';
+import { calcReal } from '../../../../Assets/config';
 
 const { width } = Dimensions.get('window');
 
 const WAIT_TEXT = 'GAIMZ BOT PREPARING LOBBY';
 const INVITE_TEXT = 'INVITE SEND\nYOU ARE ';
 const PREPARE_TEXT = 'GETTING\nMATCH DATA';
-const TOTAL_CALL_DURATION = 600;
 const targetMatchStatus = [
   'match_accepted',
   'invites_sent',
@@ -40,6 +43,12 @@ const targetMatchStatus = [
 const LobbyStartScreen = ({ navigation }) => {
   const [match, setMatch] = useContext(MatchContext);
   const [user] = useContext(UserContext);
+  const [matchType, setMatchType] = useState(get(match, 'match.gameType') === '1v1');
+  const [direPlayer, setDirePlayer] = useState(user);
+  const [radiantPlayer, setRadiantPlayer] = useState(get(match, 'opponent'));
+  const [direTeam, setDireTeam] = useState();
+  const [selectedTeam, setSelectedTeam] = useState(true);
+  const [radiantTeam, setRadiantTeam] = useState();
   const [currentTime, setCurrentTime] = useState(0);
   const [startedTime, setStartTime] = useState(moment());
   const [currentPage, setCurrentPage] = useState(0);
@@ -90,6 +99,26 @@ const LobbyStartScreen = ({ navigation }) => {
     }
   });
 
+  const updateTeamMembers = useCallback((players, teamName) => {
+    if (players && players.length > 0) {
+      if (teamName === 'dire') {
+        setDireTeam(players);
+        if (find(players, (subPlayer) => subPlayer.userId === user.userId)) {
+          setDirePlayer(user);
+        } else {
+          setDirePlayer(get(match, 'opponent'));
+        }
+      } else {
+        setRadiantTeam(players);
+        if (find(players, (subPlayer) => subPlayer.userId === user.userId)) {
+          setRadiantPlayer(user);
+        } else {
+          setRadiantPlayer(get(match, 'opponent'));
+        }
+      }
+    }
+  });
+
   const checkMatchStatus = useCallback(async () => {
     try {
       const response = await getMatchStatus(get(match, 'match.matchId'));
@@ -107,6 +136,9 @@ const LobbyStartScreen = ({ navigation }) => {
           ...match,
           match: response,
         });
+        setMatchType(get(response, 'gameType') === '1v1');
+        updateTeamMembers(get(response, 'dire.players'), 'dire');
+        updateTeamMembers(get(response, 'radiant.players'), 'radiant');
         if (currentPageRef.current === offset) {
           return;
         }
@@ -125,27 +157,14 @@ const LobbyStartScreen = ({ navigation }) => {
 
   const startTimer = () => {
     BackgroundTimer.runBackgroundTimer(() => {
-      let diff = moment().diff(startedTimeRef.current, 'second');
-      if (diff < TOTAL_CALL_DURATION) {
-        if (diff > TOTAL_CALL_DURATION) {
-          diff = TOTAL_CALL_DURATION;
-        } else if (diff < 0) {
-          diff = 0;
-        }
-        if (currentTimeRef.current !== diff) {
-          setCurrentTime(diff);
-          checkMatchStatus();
-        }
-      } else {
-        cancelMatchRequest();
-      }
-    }, 1000);
+      checkMatchStatus();
+      cancelMatchRequest();
+    }, 5000);
   };
 
   useEffect(() => {
     // Start Timer for preparing lobby
     startTimer();
-
     return () => {
       BackgroundTimer.stopBackgroundTimer();
     };
@@ -159,25 +178,49 @@ const LobbyStartScreen = ({ navigation }) => {
       <StatusBar barStyle="light-content" />
       <View style={styles.header}>
         <ImageBackground
-          style={styles.headerInnerContainer}
+          style={styles.flexContainer}
           imageStyle={styles.itemContainer}
           source={lobbyBgDota}
         >
-          <ProfileComponent item={{ username: user.userName, team: 'DIRE', avatar: user.userAvatarUrl }} />
-          <View style={styles.itemContainer}>
-            <Text style={[styles.profileText, styles.fontBig]}>VS</Text>
+          <View style={styles.headerInnerContainer}>
+            <ProfileComponent
+              item={{
+                username: matchType ? direPlayer.userName : 'DIRE',
+                avatar: matchType ? { uri: direPlayer.userAvatarUrl } : direIcon,
+                team: (matchType && !!get(match, 'match.dire')) ? 'DIRE' : '',
+                borderWidth: (matchType || !selectedTeam) ? 0 : calcReal(4),
+                borderColor: '#6320EE',
+              }}
+              onClick={() => setSelectedTeam(true)}
+            />
+            <View style={styles.itemContainer}>
+              <Text style={[styles.profileText, styles.fontBig]}>VS</Text>
+            </View>
+            <ProfileComponent
+              item={{
+                username: matchType ? radiantPlayer.userName : 'RADIANT',
+                avatar: matchType ? { uri: radiantPlayer.userAvatarUrl } : radiantIcon,
+                team: (matchType && !!get(match, 'match.radiant')) ? 'RADIANT' : '',
+                borderWidth: (matchType || selectedTeam) ? 0 : calcReal(4),
+                borderColor: '#6320EE',
+              }}
+              onClick={() => setSelectedTeam(false)}
+            />
           </View>
-          <ProfileComponent item={{ username: get(match, 'opponent.userName'), avatar: get(match, 'opponent.userAvatarUrl'), team: 'RADIANT' }} />
+          {!matchType && (
+            <MatchSummaryComponent match={match} />
+          )}
         </ImageBackground>
         {get(match, 'match.matchStatus') === 'match_ended' && (
           <Text style={[styles.profileText, styles.fontBig, styles.absoluteOne]}>
-            DIRE WON
+            {get(match, 'match.radiantWon') === true ? 'RADIANT WON' : 'DIRE WON'}
           </Text>
         )}
       </View>
       <View style={styles.searchContainer}>
-        <Text style={[styles.profileText, styles.description]}>#GMZLOBBY2973</Text>
-        <Text style={[styles.profileText, styles.description]}>DOTA 2 1VS1 | EU | BO1</Text>
+        {matchType && (
+          <MatchSummaryComponent match={match} />
+        )}
         <ScrollView
           ref={scrollViewRef}
           style={styles.flexContainer}
@@ -190,14 +233,17 @@ const LobbyStartScreen = ({ navigation }) => {
             currentTime={currentTime}
             navigation={navigation}
             pageText={WAIT_TEXT}
-            buttonVisible={false}
+            buttonText="CANCEL MATCH"
+            buttonVisible
+            clicked={cancelMatchRequest}
           />
           <PageScreen
             currentTime={currentTime}
             navigation={navigation}
             pageText={`${INVITE_TEXT}${'RADIANT'}`}
             buttonVisible
-            sendInviteAgain={acceptMatchRequest}
+            buttonText="SEND INVITE AGAIN"
+            clicked={acceptMatchRequest}
           />
           <PageScreen
             currentTime={currentTime}
@@ -206,53 +252,24 @@ const LobbyStartScreen = ({ navigation }) => {
             buttonVisible={false}
           />
           <View style={styles.individualPage}>
-            <View style={styles.itemContainer}>
-              <Text style={[styles.profileText, styles.matchProgressText]}>
-                The Dire | Username #1
-              </Text>
-              <View style={styles.inProgressContainer}>
-                <View style={styles.itemContainer}>
-                  <Text style={[styles.profileText, styles.matchProgressText]}>
-                    Jakiro
-                  </Text>
-                  <Image style={styles.heroImage} source={heroTemplate} resizeMode="cover" />
-                </View>
-                <View style={[styles.itemContainer, styles.pt23]}>
-                  <Text style={[styles.profileText, styles.matchProgressText, styles.fontMedium]}>
-                    K / D / A
-                  </Text>
-                  <Text style={[styles.profileText, styles.matchProgressText, styles.fontMedium]}>
-                    0 / 10 / 7
-                  </Text>
-                </View>
-                <View style={[styles.itemContainer, styles.pt23]}>
-                  <Image style={styles.heroImage} source={heroTemplate} resizeMode="cover" />
-                </View>
+            {matchType && direTeam && (
+              <View style={styles.itemContainer}>
+                <Text style={[styles.profileText, styles.matchProgressText]}>
+                  {`The Dire | ${direPlayer.userName}`}
+                </Text>
+                <MatchOneDetailComponent teamMember={direTeam[0]} />
+                <View style={styles.seperatorLine} />
+                <Text style={[styles.profileText, styles.matchProgressText]}>
+                  {`Radiant | ${radiantPlayer.userName}`}
+                </Text>
+                <MatchOneDetailComponent teamMember={radiantTeam[0]} />
               </View>
-              <View style={styles.seperatorLine} />
-              <Text style={[styles.profileText, styles.matchProgressText]}>
-                The Radiant | Username #2
-              </Text>
-              <View style={styles.inProgressContainer}>
-                <View style={styles.itemContainer}>
-                  <Text style={[styles.profileText, styles.matchProgressText]}>
-                    Jakiro
-                  </Text>
-                  <Image style={styles.heroImage} source={heroTemplate} resizeMode="cover" />
-                </View>
-                <View style={[styles.itemContainer, styles.pt23]}>
-                  <Text style={[styles.profileText, styles.matchProgressText, styles.fontMedium]}>
-                    K / D / A
-                  </Text>
-                  <Text style={[styles.profileText, styles.matchProgressText, styles.fontMedium]}>
-                    0 / 10 / 7
-                  </Text>
-                </View>
-                <View style={[styles.itemContainer, styles.pt23]}>
-                  <Image style={styles.heroImage} source={heroTemplate} resizeMode="cover" />
-                </View>
+            )}
+            {!matchType && direTeam && (
+              <View style={styles.teamItemContainer}>
+                <MatchTeamDetailComponent teamMember={selectedTeam ? direTeam : radiantTeam} />
               </View>
-            </View>
+            )}
           </View>
         </ScrollView>
         <TouchableOpacity style={styles.reportContainer}>
