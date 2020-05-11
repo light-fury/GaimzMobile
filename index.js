@@ -2,10 +2,10 @@
  * @format
  */
 
-import {AppRegistry} from 'react-native';
+import { AppRegistry } from 'react-native';
 import App from './src/Containers/App';
-import {name as appName} from './app.json';
-import {typography} from './src/Components/Typography';
+import { name as appName } from './app.json';
+import { typography } from './src/Components/Typography';
 
 typography();
 

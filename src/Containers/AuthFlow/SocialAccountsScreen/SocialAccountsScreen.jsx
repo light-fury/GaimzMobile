@@ -13,6 +13,7 @@ import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import queryString from 'query-string';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import ConfirmButton from '../../../Components/ConfirmButton';
 import LoadingComponent from '../../../Components/LoadingComponent';
@@ -26,6 +27,7 @@ import { resetNavigation } from '../../../helpers/navigation';
 import { signInWithTwitch, signInWithSteam } from '../../../api';
 import { UserContext } from '../../../contexts';
 import { twitchSigninUrl, steamSigninUrl } from '../../../constants/oauth';
+import { setApiClientHeader } from '../../../constants/api-client';
 
 const SocialAccountsScreen = ({ navigation }) => {
   const [user, setUser] = useContext(UserContext);
@@ -42,7 +44,8 @@ const SocialAccountsScreen = ({ navigation }) => {
         } else {
           apiResponse = await signInWithSteam(parsedParams);
         }
-
+        AsyncStorage.setItem('AuthToken', apiResponse.authToken);
+        setApiClientHeader('Authorization', `Bearer ${apiResponse.authToken}`);
         setUser(apiResponse.user);
       } catch (err) {
         Alert.alert('Error', 'There was an error connecting the account');

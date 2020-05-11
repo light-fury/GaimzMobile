@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import SocialButton from '../../../../Components/SocialButton';
@@ -17,14 +18,16 @@ import {
   closeIcon,
 } from '../../../../Assets';
 import styles from './AccountSettingScreen.style';
-import { UserContext } from '../../../../contexts';
+import { UserContext, MatchContext } from '../../../../contexts';
 import { deleteUser, updateUser } from '../../../../api';
 import { resetNavigation } from '../../../../helpers/navigation';
+import { removeApiClientHeader } from '../../../../constants/api-client';
 
 const AccountSettingScreen = ({ navigation }) => {
   const [user, setUser] = useContext(UserContext);
   const [userName, setUsername] = useState(user.userName);
   const [userEmail, setEmail] = useState(user.userEmail);
+  const [, setMatch] = useContext(MatchContext);
   //  const [birthday] = useState('')
   //  const [location] = useState('')
 
@@ -49,6 +52,11 @@ const AccountSettingScreen = ({ navigation }) => {
           onPress: async () => {
             try {
               await deleteUser();
+              await AsyncStorage.removeItem('AuthToken');
+              await AsyncStorage.removeItem('MatchSettings');
+              removeApiClientHeader('Authorization');
+              setUser({});
+              setMatch({});
               resetNavigation(navigation, 'AuthFlow');
             } catch (err) {
               Alert.alert('Error', 'There was an error deleting your account');

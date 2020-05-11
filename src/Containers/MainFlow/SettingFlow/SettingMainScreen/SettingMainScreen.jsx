@@ -22,6 +22,7 @@ import SocialButton from '../../../../Components/SocialButton';
 import styles from './SettingMainScreen.style';
 import { UserContext, MatchContext } from '../../../../contexts';
 import { resetNavigation } from '../../../../helpers/navigation';
+import { removeApiClientHeader } from '../../../../constants/api-client';
 
 
 const listData = [
@@ -52,6 +53,7 @@ const SettingMainScreen = ({ navigation }) => {
       await AsyncStorage.removeItem('MatchSettings');
       setUser({});
       setMatch({});
+      removeApiClientHeader('Authorization');
       resetNavigation(navigation, 'AuthFlow');
     } else {
       navigation.navigate(route);

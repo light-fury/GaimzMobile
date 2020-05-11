@@ -26,3 +26,7 @@ apiClient.interceptors.response.use(
 export const setApiClientHeader = (name, value) => {
   apiClient.defaults.headers.common[name] = value;
 };
+
+export const removeApiClientHeader = (name) => {
+  delete apiClient.defaults.headers.common[name];
+};
