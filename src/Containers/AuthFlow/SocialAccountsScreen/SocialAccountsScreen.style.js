@@ -11,7 +11,7 @@ export default StyleSheet.create({
     backgroundColor: colors.lightGray,
   },
   topContainer: {
-    height: width * 0.6,
+    height: calcReal(240),
     alignItems: 'center',
     justifyContent: 'center',
     paddingTop: getStatusBarHeight(false) + calcReal(40),
@@ -30,7 +30,6 @@ export default StyleSheet.create({
     borderTopRightRadius: calcReal(32),
   },
   scrollInner: {
-    flex: 1,
     paddingVertical: calcReal(40),
     paddingHorizontal: calcReal(28),
   },

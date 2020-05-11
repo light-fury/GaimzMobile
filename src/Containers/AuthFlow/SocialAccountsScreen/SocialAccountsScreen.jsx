@@ -84,6 +84,7 @@ const SocialAccountsScreen = ({ navigation }) => {
       </ImageBackground>
       <KeyboardAwareScrollView
         enableOnAndroid
+        bounces={false}
         style={styles.absoluteFill}
         contentContainerStyle={styles.scrollInner}
       >

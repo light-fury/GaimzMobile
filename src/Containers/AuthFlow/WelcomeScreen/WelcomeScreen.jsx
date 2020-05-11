@@ -124,95 +124,101 @@ const WelcomeScreen = ({ navigation }) => {
       forceInset={{ bottom: 'never', top: 'never' }}
       style={styles.container}
     >
-      <StatusBar barStyle="light-content" />
-      <ImageBackground
-        style={styles.topContainer}
-        source={splashBackground}
-        imageStyle={styles.flexStyle}
-        resizeMode="cover"
-      >
-        <Image
-          style={styles.logoImage}
-          source={appLogo}
-          resizeMode="contain"
-        />
-      </ImageBackground>
       <KeyboardAwareScrollView
-        enableOnAndroid
-        style={styles.absoluteFill}
-        contentContainerStyle={styles.scrollInner}
-        extraScrollHeight={calcReal(50)}
+        bounces={false}
       >
-        <Text style={styles.title}>Welcome Back!</Text>
-        <Text style={styles.instructionText}>
-          Login your account to continue
-        </Text>
-        <View style={styles.socialContainer}>
-          {/* <SocialButton
+        <StatusBar barStyle="light-content" />
+        <ImageBackground
+          style={styles.topContainer}
+          source={splashBackground}
+          imageStyle={styles.flexStyle}
+          resizeMode="cover"
+        >
+          <Image
+            style={styles.logoImage}
+            source={appLogo}
+            resizeMode="contain"
+          />
+        </ImageBackground>
+        <View style={styles.topBorderContainer}>
+          <View style={styles.topWhiteContainer} />
+        </View>
+        <View
+          style={styles.absoluteFill}
+        >
+          <Text style={styles.title}>Welcome Back!</Text>
+          <Text style={styles.instructionText}>
+            Login your account to continue
+          </Text>
+          <View style={styles.socialContainer}>
+            {/* <SocialButton
             style={[styles.socialButton, { backgroundColor: colors.fbColor }]}
             icon={facebookIcon}
             onClick={() => {
               Alert.alert('FB Login');
             }}
           /> */}
-          <SocialButton
-            style={[styles.socialButton, { backgroundColor: colors.lightGray }]}
-            icon={twitchIcon}
-            onClick={twitchSignin}
+            <SocialButton
+              style={[styles.socialButton, { backgroundColor: colors.lightGray }]}
+              icon={twitchIcon}
+              onClick={twitchSignin}
+            />
+            <Text style={[styles.instructionText, { fontSize: calcReal(12) }]}>
+              Or use your email account
+            </Text>
+          </View>
+          <CustomInput
+            autoCorrect={false}
+            autoCapitalize="none"
+            autoCompleteType="email"
+            label="Email"
+            value={email}
+            onUpdateValue={setEmail}
+            icon={validateEmail(email) ? checkIcon : closeIcon}
+            iconVisible={email.length > 0}
+            borderColor={email.length > 0 && !validateEmail(email)
+              ? colors.red : colors.grayOpacity}
+            containerStyle={styles.inputContainer}
+            onClick={() => !validateEmail(email) && setEmail('')}
           />
-          <Text style={[styles.instructionText, { fontSize: calcReal(12) }]}>
-            Or use your email account
-          </Text>
-        </View>
-        <CustomInput
-          autoCorrect={false}
-          autoCapitalize="none"
-          autoCompleteType="email"
-          label="Email"
-          value={email}
-          onUpdateValue={setEmail}
-          icon={validateEmail(email) ? checkIcon : closeIcon}
-          iconVisible={email.length > 0}
-          borderColor={email.length > 0 && !validateEmail(email) ? colors.red : colors.grayOpacity}
-          containerStyle={styles.inputContainer}
-          onClick={() => !validateEmail(email) && setEmail('')}
-        />
-        <CustomInput
-          label="Password"
-          value={password}
-          secureTextEntry={!passwordVisible}
-          icon={eyeIcon}
-          iconVisible={password.length > 0}
-          onUpdateValue={setPassword}
-          onClick={() => setPasswordVisible(!passwordVisible)}
-          borderColor={password.length > 0 && password.length < 8 ? colors.red : colors.grayOpacity}
-          containerStyle={styles.inputContainer}
-        />
-        <ConfirmButton
-          color={colors.loginColor}
-          label="Login"
-          disabled={
+          <CustomInput
+            label="Password"
+            value={password}
+            secureTextEntry={!passwordVisible}
+            icon={eyeIcon}
+            iconVisible={password.length > 0}
+            onUpdateValue={setPassword}
+            onClick={() => setPasswordVisible(!passwordVisible)}
+            borderColor={password.length > 0 && password.length < 8
+              ? colors.red : colors.grayOpacity}
+            containerStyle={styles.inputContainer}
+          />
+          <ConfirmButton
+            color={colors.loginColor}
+            label="Login"
+            disabled={
             isLoading
             || password.length < 8
             || email.length === 0
             || !validateEmail(email)
           }
-          onClick={onSubmit}
-        />
-        <ConfirmButton
-          borderColor={colors.transparent}
-          textColor={colors.gray}
-          label="Forgot password?"
-          onClick={() => navigation.navigate('ForgotPasswordScreen')}
-          fontStyle={styles.lightFont}
-        />
-        <View style={styles.space} />
-        <ConfirmButton
-          borderColor={colors.secondaryOpacity}
-          textColor={`${colors.secondary}70`}
-          label="Create an account"
-          onClick={() => navigation.navigate('SignUpScreen')}
-        />
+            onClick={onSubmit}
+          />
+          <ConfirmButton
+            borderColor={colors.transparent}
+            textColor={colors.gray}
+            label="Forgot password?"
+            onClick={() => navigation.navigate('ForgotPasswordScreen')}
+            fontStyle={styles.lightFont}
+          />
+          <View style={styles.space} />
+          <ConfirmButton
+            borderColor={colors.secondaryOpacity}
+            textColor={`${colors.secondary}70`}
+            label="Create an account"
+            onClick={() => navigation.navigate('SignUpScreen')}
+          />
+        </View>
       </KeyboardAwareScrollView>
       {isLoading && (
         <LoadingComponent />

@@ -8,10 +8,10 @@ const { width } = Dimensions.get('window');
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.lightGray,
+    backgroundColor: colors.white,
   },
   topContainer: {
-    height: width * 0.6,
+    height: calcReal(240),
     alignItems: 'center',
     justifyContent: 'center',
     paddingTop: getStatusBarHeight(false) + calcReal(40),
@@ -26,12 +26,19 @@ export default StyleSheet.create({
   absoluteFill: {
     flex: 1,
     backgroundColor: colors.white,
-    borderTopLeftRadius: calcReal(32),
-    borderTopRightRadius: calcReal(32),
   },
   scrollInner: {
-    paddingVertical: calcReal(40),
     paddingHorizontal: calcReal(28),
+  },
+  topBorderContainer: {
+    height: calcReal(40),
+    backgroundColor: colors.lightGray,
+  },
+  topWhiteContainer: {
+    flex: 1,
+    borderTopLeftRadius: calcReal(32),
+    borderTopRightRadius: calcReal(32),
+    backgroundColor: colors.white,
   },
   title: {
     fontSize: calcReal(22),
