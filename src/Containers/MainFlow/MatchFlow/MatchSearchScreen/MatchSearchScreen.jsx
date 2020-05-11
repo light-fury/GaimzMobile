@@ -5,6 +5,7 @@ import {
   View, Image, TouchableOpacity, ImageBackground, Text, FlatList, Alert,
 } from 'react-native';
 import PropTypes from 'prop-types';
+import { NavigationEvents } from 'react-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
 
 import ConfirmButton from '../../../../Components/ConfirmButton';
@@ -20,7 +21,7 @@ import { lockIcon, profileTempDota } from '../../../../Assets';
 
 const MatchSearchScreen = ({ navigation }) => {
   const [, setMatch] = useContext(MatchContext);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [lobbyList, setLobbyList] = useState([]);
   const [, setLobby] = useContext(LobbyContext);
   const mountedRef = useRef(false);
@@ -39,6 +40,7 @@ const MatchSearchScreen = ({ navigation }) => {
 
   const initData = async () => {
     try {
+      setLoading(true);
       const apiGames = await getGames();
       if (apiGames.length < 1 || mountedRef.current === false) {
         return;
@@ -98,8 +100,6 @@ const MatchSearchScreen = ({ navigation }) => {
 
   useEffect(() => {
     mountedRef.current = true;
-    initData();
-
     return () => {
       mountedRef.current = false;
     };
@@ -132,6 +132,9 @@ const MatchSearchScreen = ({ navigation }) => {
       forceInset={{ bottom: 'never' }}
       style={styles.container}
     >
+      <NavigationEvents
+        onWillFocus={() => initData()}
+      />
       <View style={styles.header} />
       <View
         style={styles.searchContainer}

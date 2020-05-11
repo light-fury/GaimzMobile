@@ -1,12 +1,14 @@
 // @flow
 import React, {
-  useContext, useCallback, useState, useEffect,
+  useContext, useCallback, useState,
 } from 'react';
 import {
-  Text, View, ScrollView, Linking, Alert,
+  Text, View, Linking, Alert,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
+import { NavigationEvents } from 'react-navigation';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {
   find, get, map,
 } from 'lodash';
@@ -59,10 +61,13 @@ const MatchSettingScreen = ({ navigation }) => {
         }
         return;
       }
+      setLoading(true);
       const apiGames = await getGames();
       setGames(apiGames);
     } catch (err) {
       //
+    } finally {
+      setLoading(false);
     }
   });
 
@@ -121,18 +126,19 @@ const MatchSettingScreen = ({ navigation }) => {
     setLoading(false);
   }, [match]);
 
-  useEffect(() => { initData(); }, []);
-
   return (
     <SafeAreaView
       forceInset={{ bottom: 'never', top: 'never' }}
       style={styles.container}
     >
+      <NavigationEvents
+        onWillFocus={() => initData()}
+      />
       <View style={styles.header} />
       {get(user, 'apps.steam')
         ? (
           <>
-            <ScrollView
+            <KeyboardAwareScrollView
               style={styles.searchContainer}
               contentContainerStyle={styles.padding0}
             >
@@ -217,7 +223,7 @@ const MatchSettingScreen = ({ navigation }) => {
                 fontStyle={styles.fontSpacing}
                 disabled={loading}
               />
-            </ScrollView>
+            </KeyboardAwareScrollView>
             <Text style={styles.orText}>OR</Text>
             <ConfirmButton
               borderColor={colors.secondary}
