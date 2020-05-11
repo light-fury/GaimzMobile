@@ -47,8 +47,8 @@ const MatchErrorScreen = ({ navigation }) => {
         textColor={colors.grayText}
         label="SETTINGS"
         onClick={() => {
-          navigation.replace({ key: 'MatchSearchScreen', newKey: 'MatchSettingScreen', routeName: 'MatchSettingScreen' });
-          navigation.pop();
+          navigation.replace({ key: 'MatchSettingScreen', newKey: 'MatchSettingScreen', routeName: 'MatchSettingScreen' });
+          navigation.popToTop();
         }}
         fontStyle={styles.fontSpacing}
         containerStyle={styles.mh48}

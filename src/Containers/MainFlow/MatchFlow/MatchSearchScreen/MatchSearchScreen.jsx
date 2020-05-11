@@ -1,10 +1,11 @@
 import React, {
-  useContext, useCallback, useState, useEffect,
+  useContext, useCallback, useState, useEffect, useRef,
 } from 'react';
 import {
   View, Image, TouchableOpacity, ImageBackground, Text, FlatList, Alert,
 } from 'react-native';
 import PropTypes from 'prop-types';
+import { NavigationEvents } from 'react-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
 
 import ConfirmButton from '../../../../Components/ConfirmButton';
@@ -23,6 +24,7 @@ const MatchSearchScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [lobbyList, setLobbyList] = useState([]);
   const [, setLobby] = useContext(LobbyContext);
+  const mountedRef = useRef(false);
 
   const fetchLobbiesFromGame = useCallback(async (targetGame) => {
     try {
@@ -36,11 +38,11 @@ const MatchSearchScreen = ({ navigation }) => {
     return [];
   });
 
-  const initData = useCallback(async () => {
+  const initData = async () => {
     try {
       setLoading(true);
       const apiGames = await getGames();
-      if (apiGames.length < 1) {
+      if (apiGames.length < 1 || mountedRef.current === false) {
         return;
       }
       const promises = [];
@@ -48,15 +50,17 @@ const MatchSearchScreen = ({ navigation }) => {
       apiGames.map((item) => promises.push(fetchLobbiesFromGame(item)));
       const apiResult = await Promise.all(promises);
       const resultList = [].concat(...apiResult);
-      if (resultList.length > 0) {
+      if (resultList.length > 0 && mountedRef.current === true) {
         setLobbyList(resultList);
       }
     } catch (err) {
       //
     } finally {
-      setLoading(false);
+      if (mountedRef.current === true) {
+        setLoading(false);
+      }
     }
-  });
+  };
 
   const sendLobby = useCallback(async (item) => {
     setLoading(true);
@@ -94,7 +98,12 @@ const MatchSearchScreen = ({ navigation }) => {
     }
   });
 
-  useEffect(() => { initData(); }, []);
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
 
   const renderItem = ({ item }) => (
     <View style={styles.itemContainer}>
@@ -123,6 +132,9 @@ const MatchSearchScreen = ({ navigation }) => {
       forceInset={{ bottom: 'never' }}
       style={styles.container}
     >
+      <NavigationEvents
+        onWillFocus={() => initData()}
+      />
       <View style={styles.header} />
       <View
         style={styles.searchContainer}
@@ -139,20 +151,19 @@ const MatchSearchScreen = ({ navigation }) => {
           keyExtractor={(item, index) => `${item.gameName}-${index}`}
         />
       </View>
+      {loading && (
+        <LoadingComponent />
+      )}
       <Text style={styles.orText}>OR</Text>
       <ConfirmButton
         borderColor={colors.secondaryOpacity}
         textColor={colors.grayText}
         label="CREATE GAME"
-        onClick={() => navigation.replace({ key: 'MatchSearchScreen', newKey: 'MatchSettingScreen', routeName: 'MatchSettingScreen' })}
+        onClick={() => navigation.pop()}
         fontStyle={styles.fontSpacing}
         containerStyle={styles.mh48}
-        disabled={loading}
       />
       <View style={styles.space} />
-      {loading && (
-        <LoadingComponent />
-      )}
     </SafeAreaView>
   );
 };
