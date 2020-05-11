@@ -36,7 +36,6 @@ const targetMatchStatus = [
   'match_accepted',
   'invites_sent',
   'match_started',
-  'match_started',
   'match_ended',
 ];
 
@@ -137,14 +136,14 @@ const LobbyStartScreen = ({ navigation }) => {
           match: response,
         });
         setMatchType(get(response, 'gameType') === '1v1');
-        updateTeamMembers(get(response, 'dire.players'), 'dire');
-        updateTeamMembers(get(response, 'radiant.players'), 'radiant');
+        updateTeamMembers(get(response, 'stats.dire.players'), 'dire');
+        updateTeamMembers(get(response, 'stats.radiant.players'), 'radiant');
         if (currentPageRef.current === offset) {
           return;
         }
         if (offset !== 2 && offset !== 3) {
           onPageChanged(offset);
-        } else if (response.player_data) {
+        } else if (response.stats) {
           onPageChanged(3);
         } else {
           onPageChanged(2);
@@ -251,7 +250,7 @@ const LobbyStartScreen = ({ navigation }) => {
             buttonVisible={false}
           />
           <View style={styles.individualPage}>
-            {matchType && direTeam && (
+            {matchType && direTeam && radiantTeam && (
               <View style={styles.itemContainer}>
                 <Text style={[styles.profileText, styles.matchProgressText]}>
                   {`The Dire | ${direPlayer.userName}`}
@@ -264,7 +263,7 @@ const LobbyStartScreen = ({ navigation }) => {
                 <MatchOneDetailComponent teamMember={radiantTeam[0]} />
               </View>
             )}
-            {!matchType && direTeam && (
+            {!matchType && direTeam && radiantTeam && (
               <View style={styles.teamItemContainer}>
                 <MatchTeamDetailComponent teamMember={selectedTeam ? direTeam : radiantTeam} />
               </View>
