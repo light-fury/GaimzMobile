@@ -62,9 +62,11 @@ export default StyleSheet.create({
     marginBottom: calcReal(28),
   },
   socialButton: {
-    width: calcReal(38),
-    height: calcReal(38),
+    width: calcReal(50),
+    height: calcReal(50),
     borderRadius: calcReal(12),
+    borderColor: '#000000',
+    borderWidth: 1,
     marginRight: calcReal(18),
     justifyContent: 'center',
     alignItems: 'center',

@@ -94,6 +94,7 @@ const WelcomeScreen = ({ navigation }) => {
         }
 
         AsyncStorage.setItem('AuthToken', apiResponse.authToken);
+        setApiClientHeader('Authorization', `Bearer ${apiResponse.authToken}`);
         setUser(apiResponse.user);
         resetNavigation(navigation, 'MainFlow');
       } catch (err) {

@@ -76,6 +76,7 @@ const SignUpScreen = ({ navigation }) => {
         }
 
         AsyncStorage.setItem('AuthToken', apiResponse.authToken);
+        setApiClientHeader('Authorization', `Bearer ${apiResponse.authToken}`);
         setUser(apiResponse.user);
       } catch (err) {
         Alert.alert('Error', 'There was an error signing you in');
@@ -150,7 +151,7 @@ const SignUpScreen = ({ navigation }) => {
               icon={twitchIcon}
               onClick={twitchSignin}
             />
-            <Text style={[styles.instructionText, { fontSize: calcReal(12) }]}>
+            <Text style={[styles.instructionText, { fontSize: calcReal(14) }]}>
               Or use your email account
             </Text>
           </View>

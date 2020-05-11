@@ -6,8 +6,8 @@ import { calcReal } from '../../Assets/config';
 
 const styles = StyleSheet.create({
   iconTemplate: {
-    width: calcReal(18),
-    height: calcReal(18),
+    width: calcReal(30),
+    height: calcReal(30),
   },
 });
 
