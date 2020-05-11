@@ -223,7 +223,7 @@ const MatchSettingScreen = ({ navigation }) => {
               borderColor={colors.secondary}
               textColor={colors.grayText}
               label="SEARCH GAME"
-              onClick={() => navigation.replace({ key: 'MatchSettingScreen', newKey: 'MatchSearchScreen', routeName: 'MatchSearchScreen' })}
+              onClick={() => navigation.navigate({ key: 'MatchSearchScreen', routeName: 'MatchSearchScreen' })}
               fontStyle={styles.fontSpacing}
               containerStyle={styles.mh48}
             />
