@@ -217,7 +217,7 @@ const LobbyStartScreen = ({ navigation }) => {
         </ImageBackground>
         {get(match, 'match.matchStatus') === 'match_ended' && (
           <Text style={[styles.profileText, styles.fontBig, styles.absoluteOne]}>
-            {get(match, 'match.radiantWon') === true ? 'RADIANT WON' : 'DIRE WON'}
+            {get(match, 'match.stats.radiantWon') === true ? 'RADIANT WON' : 'DIRE WON'}
           </Text>
         )}
       </View>
