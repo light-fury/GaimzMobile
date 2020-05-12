@@ -21,12 +21,14 @@ const MatchOneDetailComponent = ({ teamMember }) => {
         <Text style={[styles.profileText, styles.matchProgressText]}>
           {get(teamMember, 'heroName')}
         </Text>
-        <Image
-          style={styles.heroImage}
-          defaultSource={heroTemplate}
-          source={{ uri: get(teamMember, 'heroAvatarUrl') || '' }}
-          resizeMode="cover"
-        />
+        {get(teamMember, 'heroAvatarUrl') && (
+          <Image
+            style={styles.heroImage}
+            defaultSource={heroTemplate}
+            source={{ uri: get(teamMember, 'heroAvatarUrl') || '' }}
+            resizeMode="cover"
+          />
+        )}
       </View>
       <View style={[styles.itemContainer, styles.pt23]}>
         <Text style={[styles.profileText, styles.matchProgressText, styles.fontMedium]}>
@@ -38,19 +40,20 @@ const MatchOneDetailComponent = ({ teamMember }) => {
       </View>
       <View style={[styles.itemContainer, styles.pt23]}>
         <View style={[styles.rowContainer, styles.mb4]}>
-          {memberItems.length >= 3 && memberItems.slice(0, 3).map((subItem) => (
-            <Image
-              key={`dire ${subItem}`}
-              style={styles.heroItemImage}
-              source={{ uri: subItem || '' }}
-              resizeMode="cover"
-            />
+          {memberItems.slice(0,
+            (memberItems.length > 3 ? 3 : memberItems.length)).map((subItem, index) => (
+              <Image
+                key={`dire ${subItem}${index + 1}`}
+                style={styles.heroItemImage}
+                source={{ uri: subItem || '' }}
+                resizeMode="cover"
+              />
           ))}
         </View>
         <View style={styles.rowContainer}>
-          {memberItems.length >= 6 && memberItems.slice(3, 6).map((subItem) => (
+          {memberItems.length > 3 && memberItems.slice(3).map((subItem, index) => (
             <Image
-              key={`dire ${subItem}`}
+              key={`dire ${subItem}${index + 1}`}
               style={styles.heroItemImage}
               source={{ uri: subItem || '' }}
               resizeMode="cover"

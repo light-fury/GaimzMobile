@@ -63,9 +63,9 @@ const LobbyStartScreen = ({ navigation }) => {
     if (scrollViewRef.current) {
       scrollViewRef.current.scrollTo({ x: width * offset, y: 0 });
     }
-    setCurrentPage(offset);
-    setStartTime(moment());
-    setCurrentTime(0);
+    setCurrentPage(() => offset);
+    setStartTime(() => moment());
+    setCurrentTime(() => 0);
   };
 
   const acceptMatchRequest = useCallback(async () => {
@@ -98,27 +98,27 @@ const LobbyStartScreen = ({ navigation }) => {
     }
   });
 
-  const updateTeamMembers = useCallback((players, teamName) => {
+  const updateTeamMembers = (players, teamName) => {
     if (players && players.length > 0) {
       if (teamName === 'dire') {
-        setDireTeam(players);
+        setDireTeam(() => players);
         if (find(players, (subPlayer) => subPlayer.userId === user.userId)) {
-          setDirePlayer(user);
+          setDirePlayer(() => user);
         } else {
-          setDirePlayer(get(match, 'opponent'));
+          setDirePlayer(() => get(match, 'opponent'));
         }
       } else {
-        setRadiantTeam(players);
+        setRadiantTeam(() => players);
         if (find(players, (subPlayer) => subPlayer.userId === user.userId)) {
-          setRadiantPlayer(user);
+          setRadiantPlayer(() => user);
         } else {
-          setRadiantPlayer(get(match, 'opponent'));
+          setRadiantPlayer(() => get(match, 'opponent'));
         }
       }
     }
-  });
+  };
 
-  const checkMatchStatus = useCallback(async () => {
+  const checkMatchStatus = async () => {
     try {
       const response = await getMatchStatus(get(match, 'match.matchId'));
       if (response && response.matchStatus === 'match_cancelled') {
@@ -138,13 +138,19 @@ const LobbyStartScreen = ({ navigation }) => {
         setMatchType(get(response, 'gameType') === '1v1');
         updateTeamMembers(get(response, 'stats.dire.players'), 'dire');
         updateTeamMembers(get(response, 'stats.radiant.players'), 'radiant');
+        if (response.stats
+          && response.stats.dire
+          && response.stats.dire.players
+          && response.stats.dire.players.length > 0
+          && response.stats.dire.players[0].heroAvatarUrl) {
+          onPageChanged(3);
+          return;
+        }
         if (currentPageRef.current === offset) {
           return;
         }
         if (offset !== 2 && offset !== 3) {
           onPageChanged(offset);
-        } else if (response.stats) {
-          onPageChanged(3);
         } else {
           onPageChanged(2);
         }
@@ -152,7 +158,7 @@ const LobbyStartScreen = ({ navigation }) => {
     } catch (err) {
       //
     }
-  });
+  };
 
   const startTimer = () => {
     BackgroundTimer.runBackgroundTimer(() => {
