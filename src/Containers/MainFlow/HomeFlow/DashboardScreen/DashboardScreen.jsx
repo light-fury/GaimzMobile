@@ -96,10 +96,12 @@ const DashboardScreen = ({ navigation }) => {
     >
       <StatusBar barStyle="dark-content" />
       <View style={styles.header}>
-        <Image
-          source={{ uri: user.userAvatarUrl }}
+        <SocialButton
           style={styles.avatarImage}
-          resizeMode="cover"
+          iconStyle={styles.avatarImage}
+          icon={{ uri: user.userAvatarUrl }}
+          clickOpacity={1}
+          onClick={() => navigation.navigate('AccountScreen', { from: 'HomeFlow' })}
         />
         <Text style={[styles.flexContainer, styles.profileName]}>
           {user.userName}

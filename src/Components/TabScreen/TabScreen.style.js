@@ -1,11 +1,11 @@
 // @flow
 import { StyleSheet } from 'react-native';
-import { colors, calcReal } from '../../Assets/config';
+import { colors, calcReal, isIphoneX } from '../../Assets/config';
 
 export default StyleSheet.create({
   flexStyle: {
     height: calcReal(100),
-    paddingBottom: calcReal(20),
+    paddingBottom: isIphoneX() ? calcReal(20) : 0,
     paddingHorizontal: calcReal(22),
     backgroundColor: colors.white,
     position: 'absolute',
@@ -38,5 +38,14 @@ export default StyleSheet.create({
     width: calcReal(30),
     height: calcReal(30),
     tintColor: colors.secondary,
+  },
+  titleText: {
+    fontSize: calcReal(15),
+    lineHeight: calcReal(18),
+    color: colors.gray,
+  },
+  titleFocused: {
+    color: colors.secondary,
+    fontWeight: 'bold',
   },
 });

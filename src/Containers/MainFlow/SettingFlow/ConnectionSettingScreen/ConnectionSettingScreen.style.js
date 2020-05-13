@@ -1,5 +1,5 @@
 // @flow
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { colors, calcReal } from '../../../../Assets/config';
 
@@ -13,7 +13,7 @@ export default StyleSheet.create({
     flex: 1,
   },
   header: {
-    marginTop: getStatusBarHeight(false),
+    marginTop: Platform.OS === 'ios' ? getStatusBarHeight(true) : calcReal(14),
     height: calcReal(78),
     flexDirection: 'row',
     alignItems: 'center',
@@ -22,10 +22,12 @@ export default StyleSheet.create({
     paddingHorizontal: calcReal(20),
   },
   avatarImage: {
-    borderRadius: calcReal(12),
-    overflow: 'hidden',
     width: calcReal(48),
     height: calcReal(48),
+    borderRadius: calcReal(12),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: `${colors.lightGray}70`,
   },
   profileName: {
     marginHorizontal: calcReal(18),

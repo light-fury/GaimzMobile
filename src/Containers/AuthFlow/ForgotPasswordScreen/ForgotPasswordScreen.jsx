@@ -57,6 +57,7 @@ class ForgotPasswordScreen extends React.PureComponent {
             <SocialButton
               style={styles.socialButton}
               icon={arrowLeft}
+              iconStyle={styles.headerIcon}
               onClick={() => navigation.pop()}
             />
           </ImageBackground>

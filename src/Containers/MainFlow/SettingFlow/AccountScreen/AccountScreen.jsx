@@ -1,5 +1,5 @@
 // @flow
-import React, { useContext } from 'react';
+import React, { useContext, useCallback } from 'react';
 import {
   Text,
   View,
@@ -12,9 +12,9 @@ import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
 
 import {
-  templateAvatar,
-  settingsIcon,
+  heroTemplate,
   dotaBackground,
+  arrowLeft,
 } from '../../../../Assets';
 import SocialButton from '../../../../Components/SocialButton';
 import styles from './AccountScreen.style';
@@ -23,27 +23,27 @@ import { UserContext } from '../../../../contexts';
 
 const listData = [
   {
-    image: templateAvatar,
+    image: heroTemplate,
     title: 'Riki',
     status: '14/6/19',
   },
   {
-    image: templateAvatar,
+    image: heroTemplate,
     title: 'Lich',
     status: '17/2/4',
   },
   {
-    image: templateAvatar,
+    image: heroTemplate,
     title: 'Pudge',
     status: '7/3/29',
   },
   {
-    image: templateAvatar,
+    image: heroTemplate,
     title: 'Lycan',
     status: '6/12/7',
   },
   {
-    image: templateAvatar,
+    image: heroTemplate,
     title: 'Phantom Assasin',
     status: '19/2/14',
   },
@@ -51,6 +51,15 @@ const listData = [
 
 const AccountScreen = ({ navigation }) => {
   const [user] = useContext(UserContext);
+
+  const handleGoBack = useCallback(() => {
+    const fromScreen = navigation.getParam('from');
+    if (fromScreen && fromScreen.length > 0) {
+      navigation.navigate(fromScreen);
+    } else {
+      navigation.pop();
+    }
+  });
 
   const renderItem = ({ item, index }) => (
     <TouchableOpacity
@@ -90,8 +99,8 @@ const AccountScreen = ({ navigation }) => {
         <SocialButton
           style={styles.headerButton}
           iconStyle={styles.headerIcon}
-          icon={settingsIcon}
-          onClick={() => navigation.navigate('SettingMainScreen')}
+          icon={arrowLeft}
+          onClick={() => handleGoBack()}
         />
       </View>
       <Text style={styles.titleText}>Recent Matches</Text>
