@@ -107,7 +107,7 @@ const LobbyStartScreen = ({ navigation }) => {
         }
       }
     }
-  }, [user]);
+  }, [user, match]);
 
   const checkMatchStatus = useCallback(async () => {
     try {

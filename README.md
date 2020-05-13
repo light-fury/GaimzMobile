@@ -3,7 +3,8 @@
 </p>
 
   
-
+[![Build status](https://build.appcenter.ms/v0.1/apps/e9d41305-cb66-43e3-9741-54b7203b306b/branches/master/badge)](https://appcenter.ms)
+[![Build status](https://build.appcenter.ms/v0.1/apps/ef997688-19e8-4676-8eca-e11fd23aaf01/branches/master/badge)](https://appcenter.ms)
 ## Description
 This project is the React Native Frontend used for Gaimz as a platform. You should be able to follow the steps from this readme to get an app up and running.
 
