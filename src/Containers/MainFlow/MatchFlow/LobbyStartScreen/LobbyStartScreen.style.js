@@ -101,6 +101,11 @@ export default StyleSheet.create({
     paddingRight: calcReal(16),
     justifyContent: 'space-between',
   },
+  endButtonStyle: {
+    marginHorizontal: calcReal(97),
+    height: calcReal(39),
+    marginBottom: calcReal(10),
+  },
   arrowImage: {
     width: calcReal(16),
     height: calcReal(16),
