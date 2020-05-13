@@ -12,7 +12,7 @@ import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
 
 import {
-  templateAvatar,
+  heroTemplate,
   dotaBackground,
   arrowLeft,
 } from '../../../../Assets';
@@ -23,27 +23,27 @@ import { UserContext } from '../../../../contexts';
 
 const listData = [
   {
-    image: templateAvatar,
+    image: heroTemplate,
     title: 'Riki',
     status: '14/6/19',
   },
   {
-    image: templateAvatar,
+    image: heroTemplate,
     title: 'Lich',
     status: '17/2/4',
   },
   {
-    image: templateAvatar,
+    image: heroTemplate,
     title: 'Pudge',
     status: '7/3/29',
   },
   {
-    image: templateAvatar,
+    image: heroTemplate,
     title: 'Lycan',
     status: '6/12/7',
   },
   {
-    image: templateAvatar,
+    image: heroTemplate,
     title: 'Phantom Assasin',
     status: '19/2/14',
   },
