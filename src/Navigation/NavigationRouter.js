@@ -22,6 +22,7 @@ import MatchReadyScreen from '../Containers/MainFlow/MatchFlow/MatchReadyScreen'
 import LobbyStartScreen from '../Containers/MainFlow/MatchFlow/LobbyStartScreen';
 // Home Flow
 import SettingMainScreen from '../Containers/MainFlow/SettingFlow/SettingMainScreen';
+import AccountScreen from '../Containers/MainFlow/SettingFlow/AccountScreen';
 import ConnectionSettingScreen from '../Containers/MainFlow/SettingFlow/ConnectionSettingScreen';
 import AccountSettingScreen from '../Containers/MainFlow/SettingFlow/AccountSettingScreen';
 import TabScreen from '../Components/TabScreen/TabScreen';
@@ -178,9 +179,16 @@ export const MainNavigator = createStackNavigator(
                     headerShown: false,
                   }),
                 },
+                AccountScreen: {
+                  screen: AccountScreen,
+                  navigationOptions: () => ({
+                    headerShown: false,
+                  }),
+                },
               },
               {
                 headerMode: 'screen',
+                initialRouteName: 'SettingMainScreen',
               },
             ),
             navigationOptions: ({ navigation }) => {

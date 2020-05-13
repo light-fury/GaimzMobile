@@ -28,6 +28,7 @@ const StreamDetailScreen = ({ navigation }) => {
       <SocialButton
         style={styles.socialButton}
         icon={arrowLeft}
+        iconStyle={styles.headerIcon}
         onClick={() => navigation.pop()}
       />
     </SafeAreaView>

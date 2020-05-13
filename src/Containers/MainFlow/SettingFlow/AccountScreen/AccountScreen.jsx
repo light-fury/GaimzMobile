@@ -1,5 +1,5 @@
 // @flow
-import React, { useContext } from 'react';
+import React, { useContext, useCallback } from 'react';
 import {
   Text,
   View,
@@ -13,8 +13,8 @@ import SafeAreaView from 'react-native-safe-area-view';
 
 import {
   templateAvatar,
-  settingsIcon,
   dotaBackground,
+  arrowLeft,
 } from '../../../../Assets';
 import SocialButton from '../../../../Components/SocialButton';
 import styles from './AccountScreen.style';
@@ -51,6 +51,15 @@ const listData = [
 
 const AccountScreen = ({ navigation }) => {
   const [user] = useContext(UserContext);
+
+  const handleGoBack = useCallback(() => {
+    const fromScreen = navigation.getParam('from');
+    if (fromScreen && fromScreen.length > 0) {
+      navigation.navigate(fromScreen);
+    } else {
+      navigation.pop();
+    }
+  });
 
   const renderItem = ({ item, index }) => (
     <TouchableOpacity
@@ -90,8 +99,8 @@ const AccountScreen = ({ navigation }) => {
         <SocialButton
           style={styles.headerButton}
           iconStyle={styles.headerIcon}
-          icon={settingsIcon}
-          onClick={() => navigation.navigate('SettingMainScreen')}
+          icon={arrowLeft}
+          onClick={() => handleGoBack()}
         />
       </View>
       <Text style={styles.titleText}>Recent Matches</Text>

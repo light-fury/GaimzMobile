@@ -22,10 +22,12 @@ export default StyleSheet.create({
     paddingHorizontal: calcReal(20),
   },
   avatarImage: {
-    borderRadius: calcReal(12),
-    overflow: 'hidden',
     width: calcReal(48),
     height: calcReal(48),
+    borderRadius: calcReal(12),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: `${colors.lightGray}70`,
   },
   profileName: {
     marginHorizontal: calcReal(18),

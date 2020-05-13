@@ -1,5 +1,5 @@
 // @flow
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { colors, calcReal } from '../../../../Assets/config';
 
@@ -7,27 +7,19 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.secondary,
-    paddingTop: getStatusBarHeight(false),
     paddingBottom: calcReal(100),
   },
   flexContainer: {
     flex: 1,
   },
-  scrollContainer: {
-    flex: 1,
-    marginHorizontal: calcReal(18),
-    borderTopLeftRadius: calcReal(32),
-    borderTopRightRadius: calcReal(32),
-    backgroundColor: colors.white,
-  },
   innerContainer: {
-    paddingHorizontal: calcReal(28),
-    paddingVertical: calcReal(38),
+    paddingHorizontal: calcReal(48),
   },
   rowContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: calcReal(38),
+    marginBottom: calcReal(28),
+    marginHorizontal: calcReal(48),
   },
   avatarImage: {
     borderRadius: calcReal(34),
@@ -41,29 +33,68 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: calcReal(15),
-    backgroundColor: colors.secondary,
+    backgroundColor: colors.grayBorder,
     marginRight: 'auto',
     marginLeft: 'auto',
   },
   headerTrashButton: {
     borderWidth: calcReal(1),
-    borderColor: `${colors.gray}A0`,
-    backgroundColor: colors.white,
+    borderColor: colors.white,
+    backgroundColor: colors.transparent,
+  },
+  headerTrashIcon: {
+    width: calcReal(22),
+    height: calcReal(22),
+    tintColor: colors.white,
   },
   headerIcon: {
     width: calcReal(22),
     height: calcReal(22),
+    tintColor: colors.black,
   },
   titleText: {
     fontSize: calcReal(20),
     lineHeight: calcReal(20),
     fontWeight: 'bold',
-    color: colors.secondary,
+    color: colors.lightGray,
   },
   inputContainer: {
     marginBottom: calcReal(18),
+    marginHorizontal: calcReal(48),
   },
   mv10: {
     marginVertical: calcReal(8),
+    marginHorizontal: calcReal(48),
+  },
+  header: {
+    marginTop: Platform.OS === 'ios' ? getStatusBarHeight(true) : calcReal(14),
+    height: calcReal(78),
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingTop: calcReal(8),
+    paddingBottom: calcReal(22),
+    paddingHorizontal: calcReal(20),
+  },
+  headerText: {
+    fontSize: calcReal(16),
+    lineHeight: calcReal(22),
+    fontWeight: 'bold',
+    color: colors.white,
+    marginLeft: calcReal(18),
+  },
+  arrowImage: {
+    width: calcReal(48),
+    height: calcReal(48),
+    borderRadius: calcReal(12),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: `${colors.lightGray}70`,
+  },
+  arrowIcon: {
+    width: calcReal(18),
+    height: calcReal(18),
+  },
+  labelStyle: {
+    color: colors.lightGray,
   },
 });

@@ -93,10 +93,12 @@ const SettingMainScreen = ({ navigation }) => {
     >
       <StatusBar barStyle="light-content" />
       <View style={styles.header}>
-        <Image
-          source={{ uri: user.userAvatarUrl }}
+        <SocialButton
           style={styles.avatarImage}
-          resizeMode="cover"
+          iconStyle={styles.avatarImage}
+          icon={{ uri: user.userAvatarUrl }}
+          clickOpacity={1}
+          onClick={() => navigation.navigate('AccountScreen')}
         />
         <Text style={[styles.flexContainer, styles.profileName]}>
           {user.userName}

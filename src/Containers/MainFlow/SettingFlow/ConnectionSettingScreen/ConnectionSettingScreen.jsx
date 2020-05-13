@@ -110,22 +110,17 @@ const ConnectionSettingScreen = ({ navigation }) => {
       forceInset={{ bottom: 'never', top: 'never' }}
       style={styles.container}
     >
-      <TouchableOpacity style={styles.header} onPress={() => navigation.pop()}>
-        <Image
-          source={arrowLeft}
+      <View style={styles.header}>
+        <SocialButton
           style={styles.avatarImage}
-          resizeMode="cover"
+          iconStyle={styles.headerIcon}
+          icon={arrowLeft}
+          onClick={() => navigation.pop()}
         />
         <Text style={[styles.flexContainer, styles.profileName]}>
           Back
         </Text>
-        {/* <SocialButton
-          style={styles.headerButton}
-          iconStyle={styles.headerIcon}
-          icon={settingsIcon}
-          onClick={() => Alert.alert('Bell Clicked')}
-        /> */}
-      </TouchableOpacity>
+      </View>
       <Text style={styles.titleText}>Connections</Text>
       <FlatList
         style={styles.flexContainer}

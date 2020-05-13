@@ -33,4 +33,8 @@ export default StyleSheet.create({
     alignItems: 'center',
     backgroundColor: `${colors.lightGray}70`,
   },
+  headerIcon: {
+    width: calcReal(18),
+    height: calcReal(18),
+  },
 });

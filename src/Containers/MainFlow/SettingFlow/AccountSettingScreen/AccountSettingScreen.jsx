@@ -1,13 +1,13 @@
 // @flow
 import React, { useContext, useState } from 'react';
 import {
-  Alert, Text, View, Image, ScrollView,
+  Alert, Text, View, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import SafeAreaView from 'react-native-safe-area-view';
 import AsyncStorage from '@react-native-community/async-storage';
 
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import SocialButton from '../../../../Components/SocialButton';
 import CustomInput from '../../../../Components/CustomInput';
 import ConfirmButton from '../../../../Components/ConfirmButton';
@@ -16,6 +16,7 @@ import {
   cameraIcon,
   deleteIcon,
   closeIcon,
+  arrowLeft,
 } from '../../../../Assets';
 import styles from './AccountSettingScreen.style';
 import { UserContext, MatchContext } from '../../../../contexts';
@@ -73,13 +74,20 @@ const AccountSettingScreen = ({ navigation }) => {
       forceInset={{ bottom: 'never', top: 'never' }}
       style={styles.container}
     >
-      <ScrollView
-        style={styles.scrollContainer}
-        contentContainerStyle={styles.innerContainer}
+      <KeyboardAwareScrollView
+        bounces={false}
       >
-        <TouchableOpacity style={styles.backContainer} onPress={() => navigation.pop()}>
-          <Text style={styles.titleText}>&lt;  Back</Text>
-        </TouchableOpacity>
+        <View style={styles.header}>
+          <SocialButton
+            style={styles.arrowImage}
+            iconStyle={styles.arrowIcon}
+            icon={arrowLeft}
+            onClick={() => navigation.pop()}
+          />
+          <Text style={styles.headerText}>
+            Back
+          </Text>
+        </View>
         <View style={styles.rowContainer}>
           <SocialButton
             style={styles.headerButton}
@@ -94,7 +102,7 @@ const AccountSettingScreen = ({ navigation }) => {
           />
           <SocialButton
             style={[styles.headerButton, styles.headerTrashButton]}
-            iconStyle={styles.headerIcon}
+            iconStyle={styles.headerTrashIcon}
             icon={deleteIcon}
             onClick={onDelete}
           />
@@ -107,6 +115,7 @@ const AccountSettingScreen = ({ navigation }) => {
           onClick={() => setUsername('')}
           iconVisible={userName.length > 0}
           borderColor={colors.grayOpacity}
+          labelStyle={styles.labelStyle}
           containerStyle={styles.inputContainer}
         />
         <CustomInput
@@ -117,6 +126,7 @@ const AccountSettingScreen = ({ navigation }) => {
           onClick={() => setEmail('')}
           iconVisible={userEmail.length > 0}
           borderColor={colors.grayOpacity}
+          labelStyle={styles.labelStyle}
           containerStyle={styles.inputContainer}
         />
         {/* <CustomInput
@@ -145,7 +155,13 @@ const AccountSettingScreen = ({ navigation }) => {
           label="Save Changes"
           onClick={onSubmit}
         />
-      </ScrollView>
+        <ConfirmButton
+          containerStyle={styles.mv10}
+          color={colors.ADSD}
+          label="Get Back"
+          onClick={() => navigation.pop()}
+        />
+      </KeyboardAwareScrollView>
     </SafeAreaView>
   );
 };
