@@ -3,6 +3,7 @@ import { NavigationActions } from 'react-navigation';
 import PropTypes from 'prop-types';
 import {
   TouchableOpacity,
+  Text,
   View,
 } from 'react-native';
 import { connect } from 'react-redux';
@@ -25,12 +26,12 @@ class TabScreen extends Component {
           icon: homeIcon,
         },
         {
-          title: 'Match',
+          title: 'Match Up',
           routeName: 'MatchFlow',
           icon: matchIcon,
         },
         {
-          title: 'Setting',
+          title: 'Settings',
           routeName: 'SettingFlow',
           icon: settingsIcon,
         },
@@ -87,6 +88,9 @@ class TabScreen extends Component {
                 icon={item.icon}
                 onClick={() => this.navigateToScreen(item.routeName)}
               />
+              <Text style={[styles.titleText, selected && styles.titleFocused]}>
+                {item.title}
+              </Text>
             </TouchableOpacity>
           );
         })}

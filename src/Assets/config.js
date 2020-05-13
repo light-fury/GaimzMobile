@@ -1,4 +1,4 @@
-import { Dimensions } from 'react-native';
+import { Dimensions, Platform } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 
@@ -24,6 +24,11 @@ export const validateEmail = (email) => {
   const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return re.test(email);
 };
+
+export const isIphoneX = () => Platform.OS === 'ios'
+    && !Platform.isPad
+    && !Platform.isTVOS
+    && ((height === 812 || width === 812) || (height === 896 || width === 896));
 
 export const colors = {
   primary: '#119DCD',
