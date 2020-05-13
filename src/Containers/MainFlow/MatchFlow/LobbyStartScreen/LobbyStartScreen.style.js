@@ -143,7 +143,8 @@ export default StyleSheet.create({
   },
   rowContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
+    justifyContent: 'flex-start',
+    width: calcReal(60),
   },
   mb4: {
     marginBottom: calcReal(4),

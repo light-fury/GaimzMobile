@@ -9,7 +9,6 @@ import {
 import BackgroundTimer from 'react-native-background-timer';
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
-import moment from 'moment';
 import {
   get, find,
 } from 'lodash';
@@ -49,24 +48,16 @@ const LobbyStartScreen = ({ navigation }) => {
   const [selectedTeam, setSelectedTeam] = useState(true);
   const [radiantTeam, setRadiantTeam] = useState();
   const [currentTime, setCurrentTime] = useState(0);
-  const [startedTime, setStartTime] = useState(moment());
   const [currentPage, setCurrentPage] = useState(0);
-  const currentPageRef = useRef();
   const scrollViewRef = useRef();
-  const startedTimeRef = useRef();
-  const currentTimeRef = useRef();
-  currentPageRef.current = currentPage;
-  startedTimeRef.current = startedTime;
-  currentTimeRef.current = currentTime;
 
-  const onPageChanged = (offset) => {
+  const onPageChanged = useCallback((offset) => {
     if (scrollViewRef.current) {
       scrollViewRef.current.scrollTo({ x: width * offset, y: 0 });
     }
     setCurrentPage(offset);
-    setStartTime(moment());
     setCurrentTime(0);
-  };
+  }, [scrollViewRef]);
 
   const acceptMatchRequest = useCallback(async () => {
     try {
@@ -77,7 +68,7 @@ const LobbyStartScreen = ({ navigation }) => {
     } catch (err) {
       //
     }
-  });
+  }, [match]);
 
   const cancelMatchRequest = useCallback(async (updateApi) => {
     try {
@@ -116,7 +107,7 @@ const LobbyStartScreen = ({ navigation }) => {
         }
       }
     }
-  });
+  }, [user]);
 
   const checkMatchStatus = useCallback(async () => {
     try {
@@ -138,13 +129,15 @@ const LobbyStartScreen = ({ navigation }) => {
         setMatchType(get(response, 'gameType') === '1v1');
         updateTeamMembers(get(response, 'stats.dire.players'), 'dire');
         updateTeamMembers(get(response, 'stats.radiant.players'), 'radiant');
-        if (currentPageRef.current === offset) {
+        if (get(response, 'stats.dire.players[0].heroAvatarUrl')) {
+          onPageChanged(3);
+          return;
+        }
+        if (currentPage === offset) {
           return;
         }
         if (offset !== 2 && offset !== 3) {
           onPageChanged(offset);
-        } else if (response.stats) {
-          onPageChanged(3);
         } else {
           onPageChanged(2);
         }
@@ -152,7 +145,7 @@ const LobbyStartScreen = ({ navigation }) => {
     } catch (err) {
       //
     }
-  });
+  }, [match, currentPage, targetMatchStatus, updateTeamMembers]);
 
   const startTimer = () => {
     BackgroundTimer.runBackgroundTimer(() => {
@@ -211,7 +204,7 @@ const LobbyStartScreen = ({ navigation }) => {
         </ImageBackground>
         {get(match, 'match.matchStatus') === 'match_ended' && (
           <Text style={[styles.profileText, styles.fontBig, styles.absoluteOne]}>
-            {get(match, 'match.radiantWon') === true ? 'RADIANT WON' : 'DIRE WON'}
+            {get(match, 'match.stats.radiantWon') === true ? 'RADIANT WON' : 'DIRE WON'}
           </Text>
         )}
       </View>

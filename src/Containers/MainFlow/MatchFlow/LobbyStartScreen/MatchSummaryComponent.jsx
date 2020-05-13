@@ -12,9 +12,11 @@ import styles from './LobbyStartScreen.style';
 
 const MatchSummaryComponent = ({ match }) => (
   <View>
-    <Text style={[styles.profileText, styles.description]}>#GMZLOBBY2973</Text>
     <Text style={[styles.profileText, styles.description]}>
-      {`${get(match, 'game.gameName')} ${get(match, 'match.gameType') === '1v1' ? '1VS1' : '5VS5'} | EU | BO1`}
+      {`#${get(match, 'match.matchId')}`}
+    </Text>
+    <Text style={[styles.profileText, styles.description]}>
+      {`${get(match, 'game.gameName')} ${get(match, 'match.gameType') === '1v1' ? '1VS1' : '5VS5'} | BO1`}
     </Text>
   </View>
 );
