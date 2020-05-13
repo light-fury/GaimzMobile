@@ -1,5 +1,5 @@
 // @flow
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { colors, calcReal } from '../../../../Assets/config';
 
@@ -15,7 +15,7 @@ export default StyleSheet.create({
     flex: 1,
   },
   header: {
-    marginTop: getStatusBarHeight(false),
+    marginTop: Platform.OS === 'ios' ? getStatusBarHeight(true) : calcReal(14),
     height: calcReal(78),
     flexDirection: 'row',
     alignItems: 'center',

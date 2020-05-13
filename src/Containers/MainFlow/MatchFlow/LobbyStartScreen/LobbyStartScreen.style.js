@@ -8,7 +8,7 @@ const { width } = Dimensions.get('window');
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.ADSD,
+    backgroundColor: colors.secondary,
     paddingBottom: calcReal(100),
   },
   header: {
@@ -100,6 +100,11 @@ export default StyleSheet.create({
     alignItems: 'center',
     paddingRight: calcReal(16),
     justifyContent: 'space-between',
+  },
+  endButtonStyle: {
+    marginHorizontal: calcReal(97),
+    height: calcReal(39),
+    marginBottom: calcReal(10),
   },
   arrowImage: {
     width: calcReal(16),

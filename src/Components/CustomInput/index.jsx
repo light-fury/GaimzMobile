@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 
 import { colors, calcReal } from '../../Assets/config';
+import { checkIcon } from '../../Assets';
 
 const styles = StyleSheet.create({
   titleText: {
@@ -74,7 +75,11 @@ const CustomInput = ({
         {...props}
       />
       {iconVisible && icon && (
-      <TouchableOpacity onPress={onClick} style={styles.iconContainer}>
+      <TouchableOpacity
+        onPress={onClick}
+        activeOpacity={icon === checkIcon ? 1 : 0.5}
+        style={styles.iconContainer}
+      >
         <Image
           style={styles.iconStyle}
           resizeMode="contain"

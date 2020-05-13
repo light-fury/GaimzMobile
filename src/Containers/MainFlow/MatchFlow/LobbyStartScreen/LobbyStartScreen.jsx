@@ -15,6 +15,7 @@ import {
 
 import { updateMatchStatus, getMatchStatus, lobbyInvite } from '../../../../api';
 import { MatchContext, UserContext } from '../../../../contexts';
+import ConfirmButton from '../../../../Components/ConfirmButton';
 import ProfileComponent from './ProfileScreen';
 import PageScreen from './PageScreen';
 import MatchSummaryComponent from './MatchSummaryComponent';
@@ -24,7 +25,7 @@ import {
 } from '../../../../Assets';
 import MatchOneDetailComponent from './MatchOneDetailComponent';
 import MatchTeamDetailComponent from './MatchTeamDetailComponent';
-import { calcReal } from '../../../../Assets/config';
+import { calcReal, colors } from '../../../../Assets/config';
 
 const { width } = Dimensions.get('window');
 
@@ -82,7 +83,7 @@ const LobbyStartScreen = ({ navigation }) => {
       setMatch({});
       BackgroundTimer.stopBackgroundTimer();
       setTimeout(() => {
-        navigation.pop(3);
+        navigation.popToTop();
       }, 250);
     } catch (error) {
       //
@@ -263,6 +264,16 @@ const LobbyStartScreen = ({ navigation }) => {
             )}
           </View>
         </ScrollView>
+
+        {currentPage && (
+          <ConfirmButton
+            color={colors.loginColor}
+            label="END MATCH"
+            onClick={() => cancelMatchRequest(false)}
+            fontStyle={styles.fontSpacing}
+            containerStyle={styles.endButtonStyle}
+          />
+        )}
         <TouchableOpacity style={styles.reportContainer}>
           <Text style={styles.profileText}>REPORT ISSUE</Text>
           <Image source={arrowRight} style={styles.arrowImage} resizeMode="contain" />
