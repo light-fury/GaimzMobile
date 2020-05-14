@@ -29,7 +29,10 @@ const wrapFetchInTimeout = (fetchRequest) => {
   let timeoutHandleId = null;
   const timeout = new Promise((resolve, reject) => {
     console.info('in promise');
-    timeoutHandleId = setTimeout(() => { console.info('Rejecting due to timeout'); reject(); }, timeoutMs, 'request timed out');
+    timeoutHandleId = setTimeout(() => {
+      console.info('Rejecting due to timeout');
+      reject();
+    }, timeoutMs, 'request timed out');
   });
   return Promise.race([
     timeout,
@@ -86,30 +89,26 @@ async function innerFetch(method, url, headers = {}, data, abortController) {
   }
 }
 
-const post = async (url, data, abortController) => {
-  return innerFetch(
-    METHOD.POST,
-    url,
-    {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    data,
-    abortController,
-  );
-};
+const post = async (url, data, abortController) => innerFetch(
+  METHOD.POST,
+  url,
+  {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+  },
+  data,
+  abortController,
+);
 
-const get = async (url, abortController) => {
-  return innerFetch(
-    METHOD.GET,
-    url,
-    {
-      Accept: 'application/json',
-    },
-    null,
-    abortController,
-  );
-};
+const get = async (url, abortController) => innerFetch(
+  METHOD.GET,
+  url,
+  {
+    Accept: 'application/json',
+  },
+  null,
+  abortController,
+);
 
 
 export default {

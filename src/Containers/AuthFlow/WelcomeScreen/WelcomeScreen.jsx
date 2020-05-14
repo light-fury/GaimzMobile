@@ -29,7 +29,7 @@ import {
   closeIcon,
 } from '../../../Assets';
 import { colors, calcReal, validateEmail } from '../../../Assets/config';
-import { signIn, signInWithTwitch, checkToken, attemptRefreshUser } from '../../../api';
+import { signIn, signInWithTwitch, attemptRefreshUser } from '../../../api';
 import { UserContext } from '../../../contexts';
 import { twitchSigninUrl } from '../../../constants/oauth';
 import { resetNavigation } from '../../../helpers/navigation';
