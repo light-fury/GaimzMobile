@@ -264,8 +264,7 @@ const LobbyStartScreen = ({ navigation }) => {
             )}
           </View>
         </ScrollView>
-
-        {currentPage && (
+        {!!currentPage && (
           <ConfirmButton
             color={colors.loginColor}
             label="END MATCH"
