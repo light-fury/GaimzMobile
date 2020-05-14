@@ -15,12 +15,11 @@ export const checkToken = () => apiClient.get('/checktoken').then(({ data }) => 
 
 export const resetPassword = (email) => apiClient.post(`/login/reset/${email}`).then(({ data }) => data);
 
-export const attemptRefreshUser = async () => {
+export const attemptRefreshUser = async (abortController = null) => {
   // eslint-disable-next-line no-undef
-  const ac = new AbortController();
   const token = await AsyncStorage.getItem('AuthToken');
   HttpClient.setAuthenticationToken(token);
-  const response = await HttpClient.get('checktoken', ac);
+  const response = await HttpClient.get('checktoken', abortController);
   if (!response.error) {
     AsyncStorage.setItem('AuthToken', response.payload.authToken);
     return response.payload.user;
