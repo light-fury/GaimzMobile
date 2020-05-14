@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { decamelizeKeys, camelizeKeys } from 'humps';
 
 let baseUrl = 'https://basicapi.gaimz.com';
@@ -28,18 +29,13 @@ const setAuthenticationToken = (token) => {
 const wrapFetchInTimeout = (fetchRequest) => {
   let timeoutHandleId = null;
   const timeout = new Promise((resolve, reject) => {
-    console.info('in promise');
     timeoutHandleId = setTimeout(() => {
-      console.info('Rejecting due to timeout');
       reject();
     }, timeoutMs, 'request timed out');
   });
   return Promise.race([
     timeout,
-    fetchRequest.then((value) => {
-      console.info('Resolved fetch');
-      return value;
-    }),
+    fetchRequest,
   ]).then((result) => {
     clearTimeout(timeoutHandleId);
     return result;
