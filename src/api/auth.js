@@ -9,3 +9,5 @@ export const signInWithSteam = (params) => apiClient.post('/apps/steam/account',
 export const signInWithTwitch = (params) => apiClient.post('/apps/twitch/code', params).then(({ data }) => data);
 
 export const checkToken = () => apiClient.get('/checktoken').then(({ data }) => data);
+
+export const resetPassword = (email) => apiClient.post(`/login/reset/${email}`).then(({ data }) => data);

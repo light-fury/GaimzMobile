@@ -197,12 +197,12 @@ const SignUpScreen = ({ navigation }) => {
             label="Sign Up"
             onClick={onSubmit}
             disabled={
-            isLoading
-            || email.length === 0
-            || username.length === 0
-            || password.length < 8
-            || !validateEmail(email)
-          }
+              isLoading
+              || email.length === 0
+              || username.length === 0
+              || password.length < 8
+              || !validateEmail(email)
+            }
             containerStyle={styles.mh20}
           />
           <ConfirmButton

@@ -3,7 +3,7 @@ import React, {
   useContext, useCallback, useState,
 } from 'react';
 import {
-  Text, View, Linking, Alert, ScrollView
+  Text, View, Linking, Alert, ScrollView,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';

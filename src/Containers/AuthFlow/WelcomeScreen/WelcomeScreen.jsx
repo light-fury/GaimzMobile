@@ -198,10 +198,10 @@ const WelcomeScreen = ({ navigation }) => {
             label="Login"
             disabled={
             isLoading
-            || password.length < 8
-            || email.length === 0
-            || !validateEmail(email)
-          }
+              || password.length < 8
+              || email.length === 0
+              || !validateEmail(email)
+            }
             onClick={onSubmit}
           />
           <ConfirmButton
