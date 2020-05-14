@@ -44,7 +44,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
     } finally {
       setLoading(false);
     }
-  });
+  }, [email]);
 
   return (
     <SafeAreaView
