@@ -34,6 +34,9 @@ export default StyleSheet.create({
     fontWeight: 'bold',
     color: colors.white,
   },
+  textRight: {
+    textAlign: 'right',
+  },
   headerButton: {
     width: calcReal(38),
     height: calcReal(38),
@@ -43,7 +46,6 @@ export default StyleSheet.create({
     borderWidth: calcReal(1),
     borderColor: `${colors.lightGray}70`,
     backgroundColor: colors.transparent,
-    marginRight: calcReal(5),
   },
   itemButton: {
     width: calcReal(48),

@@ -97,16 +97,6 @@ const DashboardScreen = ({ navigation }) => {
       <StatusBar barStyle="dark-content" />
       <View style={styles.header}>
         <SocialButton
-          style={styles.avatarImage}
-          iconStyle={styles.avatarImage}
-          icon={{ uri: user.userAvatarUrl }}
-          clickOpacity={1}
-          onClick={() => navigation.navigate('AccountScreen', { from: 'HomeFlow' })}
-        />
-        <Text style={[styles.flexContainer, styles.profileName]}>
-          {user.userName}
-        </Text>
-        <SocialButton
           style={styles.headerButton}
           iconStyle={styles.headerIcon}
           icon={searchIcon}
@@ -117,6 +107,16 @@ const DashboardScreen = ({ navigation }) => {
           iconStyle={styles.headerIcon}
           icon={notificationIcon}
           onClick={() => Alert.alert('Bell Clicked')}
+        />
+        <Text style={[styles.flexContainer, styles.profileName, styles.textRight]}>
+          {user.userName}
+        </Text>
+        <SocialButton
+          style={styles.avatarImage}
+          iconStyle={styles.avatarImage}
+          icon={{ uri: user.userAvatarUrl }}
+          clickOpacity={1}
+          onClick={() => navigation.navigate('AccountScreen', { from: 'HomeFlow' })}
         />
       </View>
       <FlatList

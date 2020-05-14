@@ -83,8 +83,8 @@ export default StyleSheet.create({
     marginLeft: calcReal(18),
   },
   arrowImage: {
-    width: calcReal(48),
-    height: calcReal(48),
+    width: calcReal(38),
+    height: calcReal(38),
     borderRadius: calcReal(12),
     justifyContent: 'center',
     alignItems: 'center',

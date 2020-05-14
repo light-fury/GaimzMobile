@@ -3,7 +3,7 @@ import React, {
   useContext, useCallback, useState,
 } from 'react';
 import {
-  Text, View, Linking, Alert,
+  Text, View, Linking, Alert, ScrollView,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
@@ -131,53 +131,57 @@ const MatchSettingScreen = ({ navigation }) => {
       forceInset={{ bottom: 'never', top: 'never' }}
       style={styles.container}
     >
-      <NavigationEvents
-        onWillFocus={() => initData()}
-      />
-      <View style={styles.header} />
-      {get(user, 'apps.steam')
-        ? (
-          <>
-            <KeyboardAwareScrollView
-              style={styles.searchContainer}
-              contentContainerStyle={styles.padding0}
-            >
-              <Text style={[styles.itemTitle, styles.fontSpacing]}>
-                GAME SETTINGS
-              </Text>
-              <CustomDropdown
-                label="GAME"
-                labelStyle={styles.whiteColor}
-                containerStyle={styles.inputContainer}
-                options={map(games, (storeGame) => storeGame.gameName)}
-                value={get(match, 'game.gameName', '')}
-                onUpdateValue={(value) => setMatch({
-                  ...match,
-                  game: find(games, (storeGame) => storeGame.gameName === value),
-                })}
-              />
-              <CustomDropdown
-                label="GAME TYPE"
-                labelStyle={styles.whiteColor}
-                containerStyle={styles.inputContainer}
-                options={map(get(match, 'game.gameTypes'), (gameType) => gameType.type)}
-                value={get(match, 'gameType.type')}
-                onUpdateValue={(value) => setMatch({
-                  ...match,
-                  gameType: find(get(match, 'game.gameTypes'), (gameType) => gameType.type === value),
-                  gameMode: undefined,
-                })}
-              />
-              <View style={styles.rowContainer}>
+      <KeyboardAwareScrollView
+        bounces={false}
+        contentContainerStyle={styles.contentIntent}
+      >
+        <NavigationEvents
+          onWillFocus={() => initData()}
+        />
+        <View style={styles.header} />
+        {get(user, 'apps.steam')
+          ? (
+            <>
+              <ScrollView
+                style={styles.searchContainer}
+                contentContainerStyle={styles.padding0}
+              >
+                <Text style={[styles.itemTitle, styles.fontSpacing]}>
+                  GAME SETTINGS
+                </Text>
                 <CustomDropdown
-                  label="GAME MODE"
+                  label="GAME"
                   labelStyle={styles.whiteColor}
-                  containerStyle={styles.flexContainer}
-                  options={get(match, 'gameType.gameModes', [])}
-                  value={get(match, 'gameMode')}
-                  onUpdateValue={(val) => setMatch({ ...match, gameMode: val })}
+                  containerStyle={styles.inputContainer}
+                  options={map(games, (storeGame) => storeGame.gameName)}
+                  value={get(match, 'game.gameName', '')}
+                  onUpdateValue={(value) => setMatch({
+                    ...match,
+                    game: find(games, (storeGame) => storeGame.gameName === value),
+                  })}
                 />
-                {/* <CustomDropdown
+                <CustomDropdown
+                  label="GAME TYPE"
+                  labelStyle={styles.whiteColor}
+                  containerStyle={styles.inputContainer}
+                  options={map(get(match, 'game.gameTypes'), (gameType) => gameType.type)}
+                  value={get(match, 'gameType.type')}
+                  onUpdateValue={(value) => setMatch({
+                    ...match,
+                    gameType: find(get(match, 'game.gameTypes'), (gameType) => gameType.type === value),
+                    gameMode: undefined,
+                  })}
+                />
+                <View style={styles.rowContainer}>
+                  <CustomDropdown
+                    label="GAME MODE"
+                    labelStyle={styles.whiteColor}
+                    containerStyle={styles.flexContainer}
+                    options={get(match, 'gameType.gameModes', [])}
+                    value={get(match, 'gameMode')}
+                    onUpdateValue={(val) => setMatch({ ...match, gameMode: val })}
+                  />
+                  {/* <CustomDropdown
                     label="REGION"
                     labelStyle={styles.whiteColor}
                     containerStyle={[styles.flexContainer, styles.ml20]}
@@ -185,8 +189,8 @@ const MatchSettingScreen = ({ navigation }) => {
                     value={region}
                     onUpdateValue={(val) => this.setState({ region: val })}
                   /> */}
-              </View>
-              {/* <CustomDropdown
+                </View>
+                {/* <CustomDropdown
                   label="SELECT STREAMER"
                   labelStyle={styles.whiteColor}
                   containerStyle={styles.inputContainer}
@@ -194,15 +198,15 @@ const MatchSettingScreen = ({ navigation }) => {
                   value={streamer}
                   onUpdateValue={(val) => this.setState({ streamer: val })}
                 /> */}
-              <CustomDropdown
-                label="CREATE MATCH"
-                labelStyle={styles.whiteColor}
-                containerStyle={styles.inputContainer}
-                options={restrictionLevels}
-                value={match.restrictionLevel}
-                onUpdateValue={(val) => setMatch({ ...match, restrictionLevel: val })}
-              />
-              {get(match, 'restrictionLevel') === 'PasswordProtected' && (
+                <CustomDropdown
+                  label="CREATE MATCH"
+                  labelStyle={styles.whiteColor}
+                  containerStyle={styles.inputContainer}
+                  options={restrictionLevels}
+                  value={match.restrictionLevel}
+                  onUpdateValue={(val) => setMatch({ ...match, restrictionLevel: val })}
+                />
+                {get(match, 'restrictionLevel') === 'PasswordProtected' && (
                 <CustomInput
                   label="Password"
                   labelStyle={styles.whiteColor}
@@ -213,38 +217,39 @@ const MatchSettingScreen = ({ navigation }) => {
                   borderColor={(match.password || '').length === 0 ? colors.red : colors.grayOpacity}
                   containerStyle={styles.inputContainer}
                 />
-              )}
+                )}
 
-              <View style={styles.space} />
+                <View style={styles.space} />
+                <ConfirmButton
+                  color={colors.loginColor}
+                  label="MATCH UP"
+                  onClick={() => { sendMatch(); }}
+                  fontStyle={styles.fontSpacing}
+                  disabled={loading}
+                />
+              </ScrollView>
+              <Text style={styles.orText}>OR</Text>
               <ConfirmButton
-                color={colors.loginColor}
-                label="MATCH UP"
-                onClick={() => { sendMatch(); }}
+                borderColor={colors.secondary}
+                textColor={colors.grayText}
+                label="SEARCH GAME"
+                onClick={() => navigation.navigate({ key: 'MatchSearchScreen', routeName: 'MatchSearchScreen' })}
                 fontStyle={styles.fontSpacing}
-                disabled={loading}
+                containerStyle={styles.mh48}
               />
-            </KeyboardAwareScrollView>
-            <Text style={styles.orText}>OR</Text>
+            </>
+          )
+          : (
             <ConfirmButton
-              borderColor={colors.secondary}
-              textColor={colors.grayText}
-              label="SEARCH GAME"
-              onClick={() => navigation.navigate({ key: 'MatchSearchScreen', routeName: 'MatchSearchScreen' })}
+              color={colors.loginColor}
+              label="CONNECT STEAM"
+              onClick={connectSteam}
               fontStyle={styles.fontSpacing}
               containerStyle={styles.mh48}
             />
-          </>
-        )
-        : (
-          <ConfirmButton
-            color={colors.loginColor}
-            label="CONNECT STEAM"
-            onClick={connectSteam}
-            fontStyle={styles.fontSpacing}
-            containerStyle={styles.mh48}
-          />
-        )}
-      <View style={styles.space} />
+          )}
+        <View style={styles.space} />
+      </KeyboardAwareScrollView>
       {loading && (
         <LoadingComponent />
       )}

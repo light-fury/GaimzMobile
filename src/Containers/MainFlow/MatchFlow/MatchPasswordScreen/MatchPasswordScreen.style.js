@@ -10,10 +10,13 @@ export default StyleSheet.create({
     paddingBottom: calcReal(100),
   },
   header: {
-    paddingTop: getStatusBarHeight(false),
-    height: getStatusBarHeight(false) + calcReal(50),
+    paddingTop: getStatusBarHeight(true),
+    height: getStatusBarHeight(true) + calcReal(50),
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  contentIntent: {
+    height: calcReal(796),
   },
   padding0: {
     flex: 1,
