@@ -150,20 +150,21 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
-        release {
-            if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
-                storeFile file(MYAPP_UPLOAD_STORE_FILE)
-                storePassword MYAPP_UPLOAD_STORE_PASSWORD
-                keyAlias MYAPP_UPLOAD_KEY_ALIAS
-                keyPassword MYAPP_UPLOAD_KEY_PASSWORD
-            }
-            if (!project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
-                storeFile file('debug.keystore')
-                storePassword 'android'
-                keyAlias 'androiddebugkey'
-                keyPassword 'android'
-            }
-        }
+        // Removed the signing config for release, because AppCenter will take care of this!
+        // release {
+        //     if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
+        //         storeFile file(MYAPP_UPLOAD_STORE_FILE)
+        //         storePassword MYAPP_UPLOAD_STORE_PASSWORD
+        //         keyAlias MYAPP_UPLOAD_KEY_ALIAS
+        //         keyPassword MYAPP_UPLOAD_KEY_PASSWORD
+        //     }
+        //     if (!project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
+        //         storeFile file('debug.keystore')
+        //         storePassword 'android'
+        //         keyAlias 'androiddebugkey'
+        //         keyPassword 'android'
+        //     }
+        // }
     }
     buildTypes {
         debug {
