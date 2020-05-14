@@ -29,7 +29,7 @@ import {
   closeIcon,
 } from '../../../Assets';
 import { colors, calcReal, validateEmail } from '../../../Assets/config';
-import { signIn, signInWithTwitch, checkToken } from '../../../api';
+import { signIn, signInWithTwitch, checkToken, attemptRefreshUser } from '../../../api';
 import { UserContext } from '../../../contexts';
 import { twitchSigninUrl } from '../../../constants/oauth';
 import { resetNavigation } from '../../../helpers/navigation';
@@ -47,17 +47,9 @@ const WelcomeScreen = ({ navigation }) => {
       // To sign out while it isn't implemented
       // await AsyncStorage.removeItem('AuthToken');
       setLoading(true);
-      const token = await AsyncStorage.getItem('AuthToken');
-      if (token) {
-        setApiClientHeader('Authorization', `Bearer ${token}`);
-        const data = await checkToken();
-        setUser(data.user);
-        setApiClientHeader('Authorization', `Bearer ${data.authToken}`);
-        await AsyncStorage.setItem('AuthToken', data.authToken);
-        resetNavigation(navigation, 'MainFlow');
-      } else {
-        setUser({});
-      }
+      const user = await attemptRefreshUser();
+      setUser(user);
+      resetNavigation(navigation, 'MainFlow');
     } catch (err) {
       setUser({});
     } finally {
