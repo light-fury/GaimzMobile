@@ -35,6 +35,7 @@ export default StyleSheet.create({
     lineHeight: calcReal(22),
     fontWeight: 'bold',
     color: colors.white,
+    textAlign: 'right',
   },
   itemHeader: {
     fontSize: calcReal(18),
@@ -63,10 +64,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: calcReal(12),
-    borderWidth: calcReal(1),
-    borderColor: `${colors.lightGray}70`,
-    backgroundColor: colors.transparent,
-    marginRight: calcReal(5),
+    backgroundColor: `${colors.lightGray}70`,
   },
   headerIcon: {
     width: calcReal(18),

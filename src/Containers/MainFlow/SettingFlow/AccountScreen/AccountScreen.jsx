@@ -54,10 +54,9 @@ const AccountScreen = ({ navigation }) => {
 
   const handleGoBack = useCallback(() => {
     const fromScreen = navigation.getParam('from');
+    navigation.pop();
     if (fromScreen && fromScreen.length > 0) {
       navigation.navigate(fromScreen);
-    } else {
-      navigation.pop();
     }
   });
 
@@ -88,19 +87,19 @@ const AccountScreen = ({ navigation }) => {
       style={styles.container}
     >
       <View style={styles.header}>
-        <Image
-          source={{ uri: user.userAvatarUrl }}
-          style={styles.avatarImage}
-          resizeMode="cover"
-        />
-        <Text style={[styles.flexContainer, styles.profileName]}>
-          {user.userName}
-        </Text>
         <SocialButton
           style={styles.headerButton}
           iconStyle={styles.headerIcon}
           icon={arrowLeft}
           onClick={() => handleGoBack()}
+        />
+        <Text style={[styles.flexContainer, styles.profileName]}>
+          {user.userName}
+        </Text>
+        <Image
+          source={{ uri: user.userAvatarUrl }}
+          style={styles.avatarImage}
+          resizeMode="cover"
         />
       </View>
       <Text style={styles.titleText}>Recent Matches</Text>

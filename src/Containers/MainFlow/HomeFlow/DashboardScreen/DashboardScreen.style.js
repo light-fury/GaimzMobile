@@ -36,6 +36,9 @@ export default StyleSheet.create({
     fontWeight: 'bold',
     color: colors.darkGray,
   },
+  textRight: {
+    textAlign: 'right',
+  },
   headerButton: {
     marginTop: calcReal(10),
     width: calcReal(38),

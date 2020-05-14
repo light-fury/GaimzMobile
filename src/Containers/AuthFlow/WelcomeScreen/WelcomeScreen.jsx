@@ -72,8 +72,8 @@ const WelcomeScreen = ({ navigation }) => {
         user_email: email,
         user_password: password,
       });
-
-      AsyncStorage.setItem('AuthToken', response.authToken);
+      setApiClientHeader('Authorization', `Bearer ${response.authToken}`);
+      await AsyncStorage.setItem('AuthToken', response.authToken);
       setUser(response.user);
       resetNavigation(navigation, 'MainFlow');
     } catch (err) {
@@ -92,9 +92,8 @@ const WelcomeScreen = ({ navigation }) => {
         if (params.url.includes('twitch')) {
           apiResponse = await signInWithTwitch(parsedParams);
         }
-
-        AsyncStorage.setItem('AuthToken', apiResponse.authToken);
         setApiClientHeader('Authorization', `Bearer ${apiResponse.authToken}`);
+        await AsyncStorage.setItem('AuthToken', apiResponse.authToken);
         setUser(apiResponse.user);
         resetNavigation(navigation, 'MainFlow');
       } catch (err) {

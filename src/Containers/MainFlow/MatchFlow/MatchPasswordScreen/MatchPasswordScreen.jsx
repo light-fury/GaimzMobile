@@ -48,54 +48,56 @@ const MatchPasswordScreen = ({ navigation }) => {
       forceInset={{ bottom: 'never', top: 'never' }}
       style={styles.container}
     >
-      <View style={styles.header} />
       <KeyboardAwareScrollView
-        style={styles.searchContainer}
-        contentContainerStyle={styles.padding0}
+        bounces={false}
+        contentContainerStyle={styles.contentIntent}
       >
-        <View style={styles.flexContainer}>
-          <Text style={styles.itemTitle}>Enter Password</Text>
+        <View style={styles.header} />
+        <View style={styles.searchContainer}>
+          <View style={styles.flexContainer}>
+            <Text style={styles.itemTitle}>Enter Password</Text>
+          </View>
+          <CustomInput
+            label="Password"
+            secureTextEntry={!passwordVisible}
+            labelStyle={styles.whiteColor}
+            containerStyle={styles.inputContainer}
+            value={lobby.password || ''}
+            icon={eyeIcon}
+            iconVisible={(lobby.password || '').length > 0}
+            onClick={() => setPasswordVisible(!passwordVisible)}
+            onUpdateValue={(val) => setLobby({ ...lobby, password: val })}
+            borderColor={(lobby.password || '').length === 0 ? colors.red : colors.grayOpacity}
+          />
+          {loading
+            ? (<ActivityIndicator color={colors.loginColor} size="large" />)
+            : (
+              <ConfirmButton
+                color={colors.loginColor}
+                label="ENTER"
+                onClick={() => sendLobby()}
+                fontStyle={styles.fontSpacing}
+                containerStyle={styles.mh16}
+                disabled={(lobby.password || '').length === 0}
+              />
+            )}
+          <Text style={styles.descriptionText}>
+            You are trying to enter a password protected lobby. Please enter the
+            password to queue for the match.
+          </Text>
         </View>
-        <CustomInput
-          label="Password"
-          secureTextEntry={!passwordVisible}
-          labelStyle={styles.whiteColor}
-          containerStyle={styles.inputContainer}
-          value={lobby.password || ''}
-          icon={eyeIcon}
-          iconVisible={(lobby.password || '').length > 0}
-          onClick={() => setPasswordVisible(!passwordVisible)}
-          onUpdateValue={(val) => setLobby({ ...lobby, password: val })}
-          borderColor={(lobby.password || '').length === 0 ? colors.red : colors.grayOpacity}
+        <View style={styles.space} />
+        <ConfirmButton
+          borderColor={colors.secondaryOpacity}
+          textColor={colors.grayText}
+          label="GO BACK"
+          onClick={() => navigation.pop()}
+          fontStyle={styles.fontSpacing}
+          containerStyle={styles.mh48}
+          disabled={loading}
         />
-        {loading
-          ? (<ActivityIndicator color={colors.loginColor} size="large" />)
-          : (
-            <ConfirmButton
-              color={colors.loginColor}
-              label="ENTER"
-              onClick={() => sendLobby()}
-              fontStyle={styles.fontSpacing}
-              containerStyle={styles.mh16}
-              disabled={(lobby.password || '').length === 0}
-            />
-          )}
-        <Text style={styles.descriptionText}>
-          You are trying to enter a password protected lobby. Please enter the
-          password to queue for the match.
-        </Text>
+        <View style={styles.space} />
       </KeyboardAwareScrollView>
-      <View style={styles.space} />
-      <ConfirmButton
-        borderColor={colors.secondaryOpacity}
-        textColor={colors.grayText}
-        label="GO BACK"
-        onClick={() => navigation.pop()}
-        fontStyle={styles.fontSpacing}
-        containerStyle={styles.mh48}
-        disabled={loading}
-      />
-      <View style={styles.space} />
     </SafeAreaView>
   );
 };

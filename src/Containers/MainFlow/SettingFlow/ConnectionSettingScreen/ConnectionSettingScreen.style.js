@@ -22,8 +22,8 @@ export default StyleSheet.create({
     paddingHorizontal: calcReal(20),
   },
   avatarImage: {
-    width: calcReal(48),
-    height: calcReal(48),
+    width: calcReal(38),
+    height: calcReal(38),
     borderRadius: calcReal(12),
     justifyContent: 'center',
     alignItems: 'center',
