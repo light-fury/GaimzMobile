@@ -5,7 +5,7 @@ import HttpClient from '../helpers/HttpClient';
  * @param {*} abortController
  * @returns [Object]
  */
-export const getTwitchLives = async (abortController) => {
+export const getTwitchLives = async (abortController = null) => {
   const response = await HttpClient.get('/apps/twitch/live', {
     baseUrl: HttpClient.BasicApiUrl,
     abortController,

@@ -130,11 +130,28 @@ const get = async (url, options) => innerFetch(
   options,
 );
 
+/**
+ * HTTP PUT via fetch API
+ * @param {*} url - Url to hit (not including domain)
+ * @param {*} options - { baseUrl, anonymous, abortController }
+ */
+const put = async (url, data, options) => innerFetch(
+  METHOD.PUT,
+  url,
+  {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+  },
+  data,
+  options,
+);
+
 
 export default {
   setTimeout,
   post,
   get,
+  put,
 
   BasicApiUrl,
   MatchMakingApiUrl,
