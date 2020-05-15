@@ -12,7 +12,6 @@ import {
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import AsyncStorage from '@react-native-community/async-storage';
 import { isEmpty } from 'lodash';
 import queryString from 'query-string';
 
@@ -35,7 +34,6 @@ import { signUp, signInWithTwitch } from '../../../api';
 import { UserContext } from '../../../contexts';
 import { twitchSigninUrl } from '../../../constants/oauth';
 import { resetNavigation } from '../../../helpers/navigation';
-import { setApiClientHeader } from '../../../constants/api-client';
 
 const SignUpScreen = ({ navigation }) => {
   const [isLoading, setLoading] = useState(false);
@@ -48,16 +46,15 @@ const SignUpScreen = ({ navigation }) => {
   const onSubmit = async () => {
     try {
       setLoading(true);
-      const response = await signUp({
+      const signedUpUser = await signUp({
         captcha: 'lol',
         userName: username,
         userEmail: email,
         userPassword: password,
         userPasswordConfirm: password,
       });
-      AsyncStorage.setItem('AuthToken', response.authToken);
-      setApiClientHeader('Authorization', `Bearer ${response.authToken}`);
-      setUser(response.user);
+
+      setUser(signedUpUser);
     } catch (err) {
       Alert.alert('Error', 'There was an error signing you up');
     } finally {
@@ -65,19 +62,16 @@ const SignUpScreen = ({ navigation }) => {
     }
   };
 
+  // TODO: Extract due to code duplication
   const handleOpenURL = async (params) => {
     if (params.url) {
       const parsedParams = queryString.parse(params.url.split('?')[1]);
-      let apiResponse;
       setLoading(true);
       try {
         if (params.url.includes('twitch')) {
-          apiResponse = await signInWithTwitch(parsedParams);
+          const signedInUser = await signInWithTwitch(parsedParams);
+          setUser(signedInUser);
         }
-
-        AsyncStorage.setItem('AuthToken', apiResponse.authToken);
-        setApiClientHeader('Authorization', `Bearer ${apiResponse.authToken}`);
-        setUser(apiResponse.user);
       } catch (err) {
         Alert.alert('Error', 'There was an error signing you in');
       } finally {

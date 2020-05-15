@@ -13,7 +13,6 @@ import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import queryString from 'query-string';
-import AsyncStorage from '@react-native-community/async-storage';
 
 import ConfirmButton from '../../../Components/ConfirmButton';
 import LoadingComponent from '../../../Components/LoadingComponent';
@@ -27,26 +26,24 @@ import { resetNavigation } from '../../../helpers/navigation';
 import { signInWithTwitch, signInWithSteam } from '../../../api';
 import { UserContext } from '../../../contexts';
 import { twitchSigninUrl, steamSigninUrl } from '../../../constants/oauth';
-import { setApiClientHeader } from '../../../constants/api-client';
 
 const SocialAccountsScreen = ({ navigation }) => {
   const [user, setUser] = useContext(UserContext);
   const [isLoading, setLoading] = useState(false);
 
+  // TODO: Extract due to code duplication
   const handleOpenURL = async (params) => {
     if (params.url) {
       const parsedParams = queryString.parse(params.url.split('?')[1].replace(/(openid)(.)([a-z_]+)(=)/g, '$1_$3$4'));
-      let apiResponse;
+      let userResponse;
       setLoading(true);
       try {
         if (params.url.includes('twitch')) {
-          apiResponse = await signInWithTwitch(parsedParams);
+          userResponse = await signInWithTwitch(parsedParams);
         } else {
-          apiResponse = await signInWithSteam(parsedParams);
+          userResponse = await signInWithSteam(parsedParams);
         }
-        AsyncStorage.setItem('AuthToken', apiResponse.authToken);
-        setApiClientHeader('Authorization', `Bearer ${apiResponse.authToken}`);
-        setUser(apiResponse.user);
+        setUser(userResponse);
       } catch (err) {
         Alert.alert('Error', 'There was an error connecting the account');
       } finally {

@@ -1,10 +1,18 @@
 /* eslint-disable no-console */
 import { decamelizeKeys, camelizeKeys } from 'humps';
+import AsyncStorage from '@react-native-community/async-storage';
 
-let baseUrl = 'https://basicapi.gaimz.com';
-let authToken = '';
+const BasicApiUrl = 'https://basicapi.gaimz.com';
+const MatchMakingApiUrl = 'https://mmapi.gaimz.com';
+
 // Default timeout
 let timeoutMs = 10000;
+
+function HttpClientException(status, error) {
+  this.status = status;
+  this.error = error;
+  this.name = 'HttpClientException';
+}
 
 const METHOD = {
   GET: 'GET',
@@ -14,16 +22,8 @@ const METHOD = {
   PATCH: 'PATCH',
 };
 
-const setBaseUrl = (url) => {
-  baseUrl = url;
-};
-
 const setTimeout = (ms) => {
   timeoutMs = ms;
-};
-
-const setAuthenticationToken = (token) => {
-  authToken = token;
 };
 
 const wrapFetchInTimeout = (fetchRequest) => {
@@ -39,36 +39,48 @@ const wrapFetchInTimeout = (fetchRequest) => {
   ]).then((result) => {
     clearTimeout(timeoutHandleId);
     return result;
+  }).catch((e) => {
+    console.info('in wrapper error', e);
   });
 };
 
-async function innerFetch(method, url, headers = {}, data, abortController) {
+async function innerFetch(method, url, headers = {}, data, options) {
   try {
+    if (!options.baseUrl) {
+      throw Error('No URL Provided to HttpClient');
+    }
     const request = {
       method,
       headers: {
-        Authorization: `Bearer ${authToken}`,
         ...headers,
       },
     };
 
+    if (!options.anonymous) {
+      const authToken = await AsyncStorage.getItem('AuthToken');
+      request.headers.Authorization = `Bearer ${authToken}`;
+    }
+
     if (data) {
       request.body = JSON.stringify(decamelizeKeys(data));
     }
-    const combinedUrl = `${baseUrl}/${url}`;
+    const concatUrl = `${options.baseUrl}${url}`;
     console.info('request:', request);
     console.info('url:', url);
 
-    if (abortController) {
-      request.signal = abortController.signal;
+    if (options.abortController) {
+      request.signal = options.abortController.signal;
     }
 
     // eslint-disable-next-line no-undef
-    const fetchReq = fetch(combinedUrl, request);
+    const fetchReq = fetch(concatUrl, request);
     const response = await wrapFetchInTimeout(fetchReq);
     console.info('response:', response);
     const responseBody = await response.json();
     console.info('response body (pre-camelizeKeys):', responseBody);
+    if (!response.ok) {
+      throw HttpClientException(response.status, responseBody.error);
+    }
     const payload = camelizeKeys(responseBody);
     return {
       status: response.status,
@@ -76,16 +88,23 @@ async function innerFetch(method, url, headers = {}, data, abortController) {
       error: !response.ok ? response.error : null,
     };
   } catch (e) {
+    console.error(e);
     return {
       // TODO: Do we want a different code?
-      status: -1,
+      status: e.status,
       payload: null,
-      error: e ? e.message : 'Unknown Error',
+      error: e ? e.error.message : 'Unknown Error',
     };
   }
 }
 
-const post = async (url, data, abortController) => innerFetch(
+/**
+ * HTTP POST via fetch API
+ * @param {*} url - Url to hit (not including domain)
+ * @param {*} data - Any data to be POSTed
+ * @param {*} options - { baseUrl, anonymous, abortController }
+ */
+const post = async (url, data, options) => innerFetch(
   METHOD.POST,
   url,
   {
@@ -93,24 +112,30 @@ const post = async (url, data, abortController) => innerFetch(
     'Content-Type': 'application/json',
   },
   data,
-  abortController,
+  options,
 );
 
-const get = async (url, abortController) => innerFetch(
+/**
+ * HTTP GET via fetch API
+ * @param {*} url - Url to hit (not including domain)
+ * @param {*} options - { baseUrl, anonymous, abortController }
+ */
+const get = async (url, options) => innerFetch(
   METHOD.GET,
   url,
   {
     Accept: 'application/json',
   },
   null,
-  abortController,
+  options,
 );
 
 
 export default {
-  setBaseUrl,
-  setAuthenticationToken,
   setTimeout,
   post,
   get,
+
+  BasicApiUrl,
+  MatchMakingApiUrl,
 };

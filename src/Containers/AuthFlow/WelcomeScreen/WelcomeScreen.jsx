@@ -11,7 +11,6 @@ import {
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import AsyncStorage from '@react-native-community/async-storage';
 import queryString from 'query-string';
 
 import SocialButton from '../../../Components/SocialButton';
@@ -33,7 +32,6 @@ import { signIn, signInWithTwitch, attemptRefreshUser } from '../../../api';
 import { UserContext } from '../../../contexts';
 import { twitchSigninUrl } from '../../../constants/oauth';
 import { resetNavigation } from '../../../helpers/navigation';
-import { setApiClientHeader } from '../../../constants/api-client';
 
 const WelcomeScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -60,12 +58,7 @@ const WelcomeScreen = ({ navigation }) => {
   const onSubmit = async () => {
     try {
       setLoading(true);
-      const response = await signIn({
-        user_email: email,
-        user_password: password,
-      });
-      setApiClientHeader('Authorization', `Bearer ${response.authToken}`);
-      await AsyncStorage.setItem('AuthToken', response.authToken);
+      const response = await signIn(email, password);
       setUser(response.user);
       resetNavigation(navigation, 'MainFlow');
     } catch (err) {
@@ -75,19 +68,17 @@ const WelcomeScreen = ({ navigation }) => {
     }
   };
 
+  // TODO: Extract due to code duplication
   const handleOpenURL = async (params) => {
     if (params.url) {
       const parsedParams = queryString.parse(params.url.split('?')[1]);
-      let apiResponse;
       setLoading(true);
       try {
         if (params.url.includes('twitch')) {
-          apiResponse = await signInWithTwitch(parsedParams);
+          const signedInUser = await signInWithTwitch(parsedParams);
+          setUser(signedInUser);
+          resetNavigation(navigation, 'MainFlow');
         }
-        setApiClientHeader('Authorization', `Bearer ${apiResponse.authToken}`);
-        await AsyncStorage.setItem('AuthToken', apiResponse.authToken);
-        setUser(apiResponse.user);
-        resetNavigation(navigation, 'MainFlow');
       } catch (err) {
         Alert.alert('Error', 'There was an error signing you in');
       } finally {

@@ -1,28 +1,131 @@
 import AsyncStorage from '@react-native-community/async-storage';
-
-import { apiClient } from '../constants/api-client';
 import HttpClient from '../helpers/HttpClient';
 
-export const signUp = (params) => apiClient.post('/signup', params).then(({ data }) => data);
+/**
+ * Signs a user up with basic details
+ * @param {{
+        captcha,
+        userName,
+        userEmail,
+        userPassword,
+        userPasswordConfirm,
+      }} signUpParams
+ * @param {*} abortController
+ */
+export const signUp = async (signUpParams, abortController = null) => {
+  const response = await HttpClient.post('/signup', signUpParams, {
+    baseUrl: HttpClient.BasicApiUrl,
+    abortController,
+    anonymous: true,
+  });
 
-export const signIn = (params) => apiClient.post('/login', params).then(({ data }) => data);
-
-export const signInWithSteam = (params) => apiClient.post('/apps/steam/account', params).then(({ data }) => data);
-
-export const signInWithTwitch = (params) => apiClient.post('/apps/twitch/code', params).then(({ data }) => data);
-
-export const checkToken = () => apiClient.get('/checktoken').then(({ data }) => data);
-
-export const resetPassword = (email) => apiClient.post(`/login/reset/${email}`).then(({ data }) => data);
-
-export const attemptRefreshUser = async (abortController = null) => {
-  // eslint-disable-next-line no-undef
-  const token = await AsyncStorage.getItem('AuthToken');
-  HttpClient.setAuthenticationToken(token);
-  const response = await HttpClient.get('checktoken', abortController);
   if (!response.error) {
     AsyncStorage.setItem('AuthToken', response.payload.authToken);
     return response.payload.user;
   }
+
+  throw Error('Failed to sign in');
+};
+
+/**
+ * Signs in a user with the provided credentials
+ * @param {*} email
+ * @param {*} password
+ * @param {*} abortController
+ * @returns UserObject
+ */
+export const signIn = async (email, password, abortController = null) => {
+  const response = await HttpClient.post('/login', {
+    user_email: email,
+    user_password: password,
+  }, {
+    baseUrl: HttpClient.BasicApiUrl,
+    abortController,
+    anonymous: true,
+  });
+
+  if (!response.error) {
+    AsyncStorage.setItem('AuthToken', response.payload.authToken);
+    return response.payload.user;
+  }
+
+  throw Error('Failed to sign in');
+};
+
+/**
+ * Using params from a Steam URL, attempt a social sign in
+ * @param {*} params - Steam URL Params
+ * @param {*} abortController
+ * @returns UserObject
+ */
+export const signInWithSteam = async (params, abortController = null) => {
+  const response = await HttpClient.post('/apps/steam/account', params, {
+    baseUrl: HttpClient.BasicApiUrl,
+    abortController,
+  });
+
+  if (!response.error) {
+    AsyncStorage.setItem('AuthToken', response.payload.authToken);
+    return response.payload.user;
+  }
+
+  throw Error('Failed to sign in with Steam');
+};
+
+
+/**
+ * Using params from a Twitch URL, attempt a social sign in
+ * @param {*} params - Twitch URL Params
+ * @param {*} abortController
+ * @returns UserObject
+ */
+export const signInWithTwitch = async (params, abortController = null) => {
+  const response = await HttpClient.post('/apps/twitch/code', params, {
+    baseUrl: HttpClient.BasicApiUrl,
+    abortController,
+  });
+
+  if (!response.error) {
+    AsyncStorage.setItem('AuthToken', response.payload.authToken);
+    return response.payload.user;
+  }
+
+  throw Error('Failed to sign in with Twitch');
+};
+
+/**
+ * Invokes the reset password process for the provided email
+ * @param {*} email
+ * @param {*} abortController
+ */
+export const resetPassword = async (email, abortController = null) => {
+  const response = await HttpClient.post(`/login/reset/${email}`, null, {
+    baseUrl: HttpClient.BasicApiUrl,
+    abortController,
+    anonymous: true,
+  });
+  if (!response.error) {
+    return response.payload.data;
+  }
+  throw Error(response.error);
+};
+
+/**
+ * Attempts to get a new access token
+ * @param {User} abortController
+ * @returns UserObject
+ */
+export const attemptRefreshUser = async (abortController = null) => {
+  // eslint-disable-next-line no-undef
+  const response = await HttpClient.get('/checktoken', {
+    baseUrl: HttpClient.BasicApiUrl,
+    abortController,
+  });
+
+  if (!response.error) {
+    AsyncStorage.setItem('AuthToken', response.payload.authToken);
+    return response.payload.user;
+  }
+
   throw Error('Failed to refresh token and retrieve User');
 };
