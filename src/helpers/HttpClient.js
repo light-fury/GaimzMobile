@@ -58,9 +58,9 @@ async function innerFetch(method, url, headers = {}, data, options) {
 
     if (!options.anonymous) {
       const authToken = await AsyncStorage.getItem('AuthToken');
-      // if (!authToken) {
-      //   throw Error('No AuthToken present');
-      // }
+      if (!authToken) {
+        throw Error('No AuthToken present');
+      }
       request.headers.Authorization = `Bearer ${authToken}`;
     }
 
