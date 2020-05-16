@@ -58,8 +58,8 @@ const WelcomeScreen = ({ navigation }) => {
   const onSubmit = async () => {
     try {
       setLoading(true);
-      const response = await signIn(email, password);
-      setUser(response.user);
+      const userResponse = await signIn(email, password);
+      setUser(userResponse);
       resetNavigation(navigation, 'MainFlow');
     } catch (err) {
       Alert.alert('Error', 'There was an error signing you in');

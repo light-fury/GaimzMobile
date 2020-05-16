@@ -20,7 +20,7 @@ export const signUp = async (signUpParams, abortController = null) => {
   });
 
   if (!response.error) {
-    AsyncStorage.setItem('AuthToken', response.payload.authToken);
+    await AsyncStorage.setItem('AuthToken', response.payload.authToken);
     return response.payload.user;
   }
 
@@ -45,7 +45,7 @@ export const signIn = async (email, password, abortController = null) => {
   });
 
   if (!response.error) {
-    AsyncStorage.setItem('AuthToken', response.payload.authToken);
+    await AsyncStorage.setItem('AuthToken', response.payload.authToken);
     return response.payload.user;
   }
 
@@ -65,7 +65,7 @@ export const signInWithSteam = async (params, abortController = null) => {
   });
 
   if (!response.error) {
-    AsyncStorage.setItem('AuthToken', response.payload.authToken);
+    await AsyncStorage.setItem('AuthToken', response.payload.authToken);
     return response.payload.user;
   }
 
@@ -86,7 +86,7 @@ export const signInWithTwitch = async (params, abortController = null) => {
   });
 
   if (!response.error) {
-    AsyncStorage.setItem('AuthToken', response.payload.authToken);
+    await AsyncStorage.setItem('AuthToken', response.payload.authToken);
     return response.payload.user;
   }
 
@@ -117,13 +117,18 @@ export const resetPassword = async (email, abortController = null) => {
  */
 export const attemptRefreshUser = async (abortController = null) => {
   // eslint-disable-next-line no-undef
+
+  // if (!(await AsyncStorage.getItem('AuthToken'))) {
+  //   throw Error('No AuthToken present');
+  // }
+
   const response = await HttpClient.get('/checktoken', {
     baseUrl: HttpClient.BasicApiUrl,
     abortController,
   });
 
   if (!response.error) {
-    AsyncStorage.setItem('AuthToken', response.payload.authToken);
+    await AsyncStorage.setItem('AuthToken', response.payload.authToken);
     return response.payload.user;
   }
 

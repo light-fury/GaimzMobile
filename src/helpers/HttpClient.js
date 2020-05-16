@@ -58,6 +58,9 @@ async function innerFetch(method, url, headers = {}, data, options) {
 
     if (!options.anonymous) {
       const authToken = await AsyncStorage.getItem('AuthToken');
+      // if (!authToken) {
+      //   throw Error('No AuthToken present');
+      // }
       request.headers.Authorization = `Bearer ${authToken}`;
     }
 
@@ -88,7 +91,6 @@ async function innerFetch(method, url, headers = {}, data, options) {
       error: !response.ok ? response.error : null,
     };
   } catch (e) {
-    console.error(e);
     return {
       // TODO: Do we want a different code?
       status: e.status,
@@ -133,6 +135,7 @@ const get = async (url, options) => innerFetch(
 /**
  * HTTP PUT via fetch API
  * @param {*} url - Url to hit (not including domain)
+ * @param {*} data - Any data to be PUT
  * @param {*} options - { baseUrl, anonymous, abortController }
  */
 const put = async (url, data, options) => innerFetch(
@@ -146,12 +149,45 @@ const put = async (url, data, options) => innerFetch(
   options,
 );
 
+/**
+ * HTTP PATCH via fetch API
+ * @param {*} url - Url to hit (not including domain)
+ * @param {*} data - Any data to be PATCHed
+ * @param {*} options - { baseUrl, anonymous, abortController }
+ */
+const patch = async (url, data, options) => innerFetch(
+  METHOD.PATCH,
+  url,
+  {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+  },
+  data,
+  options,
+);
+
+/**
+ * HTTP DELETE via fetch API
+ * @param {*} url - Url to hit (not including domain)
+ * @param {*} options - { baseUrl, anonymous, abortController }
+ */
+const deleteMethod = async (url, options) => innerFetch(
+  METHOD.DELETE,
+  url,
+  {
+    Accept: 'application/json',
+  },
+  null,
+  options,
+);
 
 export default {
   setTimeout,
   post,
   get,
   put,
+  patch,
+  deleteMethod,
 
   BasicApiUrl,
   MatchMakingApiUrl,

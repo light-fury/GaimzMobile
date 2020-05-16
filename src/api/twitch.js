@@ -3,7 +3,7 @@ import HttpClient from '../helpers/HttpClient';
 /**
  * Returns list of streams based off your Twitch login.
  * @param {*} abortController
- * @returns [Object]
+ * @returns {Array}
  */
 export const getTwitchLives = async (abortController = null) => {
   const response = await HttpClient.get('/apps/twitch/live', {
