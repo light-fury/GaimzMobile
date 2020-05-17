@@ -86,7 +86,7 @@ const DashboardScreen = ({ navigation }) => {
   }, []);
 
   if (!user) {
-    return <></>;
+    return (<></>);
   }
 
   return (

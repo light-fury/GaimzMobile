@@ -25,6 +25,7 @@ const MatchTimerScreen = ({ navigation }) => {
   const [match, setMatch] = useContext(MatchContext);
   const [currentTime, setCurrentTime] = useState(0);
   const [startedTime] = useState(moment());
+  const [cancellingMatch, setCancellingMatch] = useState(false);
 
   const checkMatchStatus = useCallback(async () => {
     try {
@@ -45,6 +46,7 @@ const MatchTimerScreen = ({ navigation }) => {
   });
 
   const cancelMatchRequest = useCallback(async () => {
+    setCancellingMatch(true);
     try {
       const params = {
         acceptMatch: false,
@@ -57,9 +59,11 @@ const MatchTimerScreen = ({ navigation }) => {
       BackgroundTimer.stopBackgroundTimer();
       setTimeout(() => {
         navigation.pop();
-      }, 1000);
+        setCancellingMatch(false);
+      }, 300);
     } catch (error) {
       //
+      setCancellingMatch(false);
     }
   });
 
@@ -112,6 +116,7 @@ const MatchTimerScreen = ({ navigation }) => {
       <ConfirmButton
         color={colors.loginColor}
         label="CANCEL"
+        disabled={cancellingMatch}
         onClick={() => cancelMatchRequest()}
         fontStyle={styles.fontSpacing}
         containerStyle={styles.mh48}

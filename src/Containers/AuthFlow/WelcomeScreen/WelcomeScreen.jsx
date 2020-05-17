@@ -11,7 +11,6 @@ import {
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import AsyncStorage from '@react-native-community/async-storage';
 import queryString from 'query-string';
 
 import SocialButton from '../../../Components/SocialButton';
@@ -29,11 +28,10 @@ import {
   closeIcon,
 } from '../../../Assets';
 import { colors, calcReal, validateEmail } from '../../../Assets/config';
-import { signIn, signInWithTwitch, checkToken } from '../../../api';
+import { signIn, signInWithTwitch, attemptRefreshUser } from '../../../api';
 import { UserContext } from '../../../contexts';
 import { twitchSigninUrl } from '../../../constants/oauth';
 import { resetNavigation } from '../../../helpers/navigation';
-import { setApiClientHeader } from '../../../constants/api-client';
 
 const WelcomeScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -47,17 +45,9 @@ const WelcomeScreen = ({ navigation }) => {
       // To sign out while it isn't implemented
       // await AsyncStorage.removeItem('AuthToken');
       setLoading(true);
-      const token = await AsyncStorage.getItem('AuthToken');
-      if (token) {
-        setApiClientHeader('Authorization', `Bearer ${token}`);
-        const data = await checkToken();
-        setUser(data.user);
-        setApiClientHeader('Authorization', `Bearer ${data.authToken}`);
-        await AsyncStorage.setItem('AuthToken', data.authToken);
-        resetNavigation(navigation, 'MainFlow');
-      } else {
-        setUser({});
-      }
+      const user = await attemptRefreshUser();
+      setUser(user);
+      resetNavigation(navigation, 'MainFlow');
     } catch (err) {
       setUser({});
     } finally {
@@ -68,13 +58,8 @@ const WelcomeScreen = ({ navigation }) => {
   const onSubmit = async () => {
     try {
       setLoading(true);
-      const response = await signIn({
-        user_email: email,
-        user_password: password,
-      });
-      setApiClientHeader('Authorization', `Bearer ${response.authToken}`);
-      await AsyncStorage.setItem('AuthToken', response.authToken);
-      setUser(response.user);
+      const userResponse = await signIn(email, password);
+      setUser(userResponse);
       resetNavigation(navigation, 'MainFlow');
     } catch (err) {
       Alert.alert('Error', 'There was an error signing you in');
@@ -83,19 +68,17 @@ const WelcomeScreen = ({ navigation }) => {
     }
   };
 
+  // TODO: Extract due to code duplication
   const handleOpenURL = async (params) => {
     if (params.url) {
       const parsedParams = queryString.parse(params.url.split('?')[1]);
-      let apiResponse;
       setLoading(true);
       try {
         if (params.url.includes('twitch')) {
-          apiResponse = await signInWithTwitch(parsedParams);
+          const signedInUser = await signInWithTwitch(parsedParams);
+          setUser(signedInUser);
+          resetNavigation(navigation, 'MainFlow');
         }
-        setApiClientHeader('Authorization', `Bearer ${apiResponse.authToken}`);
-        await AsyncStorage.setItem('AuthToken', apiResponse.authToken);
-        setUser(apiResponse.user);
-        resetNavigation(navigation, 'MainFlow');
       } catch (err) {
         Alert.alert('Error', 'There was an error signing you in');
       } finally {

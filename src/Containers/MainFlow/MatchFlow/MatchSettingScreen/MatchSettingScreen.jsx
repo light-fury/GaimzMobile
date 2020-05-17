@@ -13,7 +13,6 @@ import {
   find, get, map,
 } from 'lodash';
 import queryString from 'query-string';
-import AsyncStorage from '@react-native-community/async-storage';
 import ConfirmButton from '../../../../Components/ConfirmButton';
 import CustomDropdown from '../../../../Components/CustomDropdown';
 import CustomInput from '../../../../Components/CustomInput';
@@ -25,7 +24,6 @@ import {
   getGames, createMatch, signInWithSteam,
 } from '../../../../api';
 import { steamSigninUrl } from '../../../../constants/oauth';
-import { setApiClientHeader } from '../../../../constants/api-client';
 
 const restrictionLevels = [
   'Everyone',
@@ -74,13 +72,10 @@ const MatchSettingScreen = ({ navigation }) => {
   const handleOpenURL = useCallback(async (params) => {
     if (params.url) {
       const parsedParams = queryString.parse(params.url.split('?')[1].replace(/(openid)(.)([a-z_]+)(=)/g, '$1_$3$4'));
-      let apiResponse;
 
       try {
-        apiResponse = await signInWithSteam(parsedParams);
-        setApiClientHeader('Authorization', `Bearer ${apiResponse.authToken}`);
-        await AsyncStorage.setItem('AuthToken', apiResponse.authToken);
-        setUser(apiResponse.user);
+        const signedInUser = await signInWithSteam(parsedParams);
+        setUser(signedInUser);
       } catch (err) {
         Alert.alert('Error', 'There was an error connecting the account');
       }

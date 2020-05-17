@@ -6,7 +6,6 @@ import {
 import PropTypes from 'prop-types';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import SafeAreaView from 'react-native-safe-area-view';
-import AsyncStorage from '@react-native-community/async-storage';
 
 import SocialButton from '../../../../Components/SocialButton';
 import CustomInput from '../../../../Components/CustomInput';
@@ -22,7 +21,6 @@ import styles from './AccountSettingScreen.style';
 import { UserContext, MatchContext } from '../../../../contexts';
 import { deleteUser, updateUser } from '../../../../api';
 import { resetNavigation } from '../../../../helpers/navigation';
-import { removeApiClientHeader } from '../../../../constants/api-client';
 
 const AccountSettingScreen = ({ navigation }) => {
   const [user, setUser] = useContext(UserContext);
@@ -53,9 +51,6 @@ const AccountSettingScreen = ({ navigation }) => {
           onPress: async () => {
             try {
               await deleteUser();
-              await AsyncStorage.removeItem('AuthToken');
-              await AsyncStorage.removeItem('MatchSettings');
-              removeApiClientHeader('Authorization');
               setUser({});
               setMatch({});
               resetNavigation(navigation, 'AuthFlow');
