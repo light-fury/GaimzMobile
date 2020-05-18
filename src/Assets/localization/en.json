@@ -1,0 +1,13 @@
+{
+  "global.email": "Email",
+  "global.password": "Password",
+  "global.login": "Login",
+  "alert.error.title": "Error",
+  "alert.error.signin": "There was an error signing you in",
+  "alert.error.twitch": "There was an error signing you in with Twitch",
+  "welcome.title": "Welcome Back!",
+  "welcome.login.description": "Login your account to continue",
+  "welcome.login.email": "Or use your email account",
+  "welcome.forgot": "Forgot password?",
+  "welcome.create": "Create an account"
+}

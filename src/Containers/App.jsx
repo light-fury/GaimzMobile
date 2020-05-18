@@ -5,6 +5,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-community/async-storage';
 import RootContainer from './RootContainer';
 import createStore from '../State';
+import LocalizationProvider from '../Components/Translation';
 import { MatchContext, UserContext, LobbyContext } from '../contexts';
 
 export const { store, persistor } = createStore();
@@ -33,18 +34,20 @@ export default () => {
   });
 
   return (
-    <MatchContext.Provider value={[match, updateMatch]}>
-      <UserContext.Provider value={[user, setUser]}>
-        <LobbyContext.Provider value={[lobby, setLobby]}>
-          <Provider store={store}>
-            <PersistGate persistor={persistor}>
-              <SafeAreaProvider>
-                <RootContainer />
-              </SafeAreaProvider>
-            </PersistGate>
-          </Provider>
-        </LobbyContext.Provider>
-      </UserContext.Provider>
-    </MatchContext.Provider>
+    <LocalizationProvider>
+      <MatchContext.Provider value={[match, updateMatch]}>
+        <UserContext.Provider value={[user, setUser]}>
+          <LobbyContext.Provider value={[lobby, setLobby]}>
+            <Provider store={store}>
+              <PersistGate persistor={persistor}>
+                <SafeAreaProvider>
+                  <RootContainer />
+                </SafeAreaProvider>
+              </PersistGate>
+            </Provider>
+          </LobbyContext.Provider>
+        </UserContext.Provider>
+      </MatchContext.Provider>
+    </LocalizationProvider>
   );
 };
