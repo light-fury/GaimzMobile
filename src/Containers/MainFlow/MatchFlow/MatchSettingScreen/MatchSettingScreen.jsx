@@ -225,7 +225,7 @@ const MatchSettingScreen = ({ navigation }) => {
               </ScrollView>
               <Text style={styles.orText}>OR</Text>
               <ConfirmButton
-                borderColor={colors.secondary}
+                borderColor={colors.steamBlack}
                 textColor={colors.grayText}
                 label="SEARCH GAME"
                 onClick={() => navigation.navigate({ key: 'MatchSearchScreen', routeName: 'MatchSearchScreen' })}

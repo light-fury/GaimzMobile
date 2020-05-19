@@ -21,13 +21,16 @@ import LoadingComponent from '../../../Components/LoadingComponent';
 import styles from './WelcomeScreen.style';
 import {
   splashBackground,
-  appLogo,
+  splashLogo,
   twitchIcon,
   checkIcon,
   eyeIcon,
   closeIcon,
+  facebookIcon,
+  eyeCloseIcon,
+  googleIcon,
 } from '../../../Assets';
-import { colors, calcReal, validateEmail } from '../../../Assets/config';
+import { colors, validateEmail } from '../../../Assets/config';
 import { signIn, signInWithTwitch, attemptRefreshUser } from '../../../api';
 import { UserContext, LocalizationContext } from '../../../contexts';
 import { twitchSigninUrl } from '../../../constants/oauth';
@@ -46,8 +49,6 @@ const WelcomeScreen = ({ navigation }) => {
 
   const initUser = async () => {
     try {
-      // To sign out while it isn't implemented
-      // await AsyncStorage.removeItem('AuthToken');
       setLoading(true);
       const user = await attemptRefreshUser();
       setUser(user);
@@ -98,7 +99,7 @@ const WelcomeScreen = ({ navigation }) => {
       Linking.addEventListener('url', handleOpenURL);
       Linking.openURL(twitchSigninUrl);
     } catch (err) {
-      Alert.alert(translations['alert.error.title'], translations['alert.error.twitch']);
+      Alert.alert(translations['alert.error.title'], translations['alert.error.signin.twitch']);
     }
   };
 
@@ -124,37 +125,45 @@ const WelcomeScreen = ({ navigation }) => {
         >
           <Image
             style={styles.logoImage}
-            source={appLogo}
+            source={splashLogo}
             resizeMode="contain"
           />
         </ImageBackground>
-        <View style={styles.topBorderContainer}>
-          <View style={styles.topWhiteContainer} />
-        </View>
         <View
           style={styles.absoluteFill}
         >
-          <Text style={styles.title}>{translations['welcome.title']}</Text>
+          <Text style={styles.title}>
+            {translations['welcome.title']}
+          </Text>
           <Text style={styles.instructionText}>
             {translations['welcome.login.description']}
           </Text>
           <View style={styles.socialContainer}>
-            {/* <SocialButton
-            style={[styles.socialButton, { backgroundColor: colors.fbColor }]}
-            icon={facebookIcon}
-            onClick={() => {
-              Alert.alert('FB Login');
-            }}
-          /> */}
             <SocialButton
-              style={[styles.socialButton, { backgroundColor: colors.lightGray }]}
+              style={[styles.socialButton, { backgroundColor: colors.fbColor }]}
+              icon={facebookIcon}
+              iconStyle={styles.iconStyle}
+              onClick={() => {}}
+            />
+            <SocialButton
+              style={[styles.socialButton, { backgroundColor: colors.steamBlack }]}
               icon={twitchIcon}
+              iconStyle={styles.iconStyle}
               onClick={twitchSignin}
             />
-            <Text style={[styles.instructionText, { fontSize: calcReal(12) }]}>
-              {translations['welcome.login.email']}
-            </Text>
+            <SocialButton
+              style={[
+                styles.socialButton,
+                styles.googleContainer,
+              ]}
+              icon={googleIcon}
+              iconStyle={styles.googleIconStyle}
+              onClick={() => {}}
+            />
           </View>
+          <Text style={[styles.instructionText, styles.extraInstruction]}>
+            {translations['welcome.login.email']}
+          </Text>
           <CustomInput
             autoCorrect={false}
             autoCapitalize="none"
@@ -165,21 +174,23 @@ const WelcomeScreen = ({ navigation }) => {
             icon={validateEmail(email) ? checkIcon : closeIcon}
             iconVisible={email.length > 0}
             borderColor={email.length > 0 && !validateEmail(email)
-              ? colors.red : colors.grayOpacity}
+              ? colors.redOpacity : colors.grayOpacity}
             containerStyle={styles.inputContainer}
             onClick={() => !validateEmail(email) && setEmail('')}
+            errorText={translations['global.invalid.email']}
           />
           <CustomInput
             label={translations['global.password']}
             value={password}
             secureTextEntry={!passwordVisible}
-            icon={eyeIcon}
+            icon={passwordVisible ? eyeCloseIcon : eyeIcon}
             iconVisible={password.length > 0}
             onUpdateValue={setPassword}
             onClick={() => setPasswordVisible(!passwordVisible)}
             borderColor={password.length > 0 && password.length < 8
-              ? colors.red : colors.grayOpacity}
+              ? colors.redOpacity : colors.grayOpacity}
             containerStyle={styles.inputContainer}
+            errorText={translations['global.invalid.password']}
           />
           <ConfirmButton
             color={colors.loginColor}
@@ -199,10 +210,9 @@ const WelcomeScreen = ({ navigation }) => {
             onClick={() => navigation.navigate('ForgotPasswordScreen')}
             fontStyle={styles.lightFont}
           />
-          <View style={styles.space} />
           <ConfirmButton
-            borderColor={colors.secondaryOpacity}
-            textColor={`${colors.secondary}70`}
+            borderColor={colors.grayOpacity2}
+            textColor={colors.steamBlack}
             label={translations['welcome.create']}
             onClick={() => navigation.navigate('SignUpScreen')}
           />

@@ -8,7 +8,7 @@ const { width } = Dimensions.get('window');
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.secondary,
+    backgroundColor: colors.steamBlack,
   },
   flexContainer: {
     position: 'absolute',

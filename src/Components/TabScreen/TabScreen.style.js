@@ -37,7 +37,7 @@ export default StyleSheet.create({
   tabIcon: {
     width: calcReal(30),
     height: calcReal(30),
-    tintColor: colors.secondary,
+    tintColor: colors.steamBlack,
   },
   titleText: {
     fontSize: calcReal(15),
@@ -45,7 +45,7 @@ export default StyleSheet.create({
     color: colors.gray,
   },
   titleFocused: {
-    color: colors.secondary,
+    color: colors.steamBlack,
     fontWeight: 'bold',
   },
 });

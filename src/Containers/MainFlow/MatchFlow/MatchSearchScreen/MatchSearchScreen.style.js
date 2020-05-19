@@ -75,7 +75,7 @@ export default StyleSheet.create({
   searchContainer: {
     flex: 1,
     marginHorizontal: calcReal(48),
-    backgroundColor: colors.secondary,
+    backgroundColor: colors.steamBlack,
     borderRadius: calcReal(12),
     paddingTop: calcReal(30),
   },

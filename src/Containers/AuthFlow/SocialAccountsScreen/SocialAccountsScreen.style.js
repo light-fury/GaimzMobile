@@ -36,7 +36,7 @@ export default StyleSheet.create({
   title: {
     fontSize: calcReal(22),
     lineHeight: calcReal(30),
-    color: colors.secondary,
+    color: colors.steamBlack,
     fontWeight: 'bold',
   },
   instructionText: {
