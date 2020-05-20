@@ -83,6 +83,7 @@ export const signInWithTwitch = async (params, abortController = null) => {
   const response = await HttpClient.post('/apps/twitch/code', params, {
     baseUrl: HttpClient.BasicApiUrl,
     abortController,
+    anonymous: true,
   });
 
   if (!response.error) {

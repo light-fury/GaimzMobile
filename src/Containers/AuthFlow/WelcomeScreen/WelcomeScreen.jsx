@@ -85,6 +85,7 @@ const WelcomeScreen = ({ navigation }) => {
           resetNavigation(navigation, 'MainFlow');
         }
       } catch (err) {
+        console.warn(params);
         Alert.alert(translations['alert.error.title'], translations['alert.error.signin']);
       } finally {
         setLoading(false);
