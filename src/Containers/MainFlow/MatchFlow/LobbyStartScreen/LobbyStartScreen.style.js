@@ -8,13 +8,13 @@ const { width } = Dimensions.get('window');
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.secondary,
+    backgroundColor: colors.steamBlack,
     paddingBottom: calcReal(100),
   },
   header: {
     paddingTop: getStatusBarHeight(false),
     height: getStatusBarHeight(false) + calcReal(320),
-    backgroundColor: colors.secondary,
+    backgroundColor: colors.steamBlack,
   },
   flex2: {
     flex: 2,
@@ -37,7 +37,7 @@ export default StyleSheet.create({
     flex: 1,
     paddingBottom: calcReal(22),
     paddingTop: calcReal(15),
-    backgroundColor: colors.secondary,
+    backgroundColor: colors.steamBlack,
   },
   flexContainer: {
     flex: 1,

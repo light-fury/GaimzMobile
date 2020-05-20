@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
   labelInnerStyle: {
     fontSize: calcReal(12),
     lineHeight: calcReal(20),
-    color: colors.secondary,
+    color: colors.steamBlack,
     marginBottom: calcReal(8),
     letterSpacing: calcReal(1),
     textTransform: 'uppercase',

@@ -35,7 +35,7 @@ export default StyleSheet.create({
     flex: 1,
     marginHorizontal: calcReal(48),
     marginTop: calcReal(24),
-    backgroundColor: colors.secondary,
+    backgroundColor: colors.steamBlack,
     borderRadius: calcReal(12),
     paddingHorizontal: calcReal(23),
     paddingVertical: calcReal(12),

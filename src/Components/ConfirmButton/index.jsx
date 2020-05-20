@@ -30,7 +30,7 @@ const ConfirmButton = ({
   <TouchableOpacity
     style={[
       {
-        height, backgroundColor: color, borderColor, opacity: disabled ? 0.3 : 1, borderWidth: 1,
+        height, backgroundColor: color, borderColor, opacity: disabled ? 0.3 : 1, borderWidth: 2,
       },
       styles.centerStyle,
       containerStyle,

@@ -35,7 +35,7 @@ export default StyleSheet.create({
     marginHorizontal: calcReal(48),
     marginBottom: calcReal(32),
     marginTop: calcReal(24),
-    backgroundColor: colors.secondary,
+    backgroundColor: colors.steamBlack,
     borderRadius: calcReal(12),
     paddingHorizontal: calcReal(38),
     paddingVertical: calcReal(12),

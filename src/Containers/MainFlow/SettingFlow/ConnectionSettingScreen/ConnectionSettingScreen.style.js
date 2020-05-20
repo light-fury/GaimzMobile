@@ -6,7 +6,7 @@ import { colors, calcReal } from '../../../../Assets/config';
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.secondary,
+    backgroundColor: colors.steamBlack,
     paddingBottom: calcReal(100),
   },
   flexContainer: {

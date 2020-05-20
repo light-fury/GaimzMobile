@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: calcReal(12),
     lineHeight: calcReal(20),
-    color: colors.secondary,
+    color: colors.steamBlack,
     marginBottom: calcReal(8),
     letterSpacing: calcReal(1),
     textTransform: 'uppercase',
@@ -48,6 +48,17 @@ const styles = StyleSheet.create({
     width: calcReal(18),
     height: calcReal(18),
   },
+  errorStyle: {
+    letterSpacing: 0,
+    color: colors.red,
+    fontWeight: 'normal',
+    textTransform: 'none',
+    marginLeft: 'auto',
+  },
+  rowContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
 });
 
 const CustomInput = ({
@@ -58,13 +69,23 @@ const CustomInput = ({
   onUpdateValue,
   secureTextEntry = false,
   onClick = () => {},
+  errorText = '',
   icon,
   borderColor = colors.grayOpacity,
   iconVisible = false,
   ...props
 }) => (
   <View style={containerStyle}>
-    <Text style={[styles.titleText, labelStyle]}>{label}</Text>
+    <View style={styles.rowContainer}>
+      <Text style={[styles.titleText, labelStyle]}>
+        {label}
+      </Text>
+      {borderColor === colors.redOpacity && errorText.length > 0 && (
+        <Text style={[styles.titleText, labelStyle, styles.errorStyle]}>
+          {errorText}
+        </Text>
+      )}
+    </View>
     <View style={[styles.inputContainer, { borderColor }]}>
       <TextInput
         style={styles.flexStyle}

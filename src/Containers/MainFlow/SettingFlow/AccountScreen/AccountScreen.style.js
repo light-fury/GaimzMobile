@@ -8,7 +8,7 @@ const { width } = Dimensions.get('window');
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.secondary,
+    backgroundColor: colors.steamBlack,
     paddingBottom: calcReal(100),
   },
   flexContainer: {
@@ -42,7 +42,7 @@ export default StyleSheet.create({
     lineHeight: calcReal(20),
     fontWeight: '300',
     letterSpacing: calcReal(1),
-    color: colors.secondary,
+    color: colors.steamBlack,
   },
   itemDescription: {
     marginLeft: 'auto',

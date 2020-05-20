@@ -115,7 +115,7 @@ const MatchReadyScreen = ({ navigation }) => {
           borderWidth={calcReal(6)}
           color={colors.loginColor}
           shadowColor={colors.grayBackground}
-          bgColor={colors.secondary}
+          bgColor={colors.steamBlack}
         >
           <Text style={styles.itemTitle}>
             {calculateTime(-currentTime)}

@@ -79,7 +79,7 @@ class TabScreen extends Component {
               <SocialButton
                 style={[
                   styles.tabButton,
-                  selected && { backgroundColor: colors.secondary },
+                  selected && { backgroundColor: colors.steamBlack },
                 ]}
                 iconStyle={[
                   styles.tabIcon,

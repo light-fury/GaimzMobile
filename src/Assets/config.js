@@ -1,12 +1,22 @@
 import { Dimensions, Platform } from 'react-native';
+import LocalizedStrings from 'react-native-localization';
+
+import en from './localization/en.json';
 
 const { width, height } = Dimensions.get('window');
 
 export const baseUrl = 'https://sheets.googleapis.com/';
 
+export const DEFAULT_LANGUAGE = 'en';
+export const APP_LANGUAGE = 'appLanguage';
+
+export const languages = { en };
+
+export const translations = new LocalizedStrings(languages);
+
 export const calcReal = (number) => {
-  const widthValue = (width / 420) * number;
-  const heightValue = (height / 900) * number;
+  const widthValue = (width / 375) * number;
+  const heightValue = (height / 812) * number;
   return widthValue > heightValue ? heightValue : widthValue;
 };
 
@@ -31,25 +41,26 @@ export const isIphoneX = () => Platform.OS === 'ios'
     && ((height === 812 || width === 812) || (height === 896 || width === 896));
 
 export const colors = {
-  primary: '#119DCD',
-  primaryOpacity: '#11ABDFA8',
-  secondary: '#1E1F20',
+  primary: '#0659FD',
+  secondary: '#79D0F1',
+  fbColor: '#39579B',
   secondaryOpacity: '#1E1F2030',
+  steamBlack: '#1E1F20',
   white: '#FFFFFF',
   gray: '#8F92A1',
+  red: '#FF4E4E',
+  redOpacity: '#FF4E4E30',
+  green: '#53D769',
+  lightGray: '#F7F7F7',
   darkGray: '#474747',
   grayOpacity: '#8F92A130',
-  lightGray: '#F7F7F7',
+  grayOpacity2: '#8F92A168',
   transparent: '#0000',
-  fbColor: '#39579B',
-  loginColor: '#613BFF',
+  loginColor: '#0C2362',
   signUpColor: '#FA7267',
-  steamBlack: '#1E1F20',
   twitchPurple: '#613BFF',
   yellow: '#FFFF82',
-  green: '#4BDD08',
   borderGreen: '#00FF29',
-  red: '#FF3A3A',
   black: '#000000',
   grayBorder: '#DDDDDD',
   grayText: '#979797',
