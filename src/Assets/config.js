@@ -2,7 +2,6 @@ import { Dimensions, Platform } from 'react-native';
 import LocalizedStrings from 'react-native-localization';
 
 import en from './localization/en.json';
-import ru from './localization/ru.json';
 
 const { width, height } = Dimensions.get('window');
 
@@ -11,7 +10,7 @@ export const baseUrl = 'https://sheets.googleapis.com/';
 export const DEFAULT_LANGUAGE = 'en';
 export const APP_LANGUAGE = 'appLanguage';
 
-export const languages = { en, ru };
+export const languages = { en };
 
 export const translations = new LocalizedStrings(languages);
 

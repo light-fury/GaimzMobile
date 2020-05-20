@@ -22,10 +22,6 @@
   "signup.description": "Sign Up to continue",
   "password.title": "Password Recovery",
   "password.title3": "Congratulations!",
-  "password.description1": "Enter your email to recover your password",
-  "password.description2": "Enter your new password to reset your password",
-  "password.description3": "You successfully reset your password",
-  "password.button1": "Send Email",
-  "password.button2": "Reset my password",
-  "password.button3": "Jump to login screen"
+  "password.description": "Enter your email to recover your password",
+  "password.button": "Send Email"
 }
