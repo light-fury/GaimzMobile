@@ -25,7 +25,6 @@ const styles = StyleSheet.create({
     borderWidth: calcReal(2),
     borderRadius: calcReal(4),
     borderColor: colors.grayOpacity,
-    height: calcReal(48),
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
@@ -39,6 +38,7 @@ const styles = StyleSheet.create({
     color: colors.gray,
     padding: 0,
     marginHorizontal: calcReal(14),
+    height: calcReal(48),
   },
   iconContainer: {
     paddingHorizontal: calcReal(14),
@@ -58,6 +58,9 @@ const styles = StyleSheet.create({
   rowContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  inputStyle: {
+    height: calcReal(48),
   },
 });
 

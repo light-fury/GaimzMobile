@@ -3,11 +3,11 @@ import React, {
   useState, useEffect, useCallback, useContext,
 } from 'react';
 import {
-  Text, View, ActivityIndicator, Alert,
+  Text, View, ActivityIndicator, Alert, ImageBackground,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
-import ProgressCircle from 'react-native-progress-circle';
+import * as ProgressBar from 'react-native-progress';
 import BackgroundTimer from 'react-native-background-timer';
 import moment from 'moment';
 import {
@@ -15,12 +15,14 @@ import {
 } from 'lodash';
 
 import ConfirmButton from '../../../../Components/ConfirmButton';
+import HeaderComponent from '../../../../Components/HeaderComponent';
 import { updateMatchStatus, getMatchStatus, getUserById } from '../../../../api';
-import { MatchContext, UserContext } from '../../../../contexts';
+import { MatchContext, UserContext, LocalizationContext } from '../../../../contexts';
 import styles from './MatchReadyScreen.style';
 import { colors, calcReal, calculateTime } from '../../../../Assets/config';
-
-const WAIT_TEXT = 'Failing to accept may result in a temporary match making ban';
+import {
+  settingsIcon, searchIcon, resetBackground,
+} from '../../../../Assets';
 
 const MatchReadyScreen = ({ navigation }) => {
   const [match, setMatch] = useContext(MatchContext);
@@ -28,6 +30,7 @@ const MatchReadyScreen = ({ navigation }) => {
   const [currentTime, setCurrentTime] = useState(0);
   const [startedTime] = useState(moment().add(30, 'seconds'));
   const [accepted, setAccepted] = useState(false);
+  const { translations } = useContext(LocalizationContext);
 
   const checkMatchStatus = useCallback(async () => {
     try {
@@ -106,46 +109,52 @@ const MatchReadyScreen = ({ navigation }) => {
       forceInset={{ bottom: 'never', top: 'never' }}
       style={styles.container}
     >
-      <View style={styles.header} />
-      <View style={styles.searchContainer}>
-        <Text style={styles.itemTitle}>Your Match is ready</Text>
-        <ProgressCircle
-          percent={-currentTime / 0.3}
-          radius={calcReal(80)}
-          borderWidth={calcReal(6)}
-          color={colors.loginColor}
-          shadowColor={colors.grayBackground}
-          bgColor={colors.steamBlack}
-        >
-          <Text style={styles.itemTitle}>
-            {calculateTime(-currentTime)}
-          </Text>
-        </ProgressCircle>
-        <Text style={styles.itemText}>
-          {WAIT_TEXT}
-        </Text>
-      </View>
-      {accepted
-        ? (<ActivityIndicator color={colors.loginColor} />)
-        : (
-          <ConfirmButton
-            color={colors.loginColor}
-            label="ACCEPT"
-            onClick={acceptMatchRequest}
-            fontStyle={styles.fontSpacing}
-            containerStyle={styles.mh48}
-          />
-        )}
-      <View style={styles.space} />
-      <ConfirmButton
-        borderColor={colors.secondaryOpacity}
-        textColor={colors.grayText}
-        label="CANCEL"
-        onClick={() => cancelMatchRequest()}
-        fontStyle={styles.fontSpacing}
-        containerStyle={styles.mh48}
+      <HeaderComponent
+        label={translations['match.setting.title']}
+        rightIcon={settingsIcon}
+        rightStyle={styles.rightButton}
+        rightClick={() => navigation.navigate('AccountScreen', { from: 'MatchFlow' })}
+        leftIcon={searchIcon}
+        leftClick={() => navigation.navigate({ key: 'MatchSearchScreen', routeName: 'MatchSearchScreen' })}
+        leftIconStyle={styles.headerIcon}
+        leftStyle={styles.leftButton}
       />
-      <View style={styles.space} />
+      <ImageBackground
+        source={resetBackground}
+        style={styles.topContainer}
+        resizeMode="cover"
+        imageStyle={styles.flexContainer}
+      >
+        <View style={styles.innerContainer}>
+          <View style={styles.flexContainer} />
+          <ProgressBar.Circle
+            size={calcReal(180)}
+            thickness={calcReal(6)}
+            unfilledColor={colors.grayBackground}
+            color={colors.primary}
+            borderWidth={0}
+            progress={-currentTime / 30}
+            showsText
+            textStyle={styles.itemTitle}
+            formatText={() => `${calculateTime(-currentTime)}\n${translations['match.timer.ready']}`}
+          />
+          <View style={styles.flexContainer}>
+            <Text style={styles.itemText}>
+              {translations['match.timer.failure']}
+            </Text>
+          </View>
+        </View>
+        {accepted
+          ? (<ActivityIndicator color={colors.loginColor} />)
+          : (
+            <ConfirmButton
+              color={colors.loginColor}
+              label={translations['global.accept']}
+              onClick={acceptMatchRequest}
+              fontStyle={styles.fontSpacing}
+            />
+          )}
+      </ImageBackground>
     </SafeAreaView>
   );
 };

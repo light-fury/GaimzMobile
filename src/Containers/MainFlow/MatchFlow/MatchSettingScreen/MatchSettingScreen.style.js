@@ -1,59 +1,57 @@
 // @flow
 import { StyleSheet } from 'react-native';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
-import { colors, calcReal } from '../../../../Assets/config';
+import { colors, calcReal, isIphoneX } from '../../../../Assets/config';
 
 export default StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.white,
-    paddingBottom: calcReal(100),
+    paddingBottom: isIphoneX() ? calcReal(80) : calcReal(50),
   },
-  header: {
-    paddingTop: getStatusBarHeight(true),
-    height: getStatusBarHeight(true) + calcReal(50),
-    alignItems: 'center',
-    justifyContent: 'center',
+  headerIcon: {
+    tintColor: colors.black,
   },
-  contentIntent: {
-    height: calcReal(796),
+  leftButton: {
+    backgroundColor: colors.white,
+    borderWidth: 1,
+    borderColor: colors.grayOpacity,
+  },
+  rightButton: {
+    backgroundColor: colors.green,
+  },
+  mr16: {
+    marginRight: calcReal(16),
+  },
+  mv10: {
+    marginTop: calcReal(10),
+    marginBottom: calcReal(10),
   },
   padding0: {
     padding: 0,
-    paddingBottom: calcReal(30),
+    paddingBottom: calcReal(60),
   },
   mh48: {
     marginHorizontal: calcReal(48),
   },
   space: {
-    height: calcReal(18),
+    height: calcReal(32),
   },
   fontSpacing: {
     letterSpacing: calcReal(1),
   },
   searchContainer: {
     flex: 1,
-    marginHorizontal: calcReal(48),
-    marginTop: calcReal(24),
-    backgroundColor: colors.steamBlack,
-    borderRadius: calcReal(12),
-    paddingHorizontal: calcReal(23),
-    paddingVertical: calcReal(12),
+    backgroundColor: colors.lightGray,
   },
-  itemTitle: {
-    fontSize: calcReal(12),
-    lineHeight: calcReal(20),
-    fontWeight: 'bold',
-    color: colors.white,
-    textAlign: 'center',
-    textTransform: 'uppercase',
+  topContainer: {
+    paddingHorizontal: calcReal(24),
+    paddingBottom: calcReal(12),
   },
-  whiteColor: {
-    color: colors.white,
-    marginBottom: 0,
+  blackColor: {
+    color: colors.steamBlack,
   },
   inputContainer: {
-    marginTop: calcReal(12),
+    marginTop: calcReal(6),
   },
   flexContainer: {
     flex: 1,
@@ -62,14 +60,22 @@ export default StyleSheet.create({
     marginTop: calcReal(6),
     flexDirection: 'row',
   },
-  ml20: {
-    marginLeft: calcReal(26),
+  supportText: {
+    lineHeight: calcReal(30),
+    fontSize: calcReal(22),
+    marginVertical: calcReal(22),
+    fontWeight: '500',
+    textAlign: 'left',
+    color: colors.darkGray,
+    marginHorizontal: calcReal(28),
   },
-  orText: {
-    lineHeight: calcReal(58),
-    fontSize: calcReal(14),
-    fontWeight: 'bold',
-    letterSpacing: calcReal(1),
-    textAlign: 'center',
+  gamesItem: {
+    width: calcReal(120),
+    height: calcReal(160),
+    borderRadius: calcReal(12),
+    marginRight: calcReal(18),
+  },
+  gamesContainer: {
+    paddingHorizontal: calcReal(28),
   },
 });

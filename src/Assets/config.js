@@ -52,7 +52,7 @@ export const colors = {
   redOpacity: '#FF4E4E30',
   green: '#53D769',
   lightGray: '#F7F7F7',
-  darkGray: '#474747',
+  darkGray: '#4F4F4F',
   grayOpacity: '#8F92A130',
   grayOpacity2: '#8F92A168',
   transparent: '#0000',
@@ -65,5 +65,6 @@ export const colors = {
   grayBorder: '#DDDDDD',
   grayText: '#979797',
   grayBackground: '#2E3134',
-  ADSD: '#333333',
+  ADSD: '#E5E5E5',
+  whiteOpacity: '#FFFFFF30',
 };

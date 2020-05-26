@@ -2,23 +2,26 @@
 import React, {
   useState, useEffect, useCallback, useContext,
 } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, ImageBackground } from 'react-native';
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
-import ProgressCircle from 'react-native-progress-circle';
 import BackgroundTimer from 'react-native-background-timer';
+import * as ProgressBar from 'react-native-progress';
 import moment from 'moment';
 import {
   get,
 } from 'lodash';
 
 import ConfirmButton from '../../../../Components/ConfirmButton';
+import HeaderComponent from '../../../../Components/HeaderComponent';
 import styles from './MatchTimerScreen.style';
 import { getMatchStatus, updateMatchStatus } from '../../../../api';
-import { MatchContext } from '../../../../contexts';
+import { MatchContext, LocalizationContext } from '../../../../contexts';
 import { colors, calcReal, calculateTime } from '../../../../Assets/config';
+import {
+  settingsIcon, searchIcon, resetBackground,
+} from '../../../../Assets';
 
-const WAIT_TEXT = 'Double click the timer to hide the search and explore Gaimz. We will notify you when the match is found.';
 const TOTAL_CALL_DURATION = 600;
 
 const MatchTimerScreen = ({ navigation }) => {
@@ -26,6 +29,7 @@ const MatchTimerScreen = ({ navigation }) => {
   const [currentTime, setCurrentTime] = useState(0);
   const [startedTime] = useState(moment());
   const [cancellingMatch, setCancellingMatch] = useState(false);
+  const { translations } = useContext(LocalizationContext);
 
   const checkMatchStatus = useCallback(async () => {
     try {
@@ -94,43 +98,49 @@ const MatchTimerScreen = ({ navigation }) => {
       forceInset={{ bottom: 'never', top: 'never' }}
       style={styles.container}
     >
-      <View style={styles.header} />
-      <View style={styles.searchContainer}>
-        <Text style={styles.itemTitle}>Finding Match...</Text>
-        <ProgressCircle
-          percent={(currentTime / TOTAL_CALL_DURATION) * 100}
-          radius={calcReal(80)}
-          borderWidth={calcReal(6)}
+      <HeaderComponent
+        label={translations['match.setting.title']}
+        rightIcon={settingsIcon}
+        rightStyle={styles.rightButton}
+        rightClick={() => navigation.navigate('AccountScreen', { from: 'MatchFlow' })}
+        leftIcon={searchIcon}
+        leftClick={() => navigation.navigate({ key: 'MatchSearchScreen', routeName: 'MatchSearchScreen' })}
+        leftIconStyle={styles.headerIcon}
+        leftStyle={styles.leftButton}
+      />
+      <ImageBackground
+        source={resetBackground}
+        style={styles.topContainer}
+        resizeMode="cover"
+        imageStyle={styles.flexContainer}
+      >
+        <View style={styles.innerContainer}>
+          <View style={styles.flexContainer} />
+          <ProgressBar.Circle
+            size={calcReal(180)}
+            thickness={calcReal(6)}
+            unfilledColor={colors.grayBackground}
+            color={colors.primary}
+            borderWidth={0}
+            progress={(currentTime / TOTAL_CALL_DURATION)}
+            showsText
+            textStyle={styles.itemTitle}
+            formatText={() => `${calculateTime(currentTime)}\n${translations['match.timer.find']}...`}
+          />
+          <View style={styles.flexContainer}>
+            <Text style={styles.itemText}>
+              {translations['match.timer.wait']}
+            </Text>
+          </View>
+        </View>
+        <ConfirmButton
           color={colors.loginColor}
-          shadowColor={colors.grayBackground}
-          bgColor={colors.steamBlack}
-        >
-          <Text style={styles.itemTitle}>
-            {calculateTime(currentTime)}
-          </Text>
-        </ProgressCircle>
-        <Text style={styles.itemText}>
-          {WAIT_TEXT}
-        </Text>
-      </View>
-      <ConfirmButton
-        color={colors.loginColor}
-        label="CANCEL"
-        disabled={cancellingMatch}
-        onClick={() => cancelMatchRequest()}
-        fontStyle={styles.fontSpacing}
-        containerStyle={styles.mh48}
-      />
-      <View style={styles.space} />
-      <ConfirmButton
-        borderColor={colors.secondaryOpacity}
-        textColor={colors.grayText}
-        label="SETTINGS"
-        onClick={() => navigation.popToTop()}
-        fontStyle={styles.fontSpacing}
-        containerStyle={styles.mh48}
-      />
-      <View style={styles.space} />
+          label={translations['global.cancel']}
+          disabled={cancellingMatch}
+          onClick={() => cancelMatchRequest()}
+          fontStyle={styles.fontSpacing}
+        />
+      </ImageBackground>
     </SafeAreaView>
   );
 };

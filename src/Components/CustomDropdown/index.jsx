@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     fontSize: calcReal(12),
     lineHeight: calcReal(20),
     color: colors.steamBlack,
-    marginBottom: calcReal(8),
+    marginVertical: calcReal(10),
     letterSpacing: calcReal(1),
     textTransform: 'uppercase',
   },
@@ -27,7 +27,8 @@ const styles = StyleSheet.create({
     lineHeight: calcReal(20),
     textAlignVertical: 'center',
     fontWeight: '300',
-    color: `${colors.white}A0`,
+    color: colors.gray,
+    fontStyle: 'italic',
     padding: 0,
     marginRight: 'auto',
   },
@@ -97,7 +98,7 @@ const CustomDropdown = ({
                 key={index} // eslint-disable-line react/no-array-index-key
                 style={[styles.itemContainer, { height: calcReal(30) }]}
               >
-                <Text style={[styles.itemText, { color: colors.primary }]}>
+                <Text style={[styles.itemText, { color: colors.primary, fontStyle: 'normal' }]}>
                   {item}
                 </Text>
               </TouchableOpacity>

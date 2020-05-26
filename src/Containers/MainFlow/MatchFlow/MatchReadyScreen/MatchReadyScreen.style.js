@@ -1,13 +1,13 @@
 // @flow
 import { StyleSheet } from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
-import { colors, calcReal } from '../../../../Assets/config';
+import { colors, calcReal, isIphoneX } from '../../../../Assets/config';
 
 export default StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.white,
-    paddingBottom: calcReal(100),
+    paddingBottom: isIphoneX() ? calcReal(80) : calcReal(50),
   },
   header: {
     paddingTop: getStatusBarHeight(true),
@@ -15,28 +15,18 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  flex2: {
-    flex: 2,
-  },
-  mh48: {
-    marginHorizontal: calcReal(48),
-  },
-  space: {
-    height: calcReal(18),
+  innerContainer: {
+    flex: 1,
+    alignItems: 'center',
+    marginHorizontal: calcReal(50),
   },
   fontSpacing: {
     letterSpacing: calcReal(1),
   },
-  searchContainer: {
+  topContainer: {
     flex: 1,
-    marginHorizontal: calcReal(48),
-    marginBottom: calcReal(32),
-    marginTop: calcReal(24),
-    backgroundColor: colors.steamBlack,
-    borderRadius: calcReal(12),
-    paddingHorizontal: calcReal(38),
-    paddingVertical: calcReal(12),
-    alignItems: 'center',
+    paddingHorizontal: calcReal(24),
+    paddingBottom: calcReal(60),
   },
   itemTitle: {
     fontSize: calcReal(18),
@@ -44,6 +34,7 @@ export default StyleSheet.create({
     fontWeight: 'bold',
     color: colors.white,
     textAlign: 'center',
+    letterSpacing: -0.25,
     marginTop: 'auto',
     marginBottom: 'auto',
   },
@@ -59,5 +50,16 @@ export default StyleSheet.create({
   },
   flexContainer: {
     flex: 1,
+  },
+  headerIcon: {
+    tintColor: colors.black,
+  },
+  leftButton: {
+    backgroundColor: colors.white,
+    borderWidth: 1,
+    borderColor: colors.grayOpacity,
+  },
+  rightButton: {
+    backgroundColor: colors.green,
   },
 });
