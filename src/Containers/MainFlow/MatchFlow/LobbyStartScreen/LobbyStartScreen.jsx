@@ -5,6 +5,7 @@ import React, {
 import {
   Text, View, ImageBackground, StatusBar,
   TouchableOpacity, ScrollView, Dimensions,
+  Image,
 } from 'react-native';
 import BackgroundTimer from 'react-native-background-timer';
 import PropTypes from 'prop-types';
@@ -14,20 +15,23 @@ import {
   get, find,
 } from 'lodash';
 
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { updateMatchStatus, getMatchStatus, lobbyInvite } from '../../../../api';
 import { MatchContext, UserContext, LocalizationContext } from '../../../../contexts';
 import HeaderComponent from '../../../../Components/HeaderComponent';
+import CustomInput from '../../../../Components/CustomInput';
 import SocialButton from '../../../../Components/SocialButton';
+import ConfirmButton from '../../../../Components/ConfirmButton';
 import ProfileComponent from './ProfileScreen';
 import PageScreen from './PageScreen';
 import MatchSummaryComponent from './MatchSummaryComponent';
 import styles from './LobbyStartScreen.style';
 import {
-  splashBackground, radiantIcon, direIcon, moreIcon, arrowLeft, closeIcon, resendIcon,
+  splashBackground, radiantIcon, direIcon, moreIcon, arrowLeft, closeIcon, resendIcon, successMark,
 } from '../../../../Assets';
 import MatchOneDetailComponent from './MatchOneDetailComponent';
 import MatchTeamDetailComponent from './MatchTeamDetailComponent';
-import { calcReal } from '../../../../Assets/config';
+import { calcReal, colors } from '../../../../Assets/config';
 
 const { width } = Dimensions.get('window');
 
@@ -49,7 +53,13 @@ const LobbyStartScreen = ({ navigation }) => {
   const [selectedTeam, setSelectedTeam] = useState(true);
   const [radiantTeam, setRadiantTeam] = useState();
   const [currentPage, setCurrentPage] = useState(0);
+  const [caseNumber, setCaseNumber] = useState(`#GMZLOBBY${get(match, 'match.matchId') || ''}`);
+  const [gameName, setGameName] = useState(`#GMZLOBBY${get(match, 'game.gameName') || ''}`);
+  const [reportSubject, setSubject] = useState(get(user, 'userName'));
+  const [reportDescription, setDescription] = useState('');
   const [optionModalVisible, setOptionModalVisible] = useState(false);
+  const [reportModalVisible, setReportModalVisible] = useState(false);
+  const [successModalVisible, setSuccessModalVisible] = useState(false);
   const scrollViewRef = useRef();
 
   const onPageChanged = useCallback((offset) => {
@@ -84,7 +94,7 @@ const LobbyStartScreen = ({ navigation }) => {
       setMatch({});
       BackgroundTimer.stopBackgroundTimer();
       setTimeout(() => {
-        navigation.popToTop();
+        // navigation.popToTop();
       }, 250);
     } catch (error) {
       //
@@ -128,7 +138,7 @@ const LobbyStartScreen = ({ navigation }) => {
           ...match,
           match: response,
         });
-        //  console.log(JSON.stringify(match));
+
         setMatchType(get(response, 'gameType') === '1v1');
         updateTeamMembers(get(response, 'stats.dire.players'), 'dire');
         updateTeamMembers(get(response, 'stats.radiant.players'), 'radiant');
@@ -149,6 +159,22 @@ const LobbyStartScreen = ({ navigation }) => {
       //
     }
   }, [match, currentPage, targetMatchStatus, updateTeamMembers]);
+
+  const showReportModal = useCallback(() => {
+    setOptionModalVisible(false);
+    setTimeout(() => {
+      setCaseNumber(`#GMZLOBBY${get(match, 'match.matchId') || ''}`);
+      setGameName(get(match, 'game.gameName') || '');
+      setReportModalVisible(true);
+    }, 500);
+  });
+
+  const showSuccessModal = useCallback(() => {
+    setReportModalVisible(false);
+    setTimeout(() => {
+      setSuccessModalVisible(true);
+    }, 500);
+  });
 
   const startTimer = () => {
     BackgroundTimer.runBackgroundTimer(() => {
@@ -308,7 +334,6 @@ const LobbyStartScreen = ({ navigation }) => {
         hideModalContentWhileAnimating
         isVisible={optionModalVisible}
         style={styles.modalStyle}
-        collapsable
       >
         <TouchableOpacity
           activeOpacity={1}
@@ -317,7 +342,7 @@ const LobbyStartScreen = ({ navigation }) => {
         >
           <View style={styles.roundedRect}>
             <View style={styles.modalHeader} />
-            <TouchableOpacity style={styles.modalButton}>
+            <TouchableOpacity onPress={() => showReportModal()} style={styles.modalButton}>
               <SocialButton
                 clickOpacity={2}
                 style={styles.modalButtonIconContainer}
@@ -345,6 +370,119 @@ const LobbyStartScreen = ({ navigation }) => {
             </TouchableOpacity>
           </View>
         </TouchableOpacity>
+      </Modal>
+      <Modal
+        useNativeDriver
+        backdropOpacity={0.2}
+        hasBackdrop
+        hideModalContentWhileAnimating
+        isVisible={reportModalVisible}
+        style={styles.modalStyle}
+      >
+        <KeyboardAwareScrollView
+          bounces={false}
+          contentContainerStyle={styles.flexContainer}
+        >
+          <TouchableOpacity
+            activeOpacity={1}
+            onPress={() => setReportModalVisible(false)}
+            style={styles.modalContainer}
+          >
+            <View
+              style={[styles.roundedRect, styles.reportModal]}
+            >
+              <View style={styles.modalHeader} />
+              <CustomInput
+                label="CASE NUMBER"
+                autoCorrect={false}
+                disabled
+                autoCapitalize="none"
+                value={caseNumber}
+                onUpdateValue={setCaseNumber}
+                borderColor={colors.grayOpacity}
+                containerStyle={styles.inputContainer}
+              />
+              <View style={styles.inputGroup}>
+                <CustomInput
+                  label="GAME"
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  value={gameName}
+                  onUpdateValue={setGameName}
+                  borderColor={colors.grayOpacity}
+                  containerStyle={[styles.flexContainer, styles.mr16]}
+                />
+                <CustomInput
+                  label="SUBJECT"
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  value={reportSubject}
+                  onUpdateValue={setSubject}
+                  borderColor={colors.grayOpacity}
+                  containerStyle={styles.flexContainer}
+                  placeholder="Player Name"
+                />
+              </View>
+              <CustomInput
+                label="DESCRIPTION"
+                autoCorrect={false}
+                autoCapitalize="none"
+                value={reportDescription}
+                onUpdateValue={setDescription}
+                borderColor={colors.grayOpacity}
+                containerStyle={styles.inputContainer}
+                multiline
+                inputStyle={styles.descriptionContainer}
+                placeholder="Example message..."
+              />
+              <ConfirmButton
+                color={colors.loginColor}
+                label={translations['global.send']}
+                onClick={() => showSuccessModal()}
+                fontStyle={styles.fontSpacing}
+              />
+            </View>
+          </TouchableOpacity>
+        </KeyboardAwareScrollView>
+      </Modal>
+      <Modal
+        useNativeDriver
+        backdropOpacity={0.2}
+        hasBackdrop
+        hideModalContentWhileAnimating
+        isVisible={successModalVisible}
+        style={styles.modalStyle}
+      >
+        <View style={styles.successModal}>
+          <View style={styles.successInnerContainer}>
+            <Image style={[styles.successMark, styles.inputContainer]} source={successMark} resizeMode="contain" />
+            <Text
+              style={[
+                styles.progressText,
+                styles.profileText,
+                styles.blackText,
+              ]}
+            >
+              Thank you!
+            </Text>
+            <Text
+              style={[
+                styles.progressText,
+                styles.modalButtonTitle,
+                styles.grayText,
+                styles.mt8,
+              ]}
+            >
+              {`Your message with Case Number: ${caseNumber} has been received. We get back to you asap. Meanwhile you can check our Discord for live support!`}
+            </Text>
+          </View>
+          <ConfirmButton
+            color={colors.loginColor}
+            label={translations['global.done']}
+            onClick={() => setSuccessModalVisible(false)}
+            fontStyle={styles.fontSpacing}
+          />
+        </View>
       </Modal>
     </SafeAreaView>
   );

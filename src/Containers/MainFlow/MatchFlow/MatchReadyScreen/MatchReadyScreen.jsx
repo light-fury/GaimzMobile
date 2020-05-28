@@ -27,7 +27,7 @@ import {
 const MatchReadyScreen = ({ navigation }) => {
   const [match, setMatch] = useContext(MatchContext);
   const [user] = useContext(UserContext);
-  const [currentTime, setCurrentTime] = useState(0);
+  const [currentTime, setCurrentTime] = useState(29);
   const [startedTime] = useState(moment().add(30, 'seconds'));
   const [accepted, setAccepted] = useState(false);
   const { translations } = useContext(LocalizationContext);

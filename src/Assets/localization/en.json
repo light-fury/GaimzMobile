@@ -6,6 +6,8 @@
   "global.name": "Name",
   "global.cancel": "Cancel",
   "global.accept": "Accept",
+  "global.send": "Send",
+  "global.done": "Done",
   "global.connect.steam": "CONNECT STEAM",
   "global.connect.twitch": "CONNECT TWITCH",
   "global.invalid.password": "Your password should have 9 characters",

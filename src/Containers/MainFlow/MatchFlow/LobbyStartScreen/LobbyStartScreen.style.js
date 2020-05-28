@@ -1,7 +1,7 @@
 // @flow
 import { StyleSheet, Dimensions } from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
-import { colors, calcReal } from '../../../../Assets/config';
+import { colors, calcReal, isIphoneX } from '../../../../Assets/config';
 
 const { width } = Dimensions.get('window');
 
@@ -255,6 +255,7 @@ export default StyleSheet.create({
     flex: 1,
     backgroundColor: '#00000020',
     justifyContent: 'flex-end',
+    paddingTop: 'auto',
   },
   roundedRect: {
     borderTopLeftRadius: calcReal(32),
@@ -300,5 +301,47 @@ export default StyleSheet.create({
     fontSize: calcReal(12),
     lineHeight: calcReal(20),
     color: colors.gray,
+  },
+  reportModal: {
+    paddingBottom: calcReal(24),
+  },
+  inputContainer: {
+    marginBottom: calcReal(24),
+  },
+  mr16: {
+    marginRight: calcReal(16),
+  },
+  inputGroup: {
+    flexDirection: 'row',
+    marginBottom: calcReal(40),
+  },
+  descriptionContainer: {
+    minHeight: calcReal(120),
+  },
+  successModal: {
+    flex: 1,
+    backgroundColor: colors.white,
+    paddingTop: getStatusBarHeight(true) + (isIphoneX() ? calcReal(110) : calcReal(80)),
+    paddingHorizontal: calcReal(24),
+    paddingBottom: isIphoneX() ? calcReal(30) : 0,
+  },
+  successModalContent: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  successMark: {
+    width: calcReal(100),
+    height: calcReal(100),
+  },
+  grayText: {
+    color: colors.gray,
+  },
+  blackText: {
+    color: colors.steamBlack,
+  },
+  successInnerContainer: {
+    paddingHorizontal: calcReal(40),
+    flex: 1,
+    alignItems: 'center',
   },
 });
