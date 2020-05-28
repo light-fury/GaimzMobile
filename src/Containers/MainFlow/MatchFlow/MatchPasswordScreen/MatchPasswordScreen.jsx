@@ -1,7 +1,7 @@
 // @flow
 import React, { useContext, useState, useCallback } from 'react';
 import {
-  Text, View, Alert, ActivityIndicator,
+  Text, View, Alert, ActivityIndicator, StatusBar,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
@@ -52,6 +52,7 @@ const MatchPasswordScreen = ({ navigation }) => {
         bounces={false}
         contentContainerStyle={styles.contentIntent}
       >
+        <StatusBar barStyle="dark-content" />
         <View style={styles.header} />
         <View style={styles.searchContainer}>
           <View style={styles.flexContainer}>

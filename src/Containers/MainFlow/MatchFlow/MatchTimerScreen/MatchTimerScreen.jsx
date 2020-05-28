@@ -2,7 +2,9 @@
 import React, {
   useState, useEffect, useCallback, useContext,
 } from 'react';
-import { Text, View, ImageBackground } from 'react-native';
+import {
+  Text, View, ImageBackground, StatusBar,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
 import BackgroundTimer from 'react-native-background-timer';
@@ -98,6 +100,7 @@ const MatchTimerScreen = ({ navigation }) => {
       forceInset={{ bottom: 'never', top: 'never' }}
       style={styles.container}
     >
+      <StatusBar barStyle="dark-content" />
       <HeaderComponent
         label={translations['match.setting.title']}
         rightIcon={settingsIcon}

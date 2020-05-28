@@ -8,13 +8,7 @@ const { width } = Dimensions.get('window');
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.steamBlack,
-    paddingBottom: calcReal(100),
-  },
-  header: {
-    paddingTop: getStatusBarHeight(false),
-    height: getStatusBarHeight(false) + calcReal(320),
-    backgroundColor: colors.steamBlack,
+    backgroundColor: colors.lightGray,
   },
   flex2: {
     flex: 2,
@@ -27,24 +21,20 @@ export default StyleSheet.create({
     height: calcReal(39),
     marginBottom: calcReal(32),
   },
+  mb0: {
+    marginBottom: 0,
+  },
   space: {
     height: calcReal(18),
   },
   fontSpacing: {
     letterSpacing: calcReal(1),
   },
-  searchContainer: {
-    flex: 1,
-    paddingBottom: calcReal(22),
-    paddingTop: calcReal(15),
-    backgroundColor: colors.steamBlack,
-  },
   flexContainer: {
     flex: 1,
   },
   headerInnerContainer: {
     flex: 1,
-    paddingHorizontal: calcReal(24),
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -53,38 +43,51 @@ export default StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
   },
+  userInnerContainer: {
+    backgroundColor: colors.white,
+    borderRadius: calcReal(8),
+    height: calcReal(70),
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   teamItemContainer: {
     flex: 1,
     paddingHorizontal: calcReal(34),
   },
   profileText: {
-    fontSize: calcReal(14),
-    lineHeight: calcReal(20),
-    letterSpacing: calcReal(1),
-    textTransform: 'uppercase',
+    fontSize: calcReal(22),
+    lineHeight: calcReal(30),
     fontWeight: 'bold',
     color: colors.white,
   },
   matchProgressText: {
     textTransform: 'none',
-    fontWeight: '300',
     letterSpacing: -0.25,
-    lineHeight: calcReal(23),
     textAlign: 'center',
+    color: colors.gray,
+    fontSize: calcReal(12),
+    lineHeight: calcReal(20),
+  },
+  alignLeft: {
+    textAlign: 'left',
+    color: colors.steamBlack,
+    marginTop: calcReal(10),
+    marginBottom: calcReal(8),
   },
   profileImage: {
-    width: width / 3 - calcReal(16),
-    height: width / 3 - calcReal(16),
+    width: calcReal(78),
+    height: calcReal(78),
+    borderRadius: calcReal(20),
   },
   mt8: {
     marginTop: calcReal(8),
   },
   fontBig: {
-    fontSize: calcReal(24),
-    lineHeight: calcReal(30),
+    color: colors.steamBlack,
+    lineHeight: calcReal(46),
   },
   fontMedium: {
-    lineHeight: calcReal(20),
+    fontWeight: '300',
   },
   progressText: {
     textAlign: 'center',
@@ -111,10 +114,13 @@ export default StyleSheet.create({
     height: calcReal(16),
   },
   description: {
-    marginHorizontal: calcReal(20),
+    color: colors.grayText,
+    fontSize: calcReal(14),
+    lineHeight: calcReal(20),
   },
   individualPage: {
     width,
+    paddingHorizontal: calcReal(15),
   },
   hideConfirm: {
     marginBottom: calcReal(71),
@@ -126,18 +132,15 @@ export default StyleSheet.create({
     marginHorizontal: calcReal(60),
   },
   inProgressContainer: {
-    marginHorizontal: calcReal(60),
-    flexDirection: 'row',
-    alignItems: 'center',
+    marginBottom: calcReal(16),
   },
   pt23: {
     paddingTop: calcReal(23),
   },
   heroImage: {
-    width: calcReal(76),
-    height: calcReal(34),
-    borderWidth: calcReal(2),
-    borderColor: colors.lightGray,
+    width: calcReal(70),
+    height: calcReal(40),
+    borderRadius: calcReal(7),
   },
   absoluteOne: {
     position: 'absolute',
@@ -154,12 +157,22 @@ export default StyleSheet.create({
   mb4: {
     marginBottom: calcReal(4),
   },
+  heroItemImageContainer: {
+    width: calcReal(15),
+    height: calcReal(15),
+    marginHorizontal: calcReal(4),
+    backgroundColor: colors.grayText,
+    shadowColor: colors.black,
+    shadowOpacity: 0.4,
+    shadowRadius: calcReal(15),
+    shadowOffset: {
+      width: 0,
+      height: calcReal(4),
+    },
+  },
   heroItemImage: {
     width: calcReal(15),
     height: calcReal(15),
-    borderWidth: calcReal(1),
-    borderColor: `${colors.white}B0`,
-    marginHorizontal: calcReal(4),
   },
   teamDetailHeader: {
     height: calcReal(24),
@@ -171,8 +184,8 @@ export default StyleSheet.create({
     lineHeight: calcReal(20),
     letterSpacing: calcReal(1),
     textTransform: 'uppercase',
-    fontWeight: 'bold',
-    color: colors.white,
+    fontWeight: '300',
+    color: colors.gray,
     textAlign: 'center',
   },
   memberContainer: {
@@ -200,5 +213,92 @@ export default StyleSheet.create({
     borderWidth: calcReal(1),
     borderColor: `${colors.white}B0`,
     marginHorizontal: calcReal(3),
+  },
+  headerIcon: {
+    tintColor: colors.black,
+  },
+  rightButton: {
+    backgroundColor: colors.green,
+  },
+  joinHeader: {
+    height: calcReal(52),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.signUpColor,
+    marginBottom: calcReal(28),
+  },
+  joinText: {
+    fontSize: calcReal(16),
+    lineHeight: calcReal(22),
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: colors.white,
+  },
+  profileContainer: {
+    height: calcReal(132),
+  },
+  flexRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  teamTitleText: {
+    fontSize: calcReal(10),
+    fontStyle: 'italic',
+    fontWeight: 'normal',
+    color: colors.gray,
+  },
+  modalStyle: {
+    margin: 0,
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: '#00000020',
+    justifyContent: 'flex-end',
+  },
+  roundedRect: {
+    borderTopLeftRadius: calcReal(32),
+    borderTopRightRadius: calcReal(32),
+    backgroundColor: colors.white,
+    paddingHorizontal: calcReal(24),
+  },
+  modalHeader: {
+    height: calcReal(5),
+    width: calcReal(38),
+    borderRadius: calcReal(3),
+    backgroundColor: colors.steamBlack,
+    opacity: 0.4,
+    marginVertical: calcReal(24),
+    alignSelf: 'center',
+  },
+  modalButtonIconContainer: {
+    width: calcReal(28),
+    height: calcReal(28),
+    borderRadius: calcReal(8),
+    backgroundColor: colors.secondaryOpacity,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: calcReal(16),
+  },
+  modalButtonIcon: {
+    width: calcReal(14),
+    height: calcReal(14),
+    tintColor: colors.black,
+  },
+  modalButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: calcReal(24),
+  },
+  modalButtonTitle: {
+    color: colors.steamBlack,
+    fontSize: calcReal(14),
+    lineHeight: calcReal(20),
+    fontStyle: 'italic',
+  },
+  modalButtonDescription: {
+    fontSize: calcReal(12),
+    lineHeight: calcReal(20),
+    color: colors.gray,
   },
 });
