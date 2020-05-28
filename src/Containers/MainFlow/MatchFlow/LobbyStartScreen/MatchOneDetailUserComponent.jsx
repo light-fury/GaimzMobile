@@ -14,7 +14,7 @@ import {
 import styles from './LobbyStartScreen.style';
 
 const MatchOneDetailComponent = ({ teamMember }) => {
-  const memberItems = get(teamMember, 'items') || [];
+  const memberItems = ['', '', '', '', '', ''];
   return (
     <View style={styles.inProgressContainer}>
       <View style={styles.teamDetailHeader}>
@@ -36,28 +36,28 @@ const MatchOneDetailComponent = ({ teamMember }) => {
       </View>
       <View style={styles.userInnerContainer}>
         <View style={[styles.itemContainer, styles.flex3]}>
-          {get(teamMember, 'heroAvatarUrl') && (
+          {get(teamMember, 'userAvatarUrl') && (
             <Image
               style={styles.heroImage}
               defaultSource={heroTemplate}
-              source={{ uri: get(teamMember, 'heroAvatarUrl') }}
+              source={{ uri: get(teamMember, 'userAvatarUrl') }}
               resizeMode="cover"
             />
           )}
         </View>
         <View style={[styles.itemContainer, styles.flex2]}>
           <Text style={[styles.profileText, styles.matchProgressText, styles.fontMedium]}>
-            {`${get(teamMember, 'kills')} / ${get(teamMember, 'deaths')} / ${get(teamMember, 'assists')}`}
+            0 / 0 / 0
           </Text>
         </View>
         <View style={[styles.itemContainer, styles.flex2]}>
           <Text style={[styles.profileText, styles.matchProgressText, styles.fontMedium]}>
-            {`${get(teamMember, 'gpm')}`}
+            000
           </Text>
         </View>
         <View style={[styles.itemContainer, styles.flex2]}>
           <Text style={[styles.profileText, styles.matchProgressText, styles.fontMedium]}>
-            {`${get(teamMember, 'lasthits')}`}
+            0 / 0
           </Text>
         </View>
         <View style={[styles.itemContainer, styles.flex3]}>

@@ -4,55 +4,47 @@ import {
   Text, View,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import ProgressCircle from 'react-native-progress-circle';
 
-import ConfirmButton from '../../../../Components/ConfirmButton';
+import MatchSummaryComponent from './MatchSummaryComponent';
+import MatchOneDetailUserComponent from './MatchOneDetailUserComponent';
+import MatchTeamDetailComponent from './MatchTeamDetailComponent';
 import styles from './LobbyStartScreen.style';
-import { colors, calcReal } from '../../../../Assets/config';
-
-const TOTAL_CALL_DURATION = 600;
 
 const PageScreen = ({
-  currentTime, pageText, buttonVisible, clicked, buttonText,
+  match, matchType, direPlayer, radiantPlayer, selectedTeam, direTeam, radiantTeam, currentPage,
 }) => (
   <View style={styles.individualPage}>
-    <View style={[styles.itemContainer, !buttonVisible && styles.hideConfirm]}>
-      <ProgressCircle
-        percent={(currentTime / TOTAL_CALL_DURATION) * 100}
-        radius={calcReal(85)}
-        borderWidth={calcReal(6)}
-        color={colors.loginColor}
-        shadowColor={colors.grayBackground}
-        bgColor={colors.steamBlack}
-      >
-        <Text style={[styles.profileText, styles.progressText]}>
-          {pageText}
+    {matchType && (
+      <View style={styles.flexContainer}>
+        <Text style={[styles.profileText, styles.matchProgressText, styles.alignLeft]}>
+          {direPlayer.userName}
         </Text>
-      </ProgressCircle>
-    </View>
-    {buttonVisible && (
-    <ConfirmButton
-      color={colors.loginColor}
-      label={buttonText}
-      onClick={clicked}
-      fontStyle={styles.fontSpacing}
-      containerStyle={styles.mh70}
-    />
+        <MatchOneDetailUserComponent teamMember={direPlayer} />
+        <Text style={[styles.profileText, styles.matchProgressText, styles.alignLeft]}>
+          {radiantPlayer.userName}
+        </Text>
+        <MatchOneDetailUserComponent teamMember={radiantPlayer} />
+        <MatchSummaryComponent currentPage={currentPage} match={match} />
+      </View>
+    )}
+    {!matchType && direTeam && (
+      <View style={styles.teamItemContainer}>
+        <MatchTeamDetailComponent teamMember={selectedTeam ? direTeam : radiantTeam} />
+        <MatchSummaryComponent currentPage={currentPage} match={match} />
+      </View>
     )}
   </View>
 );
 
 PageScreen.propTypes = {
-  currentTime: PropTypes.number.isRequired,
-  clicked: PropTypes.func,
-  buttonText: PropTypes.string,
-  pageText: PropTypes.string.isRequired,
-  buttonVisible: PropTypes.bool.isRequired,
-};
-
-PageScreen.defaultProps = {
-  clicked: () => {},
-  buttonText: 'CLICK ME',
+  match: PropTypes.shape().isRequired,
+  matchType: PropTypes.bool.isRequired,
+  direPlayer: PropTypes.shape().isRequired,
+  radiantPlayer: PropTypes.shape().isRequired,
+  selectedTeam: PropTypes.bool.isRequired,
+  currentPage: PropTypes.number.isRequired,
+  direTeam: PropTypes.shape().isRequired,
+  radiantTeam: PropTypes.shape().isRequired,
 };
 
 export default PageScreen;

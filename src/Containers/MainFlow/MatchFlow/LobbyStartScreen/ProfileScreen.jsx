@@ -16,7 +16,6 @@ const ProfileComponent = ({ item, onClick }) => (
     onPress={onClick}
     style={styles.itemContainer}
   >
-    <Text style={styles.profileText}>{item.team}</Text>
     <Image
       source={item.avatar}
       defaultSource={profileTempDota}

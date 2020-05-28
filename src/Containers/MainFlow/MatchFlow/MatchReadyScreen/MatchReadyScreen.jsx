@@ -3,7 +3,7 @@ import React, {
   useState, useEffect, useCallback, useContext,
 } from 'react';
 import {
-  Text, View, ActivityIndicator, Alert, ImageBackground,
+  Text, View, ActivityIndicator, Alert, ImageBackground, StatusBar,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
@@ -109,6 +109,7 @@ const MatchReadyScreen = ({ navigation }) => {
       forceInset={{ bottom: 'never', top: 'never' }}
       style={styles.container}
     >
+      <StatusBar barStyle="dark-content" />
       <HeaderComponent
         label={translations['match.setting.title']}
         rightIcon={settingsIcon}

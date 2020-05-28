@@ -1,6 +1,6 @@
 // @flow
 import React, { useState } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, StatusBar } from 'react-native';
 import PropTypes from 'prop-types';
 import { withNavigation } from 'react-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
@@ -17,6 +17,7 @@ const MatchErrorScreen = ({ navigation }) => {
       forceInset={{ bottom: 'never', top: 'never' }}
       style={styles.container}
     >
+      <StatusBar barStyle="dark-content" />
       <View style={styles.header} />
       <View style={styles.searchContainer}>
         <View style={styles.flexContainer} />
