@@ -152,7 +152,7 @@ export const MainNavigator = createStackNavigator(
               const navigationOptions = {
                 headerShown: false,
               };
-              if (['ProfileDetailScreen'].indexOf(routeName) >= 0) {
+              if (['LobbyStartScreen'].indexOf(routeName) >= 0) {
                 navigationOptions.tabBarVisible = false;
               }
               return navigationOptions;

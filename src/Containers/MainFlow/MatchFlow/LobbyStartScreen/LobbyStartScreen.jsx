@@ -4,24 +4,30 @@ import React, {
 } from 'react';
 import {
   Text, View, ImageBackground, StatusBar,
-  Image, TouchableOpacity, ScrollView, Dimensions,
+  TouchableOpacity, ScrollView, Dimensions,
+  Image,
 } from 'react-native';
 import BackgroundTimer from 'react-native-background-timer';
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
+import Modal from 'react-native-modal';
 import {
   get, find,
 } from 'lodash';
 
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { updateMatchStatus, getMatchStatus, lobbyInvite } from '../../../../api';
-import { MatchContext, UserContext } from '../../../../contexts';
+import { MatchContext, UserContext, LocalizationContext } from '../../../../contexts';
+import HeaderComponent from '../../../../Components/HeaderComponent';
+import CustomInput from '../../../../Components/CustomInput';
+import SocialButton from '../../../../Components/SocialButton';
 import ConfirmButton from '../../../../Components/ConfirmButton';
 import ProfileComponent from './ProfileScreen';
 import PageScreen from './PageScreen';
 import MatchSummaryComponent from './MatchSummaryComponent';
 import styles from './LobbyStartScreen.style';
 import {
-  lobbyBgDota, arrowRight, radiantIcon, direIcon,
+  splashBackground, radiantIcon, direIcon, moreIcon, arrowLeft, closeIcon, resendIcon, successMark,
 } from '../../../../Assets';
 import MatchOneDetailComponent from './MatchOneDetailComponent';
 import MatchTeamDetailComponent from './MatchTeamDetailComponent';
@@ -29,9 +35,6 @@ import { calcReal, colors } from '../../../../Assets/config';
 
 const { width } = Dimensions.get('window');
 
-const WAIT_TEXT = 'GAIMZ BOT PREPARING LOBBY';
-const INVITE_TEXT = 'INVITE SEND\nYOU ARE ';
-const PREPARE_TEXT = 'GETTING\nMATCH DATA';
 const targetMatchStatus = [
   'match_accepted',
   'invites_sent',
@@ -42,22 +45,28 @@ const targetMatchStatus = [
 const LobbyStartScreen = ({ navigation }) => {
   const [match, setMatch] = useContext(MatchContext);
   const [user] = useContext(UserContext);
+  const { translations } = useContext(LocalizationContext);
   const [matchType, setMatchType] = useState(get(match, 'match.gameType') === '1v1');
   const [direPlayer, setDirePlayer] = useState(user);
   const [radiantPlayer, setRadiantPlayer] = useState(get(match, 'opponent'));
   const [direTeam, setDireTeam] = useState();
   const [selectedTeam, setSelectedTeam] = useState(true);
   const [radiantTeam, setRadiantTeam] = useState();
-  const [currentTime, setCurrentTime] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
+  const [caseNumber, setCaseNumber] = useState(`#GMZLOBBY${get(match, 'match.matchId') || ''}`);
+  const [gameName, setGameName] = useState(`#GMZLOBBY${get(match, 'game.gameName') || ''}`);
+  const [reportSubject, setSubject] = useState(get(user, 'userName'));
+  const [reportDescription, setDescription] = useState('');
+  const [optionModalVisible, setOptionModalVisible] = useState(false);
+  const [reportModalVisible, setReportModalVisible] = useState(false);
+  const [successModalVisible, setSuccessModalVisible] = useState(false);
   const scrollViewRef = useRef();
 
   const onPageChanged = useCallback((offset) => {
     if (scrollViewRef.current) {
-      scrollViewRef.current.scrollTo({ x: width * offset, y: 0 });
+      scrollViewRef.current.scrollTo({ x: width * (offset <= 2 ? 0 : 1), y: 0 });
     }
     setCurrentPage(offset);
-    setCurrentTime(0);
   }, [scrollViewRef]);
 
   const acceptMatchRequest = useCallback(async () => {
@@ -68,6 +77,8 @@ const LobbyStartScreen = ({ navigation }) => {
       await lobbyInvite(params);
     } catch (err) {
       //
+    } finally {
+      setOptionModalVisible(false);
     }
   }, [match]);
 
@@ -83,7 +94,7 @@ const LobbyStartScreen = ({ navigation }) => {
       setMatch({});
       BackgroundTimer.stopBackgroundTimer();
       setTimeout(() => {
-        navigation.popToTop();
+        // navigation.popToTop();
       }, 250);
     } catch (error) {
       //
@@ -127,6 +138,7 @@ const LobbyStartScreen = ({ navigation }) => {
           ...match,
           match: response,
         });
+
         setMatchType(get(response, 'gameType') === '1v1');
         updateTeamMembers(get(response, 'stats.dire.players'), 'dire');
         updateTeamMembers(get(response, 'stats.radiant.players'), 'radiant');
@@ -148,6 +160,22 @@ const LobbyStartScreen = ({ navigation }) => {
     }
   }, [match, currentPage, targetMatchStatus, updateTeamMembers]);
 
+  const showReportModal = useCallback(() => {
+    setOptionModalVisible(false);
+    setTimeout(() => {
+      setCaseNumber(`#GMZLOBBY${get(match, 'match.matchId') || ''}`);
+      setGameName(get(match, 'game.gameName') || '');
+      setReportModalVisible(true);
+    }, 500);
+  });
+
+  const showSuccessModal = useCallback(() => {
+    setReportModalVisible(false);
+    setTimeout(() => {
+      setSuccessModalVisible(true);
+    }, 500);
+  });
+
   const startTimer = () => {
     BackgroundTimer.runBackgroundTimer(() => {
       checkMatchStatus();
@@ -167,52 +195,52 @@ const LobbyStartScreen = ({ navigation }) => {
       forceInset={{ bottom: 'never', top: 'never' }}
       style={styles.container}
     >
-      <StatusBar barStyle="light-content" />
-      <View style={styles.header}>
-        <ImageBackground
-          style={styles.flexContainer}
-          imageStyle={styles.itemContainer}
-          source={lobbyBgDota}
-        >
-          <View style={styles.headerInnerContainer}>
-            <ProfileComponent
-              item={{
-                username: matchType ? direPlayer.userName : 'DIRE',
-                avatar: matchType ? { uri: direPlayer.userAvatarUrl } : direIcon,
-                team: (matchType && !!get(match, 'match.dire')) ? 'DIRE' : '',
-                borderWidth: (matchType || !selectedTeam) ? 0 : calcReal(4),
-                borderColor: '#6320EE',
-              }}
-              onClick={() => setSelectedTeam(true)}
-            />
-            <View style={styles.itemContainer}>
-              <Text style={[styles.profileText, styles.fontBig]}>VS</Text>
-            </View>
-            <ProfileComponent
-              item={{
-                username: matchType ? radiantPlayer.userName : 'RADIANT',
-                avatar: matchType ? { uri: radiantPlayer.userAvatarUrl } : radiantIcon,
-                team: (matchType && !!get(match, 'match.radiant')) ? 'RADIANT' : '',
-                borderWidth: (matchType || selectedTeam) ? 0 : calcReal(4),
-                borderColor: '#6320EE',
-              }}
-              onClick={() => setSelectedTeam(false)}
-            />
-          </View>
-          {!matchType && (
-            <MatchSummaryComponent match={match} />
-          )}
-        </ImageBackground>
-        {get(match, 'match.matchStatus') === 'match_ended' && (
-          <Text style={[styles.profileText, styles.fontBig, styles.absoluteOne]}>
-            {get(match, 'match.stats.radiantWon') === true ? 'RADIANT WON' : 'DIRE WON'}
-          </Text>
-        )}
-      </View>
-      <View style={styles.searchContainer}>
-        {matchType && (
-          <MatchSummaryComponent match={match} />
-        )}
+      <StatusBar barStyle="dark-content" />
+      <HeaderComponent
+        label={translations['match.setting.title']}
+        rightIcon={moreIcon}
+        rightStyle={styles.rightButton}
+        rightClick={() => setOptionModalVisible(true)}
+        leftIcon={arrowLeft}
+        leftClick={() => cancelMatchRequest(true)}
+        leftIconStyle={styles.headerIcon}
+      />
+      {currentPage <= 2 && (
+        <View style={[styles.joinHeader, !matchType && styles.mb0]}>
+          <Text style={styles.joinText}>{`JOIN ${'DIRE'}`}</Text>
+        </View>
+      )}
+      <ImageBackground
+        style={styles.profileContainer}
+        imageStyle={styles.itemContainer}
+        source={splashBackground}
+        resizeMode="cover"
+      >
+        <View style={styles.headerInnerContainer}>
+          <ProfileComponent
+            item={{
+              username: matchType ? direPlayer.userName : 'DIRE',
+              avatar: matchType ? { uri: direPlayer.userAvatarUrl } : direIcon,
+              team: (matchType && !!get(match, 'match.dire')) ? 'DIRE' : '',
+              borderWidth: (matchType || !selectedTeam) ? 0 : calcReal(4),
+              borderColor: '#6320EE',
+            }}
+            onClick={() => setSelectedTeam(true)}
+          />
+          <Text style={[styles.profileText, styles.fontBig]}>VS</Text>
+          <ProfileComponent
+            item={{
+              username: matchType ? radiantPlayer.userName : 'RADIANT',
+              avatar: matchType ? { uri: radiantPlayer.userAvatarUrl } : radiantIcon,
+              team: (matchType && !!get(match, 'match.radiant')) ? 'RADIANT' : '',
+              borderWidth: (matchType || selectedTeam) ? 0 : calcReal(4),
+              borderColor: '#6320EE',
+            }}
+            onClick={() => setSelectedTeam(false)}
+          />
+        </View>
+      </ImageBackground>
+      <View style={styles.flexContainer}>
         <ScrollView
           ref={scrollViewRef}
           style={styles.flexContainer}
@@ -222,14 +250,17 @@ const LobbyStartScreen = ({ navigation }) => {
           showsHorizontalScrollIndicator={false}
         >
           <PageScreen
-            currentTime={currentTime}
+            matchType={matchType}
             navigation={navigation}
-            pageText={WAIT_TEXT}
-            buttonText="CANCEL MATCH"
-            buttonVisible
-            clicked={() => cancelMatchRequest(true)}
+            match={match}
+            direPlayer={direPlayer}
+            radiantPlayer={radiantPlayer}
+            selectedTeam={selectedTeam}
+            direTeam={direTeam}
+            radiantTeam={radiantTeam}
+            currentPage={currentPage}
           />
-          <PageScreen
+          {/* <PageScreen
             currentTime={currentTime}
             navigation={navigation}
             pageText={`${INVITE_TEXT}${'RADIANT'}`}
@@ -242,42 +273,217 @@ const LobbyStartScreen = ({ navigation }) => {
             navigation={navigation}
             pageText={PREPARE_TEXT}
             buttonVisible={false}
-          />
+          /> */}
           <View style={styles.individualPage}>
-            {matchType && direTeam && radiantTeam && (
-              <View style={styles.itemContainer}>
-                <Text style={[styles.profileText, styles.matchProgressText]}>
-                  {`The Dire | ${direPlayer.userName}`}
-                </Text>
-                <MatchOneDetailComponent teamMember={direTeam[0]} />
-                <View style={styles.seperatorLine} />
-                <Text style={[styles.profileText, styles.matchProgressText]}>
-                  {`Radiant | ${radiantPlayer.userName}`}
-                </Text>
-                <MatchOneDetailComponent teamMember={radiantTeam[0]} />
+            {matchType && (
+              <View style={styles.flexContainer}>
+                <View style={styles.flexRow}>
+                  <Text style={[styles.profileText, styles.matchProgressText, styles.alignLeft]}>
+                    {direPlayer.userName}
+                  </Text>
+                  <Text
+                    style={[
+                      styles.profileText,
+                      styles.matchProgressText,
+                      styles.alignLeft,
+                      styles.teamTitleText,
+                    ]}
+                  >
+                    Radiant
+                  </Text>
+                </View>
+                <MatchOneDetailComponent
+                  teamMember={radiantTeam ? radiantTeam[0] : radiantPlayer}
+                />
+                <View style={styles.flexRow}>
+                  <Text style={[styles.profileText, styles.matchProgressText, styles.alignLeft]}>
+                    {direPlayer.userName}
+                  </Text>
+                  <Text
+                    style={[
+                      styles.profileText,
+                      styles.matchProgressText,
+                      styles.alignLeft,
+                      styles.teamTitleText,
+                    ]}
+                  >
+                    Dire
+                  </Text>
+                </View>
+                <MatchOneDetailComponent teamMember={direTeam ? direTeam[0] : direPlayer} />
+                <MatchSummaryComponent currentPage={currentPage} match={match} />
               </View>
             )}
             {!matchType && direTeam && radiantTeam && (
               <View style={styles.teamItemContainer}>
                 <MatchTeamDetailComponent teamMember={selectedTeam ? direTeam : radiantTeam} />
+                <MatchSummaryComponent match={match} />
               </View>
             )}
           </View>
         </ScrollView>
-        {!!currentPage && (
-          <ConfirmButton
-            color={colors.loginColor}
-            label="END MATCH"
-            onClick={() => cancelMatchRequest(false)}
-            fontStyle={styles.fontSpacing}
-            containerStyle={styles.endButtonStyle}
-          />
-        )}
-        <TouchableOpacity style={styles.reportContainer}>
+        {/* <TouchableOpacity style={styles.reportContainer}>
           <Text style={styles.profileText}>REPORT ISSUE</Text>
           <Image source={arrowRight} style={styles.arrowImage} resizeMode="contain" />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
+      <Modal
+        useNativeDriver
+        backdropOpacity={0.2}
+        hasBackdrop
+        hideModalContentWhileAnimating
+        isVisible={optionModalVisible}
+        style={styles.modalStyle}
+      >
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => setOptionModalVisible(false)}
+          style={styles.modalContainer}
+        >
+          <View style={styles.roundedRect}>
+            <View style={styles.modalHeader} />
+            <TouchableOpacity onPress={() => showReportModal()} style={styles.modalButton}>
+              <SocialButton
+                clickOpacity={2}
+                style={styles.modalButtonIconContainer}
+                iconStyle={styles.modalButtonIcon}
+                icon={closeIcon}
+              />
+              <View>
+                <Text style={styles.modalButtonTitle}>Report Match</Text>
+                <Text style={styles.modalButtonDescription}>Something wrong? Report here.</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => acceptMatchRequest()} style={styles.modalButton}>
+              <SocialButton
+                clickOpacity={2}
+                style={styles.modalButtonIconContainer}
+                iconStyle={styles.modalButtonIcon}
+                icon={resendIcon}
+              />
+              <View>
+                <Text style={styles.modalButtonTitle}>Resend Invite Dota2</Text>
+                <Text style={styles.modalButtonDescription}>
+                  Click here to resend an bot invite.
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </TouchableOpacity>
+      </Modal>
+      <Modal
+        useNativeDriver
+        backdropOpacity={0.2}
+        hasBackdrop
+        hideModalContentWhileAnimating
+        isVisible={reportModalVisible}
+        style={styles.modalStyle}
+      >
+        <KeyboardAwareScrollView
+          bounces={false}
+          contentContainerStyle={styles.flexContainer}
+        >
+          <TouchableOpacity
+            activeOpacity={1}
+            onPress={() => setReportModalVisible(false)}
+            style={styles.modalContainer}
+          >
+            <View
+              style={[styles.roundedRect, styles.reportModal]}
+            >
+              <View style={styles.modalHeader} />
+              <CustomInput
+                label="CASE NUMBER"
+                autoCorrect={false}
+                disabled
+                autoCapitalize="none"
+                value={caseNumber}
+                onUpdateValue={setCaseNumber}
+                borderColor={colors.grayOpacity}
+                containerStyle={styles.inputContainer}
+              />
+              <View style={styles.inputGroup}>
+                <CustomInput
+                  label="GAME"
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  value={gameName}
+                  onUpdateValue={setGameName}
+                  borderColor={colors.grayOpacity}
+                  containerStyle={[styles.flexContainer, styles.mr16]}
+                />
+                <CustomInput
+                  label="SUBJECT"
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  value={reportSubject}
+                  onUpdateValue={setSubject}
+                  borderColor={colors.grayOpacity}
+                  containerStyle={styles.flexContainer}
+                  placeholder="Player Name"
+                />
+              </View>
+              <CustomInput
+                label="DESCRIPTION"
+                autoCorrect={false}
+                autoCapitalize="none"
+                value={reportDescription}
+                onUpdateValue={setDescription}
+                borderColor={colors.grayOpacity}
+                containerStyle={styles.inputContainer}
+                multiline
+                inputStyle={styles.descriptionContainer}
+                placeholder="Example message..."
+              />
+              <ConfirmButton
+                color={colors.loginColor}
+                label={translations['global.send']}
+                onClick={() => showSuccessModal()}
+                fontStyle={styles.fontSpacing}
+              />
+            </View>
+          </TouchableOpacity>
+        </KeyboardAwareScrollView>
+      </Modal>
+      <Modal
+        useNativeDriver
+        backdropOpacity={0.2}
+        hasBackdrop
+        hideModalContentWhileAnimating
+        isVisible={successModalVisible}
+        style={styles.modalStyle}
+      >
+        <View style={styles.successModal}>
+          <View style={styles.successInnerContainer}>
+            <Image style={[styles.successMark, styles.inputContainer]} source={successMark} resizeMode="contain" />
+            <Text
+              style={[
+                styles.progressText,
+                styles.profileText,
+                styles.blackText,
+              ]}
+            >
+              Thank you!
+            </Text>
+            <Text
+              style={[
+                styles.progressText,
+                styles.modalButtonTitle,
+                styles.grayText,
+                styles.mt8,
+              ]}
+            >
+              {`Your message with Case Number: ${caseNumber} has been received. We get back to you asap. Meanwhile you can check our Discord for live support!`}
+            </Text>
+          </View>
+          <ConfirmButton
+            color={colors.loginColor}
+            label={translations['global.done']}
+            onClick={() => setSuccessModalVisible(false)}
+            fontStyle={styles.fontSpacing}
+          />
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };

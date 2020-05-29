@@ -25,7 +25,6 @@ const styles = StyleSheet.create({
     borderWidth: calcReal(2),
     borderRadius: calcReal(4),
     borderColor: colors.grayOpacity,
-    height: calcReal(48),
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
@@ -39,6 +38,7 @@ const styles = StyleSheet.create({
     color: colors.gray,
     padding: 0,
     marginHorizontal: calcReal(14),
+    height: calcReal(48),
   },
   iconContainer: {
     paddingHorizontal: calcReal(14),
@@ -59,6 +59,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  inputStyle: {
+    height: calcReal(48),
+  },
 });
 
 const CustomInput = ({
@@ -73,6 +76,7 @@ const CustomInput = ({
   icon,
   borderColor = colors.grayOpacity,
   iconVisible = false,
+  inputStyle = {},
   ...props
 }) => (
   <View style={containerStyle}>
@@ -88,7 +92,7 @@ const CustomInput = ({
     </View>
     <View style={[styles.inputContainer, { borderColor }]}>
       <TextInput
-        style={styles.flexStyle}
+        style={[styles.flexStyle, inputStyle]}
         value={value}
         secureTextEntry={secureTextEntry}
         onChangeText={onUpdateValue}

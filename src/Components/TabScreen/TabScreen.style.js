@@ -4,10 +4,12 @@ import { colors, calcReal, isIphoneX } from '../../Assets/config';
 
 export default StyleSheet.create({
   flexStyle: {
-    height: calcReal(100),
-    paddingBottom: isIphoneX() ? calcReal(20) : 0,
-    paddingHorizontal: calcReal(22),
-    backgroundColor: colors.white,
+    height: isIphoneX() ? calcReal(120) : calcReal(90),
+    paddingBottom: isIphoneX() ? calcReal(30) : 0,
+    paddingHorizontal: calcReal(12),
+    borderTopRightRadius: calcReal(32),
+    borderTopLeftRadius: calcReal(32),
+    backgroundColor: colors.loginColor,
     position: 'absolute',
     bottom: 0,
     left: 0,
@@ -22,22 +24,23 @@ export default StyleSheet.create({
   },
   tabItem: {
     flex: 1,
-    height: calcReal(80),
+    height: calcReal(90),
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
   },
   tabButton: {
-    width: calcReal(56),
-    height: calcReal(56),
+    width: calcReal(38),
+    height: calcReal(38),
     borderRadius: calcReal(12),
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: colors.whiteOpacity,
   },
   tabIcon: {
-    width: calcReal(30),
-    height: calcReal(30),
-    tintColor: colors.steamBlack,
+    width: calcReal(20),
+    height: calcReal(20),
+    tintColor: colors.white,
   },
   titleText: {
     fontSize: calcReal(15),

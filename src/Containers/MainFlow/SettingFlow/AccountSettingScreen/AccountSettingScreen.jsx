@@ -152,7 +152,7 @@ const AccountSettingScreen = ({ navigation }) => {
         />
         <ConfirmButton
           containerStyle={styles.mv10}
-          color={colors.ADSD}
+          color={colors.gray}
           label="Get Back"
           onClick={() => navigation.pop()}
         />

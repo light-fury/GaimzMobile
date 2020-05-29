@@ -1,7 +1,6 @@
 // @flow
-import { StyleSheet, Dimensions, Platform } from 'react-native';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
-import { colors, calcReal } from '../../../../Assets/config';
+import { StyleSheet, Dimensions } from 'react-native';
+import { colors, calcReal, isIphoneX } from '../../../../Assets/config';
 
 const { width } = Dimensions.get('window');
 
@@ -9,25 +8,10 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.white,
-    paddingBottom: calcReal(100),
+    paddingBottom: isIphoneX() ? calcReal(80) : calcReal(50),
   },
   flexContainer: {
     flex: 1,
-  },
-  header: {
-    marginTop: Platform.OS === 'ios' ? getStatusBarHeight(true) : calcReal(14),
-    height: calcReal(78),
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingTop: calcReal(8),
-    paddingBottom: calcReal(22),
-    paddingHorizontal: calcReal(20),
-  },
-  avatarImage: {
-    borderRadius: calcReal(12),
-    overflow: 'hidden',
-    width: calcReal(48),
-    height: calcReal(48),
   },
   profileName: {
     marginHorizontal: calcReal(18),
@@ -36,26 +20,12 @@ export default StyleSheet.create({
     fontWeight: 'bold',
     color: colors.darkGray,
   },
-  textRight: {
-    textAlign: 'right',
-  },
-  headerButton: {
-    marginTop: calcReal(10),
-    width: calcReal(38),
-    height: calcReal(38),
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: calcReal(12),
-    backgroundColor: colors.signUpColor,
-    marginRight: calcReal(10),
-  },
   headerIcon: {
-    width: calcReal(18),
-    height: calcReal(18),
+    tintColor: colors.black,
   },
   scrollIntent: {
     paddingHorizontal: calcReal(16),
-    paddingBottom: calcReal(28),
+    paddingBottom: calcReal(80),
   },
   itemContainer: {
     paddingTop: calcReal(28),

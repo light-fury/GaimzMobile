@@ -2,7 +2,7 @@ import React, {
   useContext, useCallback, useState, useEffect, useRef,
 } from 'react';
 import {
-  View, Image, TouchableOpacity, ImageBackground, Text, FlatList, Alert,
+  View, Image, TouchableOpacity, ImageBackground, Text, FlatList, Alert, StatusBar,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { NavigationEvents } from 'react-navigation';
@@ -132,6 +132,7 @@ const MatchSearchScreen = ({ navigation }) => {
       forceInset={{ bottom: 'never' }}
       style={styles.container}
     >
+      <StatusBar barStyle="dark-content" />
       <NavigationEvents
         onWillFocus={() => initData()}
       />

@@ -3,7 +3,6 @@ import { NavigationActions } from 'react-navigation';
 import PropTypes from 'prop-types';
 import {
   TouchableOpacity,
-  Text,
   View,
 } from 'react-native';
 import { connect } from 'react-redux';
@@ -11,7 +10,9 @@ import { connect } from 'react-redux';
 import SocialButton from '../SocialButton';
 import { removeSecretsData } from '../../State/Secrets/Actions';
 import styles from './TabScreen.style';
-import { homeIcon, matchIcon, settingsIcon } from '../../Assets';
+import {
+  homeIcon, matchIcon, settingsIcon, calendarIcon, messageIcon,
+} from '../../Assets';
 import { colors } from '../../Assets/config';
 
 class TabScreen extends Component {
@@ -26,9 +27,19 @@ class TabScreen extends Component {
           icon: homeIcon,
         },
         {
+          title: 'Calendar',
+          routeName: 'CalendarFlow',
+          icon: calendarIcon,
+        },
+        {
           title: 'Match Up',
           routeName: 'MatchFlow',
           icon: matchIcon,
+        },
+        {
+          title: 'Messages',
+          routeName: 'MessageFlow',
+          icon: messageIcon,
         },
         {
           title: 'Settings',
@@ -79,18 +90,15 @@ class TabScreen extends Component {
               <SocialButton
                 style={[
                   styles.tabButton,
-                  selected && { backgroundColor: colors.steamBlack },
+                  selected && { backgroundColor: colors.white },
                 ]}
                 iconStyle={[
                   styles.tabIcon,
-                  selected && { tintColor: colors.white },
+                  selected && { tintColor: colors.primary },
                 ]}
                 icon={item.icon}
                 onClick={() => this.navigateToScreen(item.routeName)}
               />
-              <Text style={[styles.titleText, selected && styles.titleFocused]}>
-                {item.title}
-              </Text>
             </TouchableOpacity>
           );
         })}

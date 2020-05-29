@@ -14,11 +14,10 @@ import PropTypes from 'prop-types';
 import { withNavigation } from 'react-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
 
-import SocialButton from '../../../../Components/SocialButton';
+import HeaderComponent from '../../../../Components/HeaderComponent';
 import styles from './DashboardScreen.style';
 import {
   eyeIcon,
-  searchIcon,
   notificationIcon,
 } from '../../../../Assets';
 import { colors } from '../../../../Assets/config';
@@ -95,30 +94,12 @@ const DashboardScreen = ({ navigation }) => {
       style={styles.container}
     >
       <StatusBar barStyle="dark-content" />
-      <View style={styles.header}>
-        <SocialButton
-          style={styles.headerButton}
-          iconStyle={styles.headerIcon}
-          icon={searchIcon}
-          onClick={() => Alert.alert('Search Clicked')}
-        />
-        <SocialButton
-          style={styles.headerButton}
-          iconStyle={styles.headerIcon}
-          icon={notificationIcon}
-          onClick={() => Alert.alert('Bell Clicked')}
-        />
-        <Text style={[styles.flexContainer, styles.profileName, styles.textRight]}>
-          {user.userName}
-        </Text>
-        <SocialButton
-          style={styles.avatarImage}
-          iconStyle={styles.avatarImage}
-          icon={{ uri: user.userAvatarUrl }}
-          clickOpacity={1}
-          onClick={() => navigation.navigate('AccountScreen', { from: 'HomeFlow' })}
-        />
-      </View>
+      <HeaderComponent
+        label="HOME"
+        rightIcon={notificationIcon}
+        rightClick={() => Alert.alert('Bell Clicked')}
+        rightIconStyle={styles.headerIcon}
+      />
       <FlatList
         style={[styles.flexContainer, { backgroundColor: colors.lightGray }]}
         contentContainerStyle={styles.scrollIntent}
