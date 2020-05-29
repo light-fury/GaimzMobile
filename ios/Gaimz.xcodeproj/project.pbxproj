@@ -532,7 +532,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.gaimz.mobiledev;
+				PRODUCT_BUNDLE_IDENTIFIER = com.gaimz;
 				PRODUCT_NAME = Gaimz;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -555,7 +555,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.gaimz.mobiledev;
+				PRODUCT_BUNDLE_IDENTIFIER = com.gaimz;
 				PRODUCT_NAME = Gaimz;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
