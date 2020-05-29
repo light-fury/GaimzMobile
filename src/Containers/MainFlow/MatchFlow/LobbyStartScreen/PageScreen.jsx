@@ -7,8 +7,8 @@ import PropTypes from 'prop-types';
 
 import MatchSummaryComponent from './MatchSummaryComponent';
 import MatchOneDetailUserComponent from './MatchOneDetailUserComponent';
-import MatchTeamDetailComponent from './MatchTeamDetailComponent';
 import styles from './LobbyStartScreen.style';
+import MatchTeamDetailUserComponent from './MatchTeamDetailUserComponent';
 
 const PageScreen = ({
   match, matchType, direPlayer, radiantPlayer, selectedTeam, direTeam, radiantTeam, currentPage,
@@ -29,7 +29,7 @@ const PageScreen = ({
     )}
     {!matchType && direTeam && (
       <View style={styles.teamItemContainer}>
-        <MatchTeamDetailComponent teamMember={selectedTeam ? direTeam : radiantTeam} />
+        <MatchTeamDetailUserComponent teamMember={selectedTeam ? direTeam : radiantTeam} />
         <MatchSummaryComponent currentPage={currentPage} match={match} />
       </View>
     )}
