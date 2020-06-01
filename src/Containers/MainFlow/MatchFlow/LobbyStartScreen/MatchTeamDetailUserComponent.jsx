@@ -1,20 +1,24 @@
 // @flow
 import React from 'react';
 import {
-  Text, View, Image,
+  Text, View,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import {
   get,
 } from 'lodash';
+import FastImage from 'react-native-fast-image';
 
-import {
-  heroTemplate,
-} from '../../../../Assets';
 import styles from './LobbyStartScreen.style';
 
-const MatchTeamDetailUserComponent = ({ teamMember }) => (
+const tempTeam = [{ userId: '1' }, { userId: '2' }, { userId: '3' }, { userId: '4' }, { userId: '5' }];
+const tempItems = ['', '', '', '', '', ''];
+
+const MatchTeamDetailUserComponent = ({ selectedTeam, match }) => (
   <View>
+    <Text style={[styles.profileText, styles.matchProgressText, styles.alignLeft]}>
+      {selectedTeam ? 'DIRE' : 'RADIANT'}
+    </Text>
     <View style={styles.teamDetailHeader}>
       <View style={[styles.itemContainer, styles.flex3]}>
         <Text style={styles.teamDetailHeaderText}>HERO</Text>
@@ -32,52 +36,64 @@ const MatchTeamDetailUserComponent = ({ teamMember }) => (
         <Text style={styles.teamDetailHeaderText}>ITEMS</Text>
       </View>
     </View>
-    {teamMember.map((member) => {
-      const memberItems = get(member, 'items') || [];
+    {(get(match, 'match.players') || tempTeam).slice(0, 5).map((member) => {
+      const memberItems = get(member, 'items') || tempItems;
       return (
-        <View key={member.userId} style={styles.memberContainer}>
+        <View key={member.userId} style={[styles.userInnerContainer, styles.mb12]}>
           <View style={[styles.itemContainer, styles.flex3]}>
-            <Image
-              style={styles.memberHeroImage}
-              source={{ uri: get(member, 'heroAvatarUrl') || '' }}
-              defaultSource={heroTemplate}
-              resizeMode="cover"
+            <FastImage
+              style={styles.heroImage}
+              source={{ uri: get(member, 'userAvatarUrl') }}
+              resizeMode={FastImage.resizeMode.cover}
             />
           </View>
           <View style={[styles.itemContainer, styles.flex2]}>
-            <Text style={styles.memberDetailText}>
-              {`${get(member, 'kills')} / ${get(member, 'deaths')} / ${get(member, 'assists')}`}
+            <Text style={[styles.profileText, styles.matchProgressText, styles.fontMedium]}>
+              0 / 0 / 0
             </Text>
           </View>
           <View style={[styles.itemContainer, styles.flex2]}>
-            <Text style={styles.memberDetailText}>
-              {`${get(member, 'gpm')}`}
+            <Text style={[styles.profileText, styles.matchProgressText, styles.fontMedium]}>
+              000
             </Text>
           </View>
           <View style={[styles.itemContainer, styles.flex2]}>
-            <Text style={styles.memberDetailText}>
-              {`${get(member, 'lasthits')}`}
+            <Text style={[styles.profileText, styles.matchProgressText, styles.fontMedium]}>
+              0 / 0
             </Text>
           </View>
           <View style={[styles.itemContainer, styles.flex3]}>
             <View style={[styles.rowContainer, styles.mb4]}>
-              {memberItems.length >= 3 && memberItems.slice(0, 3).map((subItem) => (
-                <Image
-                  key={`dire ${subItem}`}
-                  style={styles.memberItemImage}
-                  source={{ uri: subItem || '' }}
-                  resizeMode="cover"
-                />
+              {memberItems.slice(0,
+                (memberItems.length > 3 ? 3 : memberItems.length)).map((subItem, index) => (
+                  <View
+                    key={`dire ${subItem}${index + 1}`}
+                    style={styles.heroItemImageContainer}
+                  >
+                    {subItem.length > 0 && (
+                      <FastImage
+                        style={styles.heroItemImage}
+                        source={{ uri: subItem || '' }}
+                        resizeMode={FastImage.resizeMode.cover}
+                      />
+                    )}
+                  </View>
               ))}
             </View>
             <View style={styles.rowContainer}>
-              {memberItems.length >= 6 && memberItems.slice(3, 6).map((subItem) => (
-                <Image
-                  key={`dire ${subItem}`}
-                  style={styles.memberItemImage}
-                  source={{ uri: subItem || '' }}
-                  resizeMode="cover"
-                />
+              {memberItems.length > 3 && memberItems.slice(3).map((subItem, index) => (
+                <View
+                  key={`dire ${subItem}${index + 4}`}
+                  style={styles.heroItemImageContainer}
+                >
+                  {subItem.length > 0 && (
+                    <FastImage
+                      style={styles.heroItemImage}
+                      source={{ uri: subItem || '' }}
+                      resizeMode={FastImage.resizeMode.cover}
+                    />
+                  )}
+                </View>
               ))}
             </View>
           </View>
@@ -88,7 +104,8 @@ const MatchTeamDetailUserComponent = ({ teamMember }) => (
 );
 
 MatchTeamDetailUserComponent.propTypes = {
-  teamMember: PropTypes.shape().isRequired,
+  selectedTeam: PropTypes.bool.isRequired,
+  match: PropTypes.shape().isRequired,
 };
 
 export default MatchTeamDetailUserComponent;

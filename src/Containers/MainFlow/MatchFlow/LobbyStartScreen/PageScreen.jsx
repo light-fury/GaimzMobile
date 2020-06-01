@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import {
-  Text, View,
+  Text, View, ScrollView,
 } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -11,7 +11,7 @@ import styles from './LobbyStartScreen.style';
 import MatchTeamDetailUserComponent from './MatchTeamDetailUserComponent';
 
 const PageScreen = ({
-  match, matchType, direPlayer, radiantPlayer, selectedTeam, direTeam, radiantTeam, currentPage,
+  match, matchType, direPlayer, radiantPlayer, selectedTeam, currentPage,
 }) => (
   <View style={styles.individualPage}>
     {matchType && (
@@ -27,11 +27,18 @@ const PageScreen = ({
         <MatchSummaryComponent currentPage={currentPage} match={match} />
       </View>
     )}
-    {!matchType && direTeam && (
-      <View style={styles.teamItemContainer}>
-        <MatchTeamDetailUserComponent teamMember={selectedTeam ? direTeam : radiantTeam} />
+    {!matchType && (
+      <ScrollView
+        style={styles.flexContainer}
+        contentContainerStyle={styles.reportModal}
+        showsVerticalScrollIndicator={false}
+      >
+        <MatchTeamDetailUserComponent
+          selectedTeam={selectedTeam}
+          match={match}
+        />
         <MatchSummaryComponent currentPage={currentPage} match={match} />
-      </View>
+      </ScrollView>
     )}
   </View>
 );
@@ -43,8 +50,6 @@ PageScreen.propTypes = {
   radiantPlayer: PropTypes.shape().isRequired,
   selectedTeam: PropTypes.bool.isRequired,
   currentPage: PropTypes.number.isRequired,
-  direTeam: PropTypes.shape().isRequired,
-  radiantTeam: PropTypes.shape().isRequired,
 };
 
 export default PageScreen;
