@@ -12,8 +12,8 @@
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		345BDB5A6D00CDC3B50C25A3 /* libPods-Gaimz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D44BE3065F8DFA4D373910D3 /* libPods-Gaimz.a */; };
 		401CF351A6C9C96CDC8BA366 /* libPods-Gaimz-GaimzTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D46DF340B6A28370C2274864 /* libPods-Gaimz-GaimzTests.a */; };
-		A3526471026E75689068E229 /* libPods-Gaimz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D44BE3065F8DFA4D373910D3 /* libPods-Gaimz.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,7 +61,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A3526471026E75689068E229 /* libPods-Gaimz.a in Frameworks */,
+				345BDB5A6D00CDC3B50C25A3 /* libPods-Gaimz.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -209,7 +209,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = SXTKCJJ6VD;
+						DevelopmentTeam = 35H9S79S43;
 						LastSwiftMigration = 1120;
 					};
 				};
@@ -519,7 +519,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = SXTKCJJ6VD;
+				DEVELOPMENT_TEAM = 35H9S79S43;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -547,7 +547,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = SXTKCJJ6VD;
+				DEVELOPMENT_TEAM = 35H9S79S43;
 				INFOPLIST_FILE = Gaimz/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
