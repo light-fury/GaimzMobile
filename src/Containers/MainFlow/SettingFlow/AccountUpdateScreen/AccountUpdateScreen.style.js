@@ -23,6 +23,11 @@ export default StyleSheet.create({
     lineHeight: calcReal(20),
     color: colors.steamBlack,
   },
+  buttonText: {
+    fontStyle: 'normal',
+    fontWeight: 'bold',
+    color: colors.white,
+  },
   grayText: {
     color: colors.gray,
   },
@@ -57,5 +62,9 @@ export default StyleSheet.create({
   checkIcon: {
     width: calcReal(12),
     height: calcReal(12),
+  },
+  absolutePos: {
+    marginBottom: calcReal(30),
+    marginHorizontal: calcReal(24),
   },
 });

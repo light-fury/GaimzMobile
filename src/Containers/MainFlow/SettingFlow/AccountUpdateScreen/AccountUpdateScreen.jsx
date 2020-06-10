@@ -19,16 +19,26 @@ import {
 import styles from './AccountUpdateScreen.style';
 import { UserContext, LocalizationContext } from '../../../../contexts';
 import HeaderComponent from '../../../../Components/HeaderComponent';
+import ConfirmButton from '../../../../Components/ConfirmButton';
 import CustomInput from '../../../../Components/CustomInput';
-import { colors, validateEmail } from '../../../../Assets/config';
+import LoadingComponent from '../../../../Components/LoadingComponent';
+import {
+  colors,
+  validateEmail,
+  useKeyboard,
+  calcReal,
+} from '../../../../Assets/config';
+import { updateUser } from '../../../../api/user';
 
 const AccountUpdateScreen = ({ navigation }) => {
-  const [user] = useContext(UserContext);
+  const [user, setUser] = useContext(UserContext);
   const { translations } = useContext(LocalizationContext);
+  const [keyboardHeight] = useKeyboard();
   const [fieldName] = useState(navigation.getParam('field'));
   const [targetValue, setTargetValue] = useState(get(user, fieldName) || '');
   const [confirmValue, setConfirmValue] = useState('');
   const [allowEmail, setAllowEmail] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
   const validateValue = useCallback(() => {
     if (targetValue.length <= 0) {
@@ -41,6 +51,25 @@ const AccountUpdateScreen = ({ navigation }) => {
       return targetValue.length >= 9;
     }
     return true;
+  });
+
+  const saveValue = useCallback(async () => {
+    try {
+      setLoading(true);
+      if (!validateValue()) {
+        return;
+      }
+      if (fieldName === 'password' && targetValue !== confirmValue) {
+        return;
+      }
+      const response = await updateUser({ [fieldName]: targetValue });
+      setUser(response);
+      navigation.pop();
+    } catch (error) {
+      // console.log(error);
+    } finally {
+      setLoading(false);
+    }
   });
 
   const getHeaderText = useCallback(() => {
@@ -91,6 +120,7 @@ const AccountUpdateScreen = ({ navigation }) => {
       />
       <KeyboardAwareScrollView
         contentContainerStyle={styles.scrollIntent}
+        extraHeight={calcReal(80)}
       >
         <View style={styles.headerTextContainer}>
           <Text style={[styles.headerNameText, styles.centerText]}>
@@ -147,6 +177,21 @@ const AccountUpdateScreen = ({ navigation }) => {
           </TouchableOpacity>
         )}
       </KeyboardAwareScrollView>
+      <ConfirmButton
+        color={colors.loginColor}
+        borderColor={colors.transparent}
+        textColor={colors.gray}
+        label="Save changes"
+        onClick={saveValue}
+        fontStyle={[styles.headerNameText, styles.buttonText]}
+        containerStyle={[
+          styles.absolutePos,
+          { marginBottom: keyboardHeight + calcReal(20) },
+        ]}
+      />
+      {isLoading && (
+        <LoadingComponent />
+      )}
     </SafeAreaView>
   );
 };
