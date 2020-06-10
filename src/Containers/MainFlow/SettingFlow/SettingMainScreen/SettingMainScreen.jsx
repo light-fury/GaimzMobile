@@ -7,6 +7,7 @@ import {
   Image,
   FlatList,
   StatusBar,
+  ImageBackground,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
@@ -17,11 +18,16 @@ import {
   connectionIcon,
   arrowRight,
   logoutIcon,
+  moreIcon,
+  arrowLeft,
+  notificationIcon,
+  helpIcon,
 } from '../../../../Assets';
 import SocialButton from '../../../../Components/SocialButton';
 import styles from './SettingMainScreen.style';
 import { UserContext, MatchContext } from '../../../../contexts';
 import { resetNavigation } from '../../../../helpers/navigation';
+import HeaderComponent from '../../../../Components/HeaderComponent';
 
 
 const listData = [
@@ -32,8 +38,18 @@ const listData = [
   },
   {
     image: connectionIcon,
-    title: 'Connection',
+    title: 'Connections',
     route: 'ConnectionSettingScreen',
+  },
+  {
+    image: notificationIcon,
+    title: 'Notifications',
+    route: 'NotificationScreen',
+  },
+  {
+    image: helpIcon,
+    title: 'Help',
+    route: 'HelpScreen',
   },
   {
     image: logoutIcon,
@@ -65,7 +81,7 @@ const SettingMainScreen = ({ navigation }) => {
       style={styles.itemContainer}
     >
       <SocialButton
-        style={styles.itemButton}
+        style={[styles.itemButton, index === 0 && styles.whiteBackground]}
         iconStyle={styles.itemIcon}
         icon={item.image}
         clickOpacity={2}
@@ -90,24 +106,25 @@ const SettingMainScreen = ({ navigation }) => {
       style={styles.container}
     >
       <StatusBar barStyle="light-content" />
-      <View style={styles.header}>
-        <Text style={[styles.flexContainer, styles.profileName, styles.textRight]}>
-          {user.userName}
-        </Text>
-        <SocialButton
-          style={styles.avatarImage}
-          iconStyle={styles.avatarImage}
-          icon={{ uri: user.userAvatarUrl }}
-          clickOpacity={1}
-          onClick={() => navigation.navigate('AccountScreen')}
-        />
-        {/* <SocialButton
-          style={styles.headerButton}
-          iconStyle={styles.headerIcon}
-          icon={settingsIcon}
-          onClick={() => navigation.pop()}
-        /> */}
-      </View>
+      <HeaderComponent
+        rightIcon={moreIcon}
+        rightStyle={styles.rightButton}
+        rightIconStyle={styles.headerRightIcon}
+        rightClick={() => navigation.goBack()}
+        leftIcon={arrowLeft}
+        leftClick={() => navigation.goBack()}
+        leftIconStyle={styles.headerLeftIcon}
+      >
+        <View style={styles.headerContainer}>
+          <ImageBackground source={{ uri: user.userAvatarUrl || '' }} style={styles.avatarImage} imageStyle={styles.flexContainer}>
+            <View style={styles.onlineStatus} />
+          </ImageBackground>
+          <View style={styles.headerTextContainer}>
+            <Text style={styles.headerNameText}>{user.userName}</Text>
+            <Text style={[styles.headerNameText, styles.grayText]}>Online</Text>
+          </View>
+        </View>
+      </HeaderComponent>
       <Text style={styles.titleText}>Settings</Text>
       <FlatList
         style={styles.flexContainer}

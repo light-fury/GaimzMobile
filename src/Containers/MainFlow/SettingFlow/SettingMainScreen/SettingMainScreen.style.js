@@ -1,67 +1,84 @@
 // @flow
-import { StyleSheet, Platform } from 'react-native';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
+import { StyleSheet } from 'react-native';
 import { colors, calcReal } from '../../../../Assets/config';
 
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.steamBlack,
-    paddingBottom: calcReal(100),
+    backgroundColor: colors.lightGray,
   },
   flexContainer: {
     flex: 1,
   },
-  header: {
-    marginTop: Platform.OS === 'ios' ? getStatusBarHeight(true) : calcReal(14),
-    height: calcReal(78),
+  headerContainer: {
+    flex: 1,
+    marginHorizontal: calcReal(16),
     flexDirection: 'row',
     alignItems: 'center',
-    paddingTop: calcReal(8),
-    paddingBottom: calcReal(22),
-    paddingHorizontal: calcReal(20),
   },
   avatarImage: {
+    width: calcReal(38),
+    height: calcReal(38),
     borderRadius: calcReal(12),
+    borderTopRightRadius: 0,
     overflow: 'hidden',
-    width: calcReal(48),
-    height: calcReal(48),
+  },
+  headerTextContainer: {
+    marginLeft: calcReal(8),
+    flexDirection: 'column',
+  },
+  headerNameText: {
+    fontStyle: 'italic',
+    fontSize: calcReal(14),
+    lineHeight: calcReal(20),
+    color: colors.steamBlack,
+  },
+  grayText: {
+    color: colors.gray,
+  },
+  onlineStatus: {
+    alignSelf: 'flex-end',
+    width: calcReal(12),
+    height: calcReal(12),
+    borderRadius: calcReal(6),
+    backgroundColor: colors.green,
+    borderWidth: calcReal(2),
+    borderColor: colors.steamBlack,
   },
   profileName: {
     marginHorizontal: calcReal(18),
     fontSize: calcReal(16),
     lineHeight: calcReal(22),
     fontWeight: 'bold',
-    color: colors.white,
-  },
-  textRight: {
-    textAlign: 'right',
-  },
-  headerButton: {
-    width: calcReal(38),
-    height: calcReal(38),
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: calcReal(12),
-    borderWidth: calcReal(1),
-    borderColor: `${colors.lightGray}70`,
-    backgroundColor: colors.transparent,
+    color: colors.steamBlack,
   },
   itemButton: {
-    width: calcReal(48),
-    height: calcReal(48),
+    width: calcReal(40),
+    height: calcReal(40),
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: calcReal(12),
-    backgroundColor: `${colors.white}30`,
+    backgroundColor: colors.transparent,
+    borderWidth: calcReal(2),
+    borderColor: colors.grayOpacity,
+  },
+  whiteBackground: {
+    borderWidth: 0,
+    backgroundColor: colors.white,
   },
   itemIcon: {
-    width: calcReal(22),
-    height: calcReal(22),
-  },
-  headerIcon: {
     width: calcReal(18),
     height: calcReal(18),
+    tintColor: colors.steamBlack,
+  },
+  headerLeftIcon: {
+    tintColor: colors.steamBlack,
+  },
+  headerRightIcon: {
+    tintColor: colors.gray,
+  },
+  rightButton: {
+    backgroundColor: colors.transparent,
   },
   arrowIcon: {
     width: calcReal(18),
@@ -69,11 +86,11 @@ export default StyleSheet.create({
     marginRight: calcReal(28),
   },
   scrollIntent: {
-    paddingHorizontal: calcReal(35),
+    paddingHorizontal: calcReal(24),
     paddingBottom: calcReal(22),
   },
   itemContainer: {
-    marginTop: calcReal(22),
+    marginBottom: calcReal(24),
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -81,8 +98,9 @@ export default StyleSheet.create({
     fontSize: calcReal(22),
     lineHeight: calcReal(30),
     fontWeight: 'bold',
-    marginHorizontal: calcReal(35),
-    marginBottom: calcReal(6),
-    color: colors.white,
+    marginHorizontal: calcReal(24),
+    marginBottom: calcReal(24),
+    marginTop: calcReal(32),
+    color: colors.steamBlack,
   },
 });

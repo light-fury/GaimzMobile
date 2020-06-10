@@ -1,162 +1,143 @@
 // @flow
-import React, { useContext, useState } from 'react';
+import React, { useContext, useCallback } from 'react';
 import {
-  Alert, Text, View, Image,
+  FlatList, Text, View, TouchableOpacity, ImageBackground,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import SafeAreaView from 'react-native-safe-area-view';
+import {
+  get,
+} from 'lodash';
 
 import SocialButton from '../../../../Components/SocialButton';
-import CustomInput from '../../../../Components/CustomInput';
-import ConfirmButton from '../../../../Components/ConfirmButton';
-import { colors } from '../../../../Assets/config';
 import {
-  cameraIcon,
-  deleteIcon,
-  closeIcon,
   arrowLeft,
+  editIcon,
 } from '../../../../Assets';
 import styles from './AccountSettingScreen.style';
-import { UserContext, MatchContext } from '../../../../contexts';
-import { deleteUser, updateUser } from '../../../../api';
-import { resetNavigation } from '../../../../helpers/navigation';
+import { UserContext } from '../../../../contexts';
+import HeaderComponent from '../../../../Components/HeaderComponent';
 
 const AccountSettingScreen = ({ navigation }) => {
-  const [user, setUser] = useContext(UserContext);
-  const [userName, setUsername] = useState(user.userName);
-  const [userEmail, setEmail] = useState(user.userEmail);
-  const [, setMatch] = useContext(MatchContext);
-  //  const [birthday] = useState('')
-  //  const [location] = useState('')
+  const [user] = useContext(UserContext);
 
-  const onSubmit = async () => {
+  const handleUrl = async (url) => {
     try {
-      const response = await updateUser({ userName, userEmail, userRole: 'lel' });
-      setUser(response);
-      navigation.pop();
-    } catch (err) {
-      Alert.alert('Error', 'There was an error during your profile update');
+      navigation.navigate('AccountUpdateScreen', { field: url });
+    } catch (error) {
+      // console.log(error);
     }
   };
 
-  const onDelete = () => {
-    Alert.alert(
-      'Are you sure ?',
-      'This will delete your account forever',
-      [
-        {
-          text: 'Yes',
-          style: 'destructive',
-          onPress: async () => {
-            try {
-              await deleteUser();
-              setUser({});
-              setMatch({});
-              resetNavigation(navigation, 'AuthFlow');
-            } catch (err) {
-              Alert.alert('Error', 'There was an error deleting your account');
-            }
-          },
-        },
-        { text: 'No', style: 'cancel' },
-      ],
-    );
-  };
+  const listData = [
+    {
+      onPress: handleUrl,
+      title: 'Full Name',
+      field: 'fullName',
+    },
+    {
+      onPress: handleUrl,
+      title: 'Username',
+      field: 'userName',
+    },
+    {
+      onPress: handleUrl,
+      title: 'Birth Date',
+      field: 'birthDate',
+    },
+    {
+      onPress: handleUrl,
+      title: 'Account Status',
+      field: 'userRole',
+    },
+    {
+      onPress: handleUrl,
+      title: 'Email address',
+      field: 'userEmail',
+    },
+    {
+      onPress: handleUrl,
+      title: 'Password',
+      field: 'password',
+    },
+    {
+      onPress: handleUrl,
+      title: 'Language',
+      field: 'language',
+    },
+    {
+      onPress: handleUrl,
+      title: 'Avatar',
+      field: 'userAvatarUrl',
+    },
+  ];
+
+  const getDescriptionText = useCallback((item) => {
+    switch (item.field) {
+      case 'password':
+        return 'Change your password';
+      case 'birthDate':
+        return get(user, item.field) || 'DD.MM.YYYY';
+      case 'userAvatarUrl':
+        return 'Upload your picture';
+      default:
+        return get(user, item.field);
+    }
+  });
+
+  const renderItem = ({ item, index }) => (
+    <TouchableOpacity
+      key={index}
+      style={styles.itemContainer}
+      onPress={() => item.onPress(item.field)}
+    >
+      <View style={styles.flexContainer}>
+        <Text style={styles.headerNameText}>
+          {item.title}
+        </Text>
+        <Text style={styles.itemDescriptionText}>
+          {getDescriptionText(item)}
+        </Text>
+      </View>
+      <SocialButton
+        style={styles.itemButton}
+        iconStyle={styles.itemIcon}
+        icon={editIcon}
+        clickOpacity={2}
+      />
+    </TouchableOpacity>
+  );
 
   return (
     <SafeAreaView
       forceInset={{ bottom: 'never', top: 'never' }}
       style={styles.container}
     >
-      <KeyboardAwareScrollView
-        bounces={false}
+      <HeaderComponent
+        rightStyle={styles.rightButton}
+        rightIconStyle={styles.headerRightIcon}
+        rightClick={() => navigation.goBack()}
+        leftIcon={arrowLeft}
+        leftClick={() => navigation.goBack()}
+        leftIconStyle={styles.headerLeftIcon}
       >
-        <View style={styles.header}>
-          <SocialButton
-            style={styles.arrowImage}
-            iconStyle={styles.arrowIcon}
-            icon={arrowLeft}
-            onClick={() => navigation.pop()}
-          />
-          <Text style={styles.headerText}>
-            Back
-          </Text>
+        <View style={styles.headerContainer}>
+          <ImageBackground source={{ uri: user.userAvatarUrl || '' }} style={styles.avatarImage} imageStyle={styles.flexContainer}>
+            <View style={styles.onlineStatus} />
+          </ImageBackground>
+          <View style={styles.headerTextContainer}>
+            <Text style={styles.headerNameText}>{user.userName}</Text>
+            <Text style={[styles.headerNameText, styles.grayText]}>Online</Text>
+          </View>
         </View>
-        <View style={styles.rowContainer}>
-          <SocialButton
-            style={styles.headerButton}
-            iconStyle={styles.headerIcon}
-            icon={cameraIcon}
-            onClick={() => Alert.alert('Camera Clicked')}
-          />
-          <Image
-            source={{ uri: user.userAvatarUrl }}
-            style={styles.avatarImage}
-            resizeMode="cover"
-          />
-          <SocialButton
-            style={[styles.headerButton, styles.headerTrashButton]}
-            iconStyle={styles.headerTrashIcon}
-            icon={deleteIcon}
-            onClick={onDelete}
-          />
-        </View>
-        <CustomInput
-          label="Name"
-          value={userName}
-          onUpdateValue={setUsername}
-          icon={closeIcon}
-          onClick={() => setUsername('')}
-          iconVisible={userName.length > 0}
-          borderColor={colors.grayOpacity}
-          labelStyle={styles.labelStyle}
-          containerStyle={styles.inputContainer}
-        />
-        <CustomInput
-          label="Email"
-          value={userEmail}
-          onUpdateValue={setEmail}
-          icon={closeIcon}
-          onClick={() => setEmail('')}
-          iconVisible={userEmail.length > 0}
-          borderColor={colors.grayOpacity}
-          labelStyle={styles.labelStyle}
-          containerStyle={styles.inputContainer}
-        />
-        {/* <CustomInput
-            label="Birthday"
-            value={birthday}
-            onUpdateValue={(text) => this.setState({ birthday: text })}
-            icon={closeIcon}
-            onClick={() => this.setState({ birthday: '' })}
-            iconVisible={birthday.length > 0}
-            borderColor={colors.grayOpacity}
-            containerStyle={styles.inputContainer}
-          />
-          <CustomInput
-            label="Location"
-            value={location}
-            onUpdateValue={(text) => this.setState({ location: text })}
-            icon={closeIcon}
-            onClick={() => this.setState({ location: '' })}
-            iconVisible={location.length > 0}
-            borderColor={colors.grayOpacity}
-            containerStyle={styles.inputContainer}
-          /> */}
-        <ConfirmButton
-          containerStyle={styles.mv10}
-          color={colors.loginColor}
-          label="Save Changes"
-          onClick={onSubmit}
-        />
-        <ConfirmButton
-          containerStyle={styles.mv10}
-          color={colors.gray}
-          label="Get Back"
-          onClick={() => navigation.pop()}
-        />
-      </KeyboardAwareScrollView>
+      </HeaderComponent>
+      <FlatList
+        style={styles.flexContainer}
+        contentContainerStyle={styles.scrollIntent}
+        data={listData}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => `${item.host}-${index}`}
+      />
     </SafeAreaView>
   );
 };

@@ -23,8 +23,11 @@ import LobbyStartScreen from '../Containers/MainFlow/MatchFlow/LobbyStartScreen'
 // Home Flow
 import SettingMainScreen from '../Containers/MainFlow/SettingFlow/SettingMainScreen';
 import AccountScreen from '../Containers/MainFlow/SettingFlow/AccountScreen';
+import HelpScreen from '../Containers/MainFlow/SettingFlow/HelpScreen';
+import ContactScreen from '../Containers/MainFlow/SettingFlow/ContactScreen';
 import ConnectionSettingScreen from '../Containers/MainFlow/SettingFlow/ConnectionSettingScreen';
 import AccountSettingScreen from '../Containers/MainFlow/SettingFlow/AccountSettingScreen';
+import AccountUpdateScreen from '../Containers/MainFlow/SettingFlow/AccountUpdateScreen';
 import TabScreen from '../Components/TabScreen/TabScreen';
 import { colors } from '../Assets/config';
 
@@ -161,6 +164,12 @@ export const MainNavigator = createStackNavigator(
           SettingFlow: {
             screen: createStackNavigator(
               {
+                AccountScreen: {
+                  screen: AccountScreen,
+                  navigationOptions: () => ({
+                    headerShown: false,
+                  }),
+                },
                 SettingMainScreen: {
                   screen: SettingMainScreen,
                   navigationOptions: () => ({
@@ -179,8 +188,20 @@ export const MainNavigator = createStackNavigator(
                     headerShown: false,
                   }),
                 },
-                AccountScreen: {
-                  screen: AccountScreen,
+                AccountUpdateScreen: {
+                  screen: AccountUpdateScreen,
+                  navigationOptions: () => ({
+                    headerShown: false,
+                  }),
+                },
+                HelpScreen: {
+                  screen: HelpScreen,
+                  navigationOptions: () => ({
+                    headerShown: false,
+                  }),
+                },
+                ContactScreen: {
+                  screen: ContactScreen,
                   navigationOptions: () => ({
                     headerShown: false,
                   }),
@@ -188,7 +209,7 @@ export const MainNavigator = createStackNavigator(
               },
               {
                 headerMode: 'screen',
-                initialRouteName: 'SettingMainScreen',
+                initialRouteName: 'AccountScreen',
               },
             ),
             navigationOptions: ({ navigation }) => {
@@ -196,7 +217,13 @@ export const MainNavigator = createStackNavigator(
               const navigationOptions = {
                 headerShown: false,
               };
-              if (['ProfileDetailScreen'].indexOf(routeName) >= 0) {
+              if (['SettingMainScreen',
+                'HelpScreen',
+                'ContactScreen',
+                'ConnectionSettingScreen',
+                'AccountUpdateScreen',
+                'AccountSettingScreen']
+                .indexOf(routeName) >= 0) {
                 navigationOptions.tabBarVisible = false;
               }
               return navigationOptions;

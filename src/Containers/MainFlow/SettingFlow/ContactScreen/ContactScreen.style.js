@@ -81,8 +81,22 @@ export default StyleSheet.create({
     borderWidth: calcReal(2),
     borderColor: colors.grayOpacity,
   },
+  itemImage: {
+    width: calcReal(38),
+    height: calcReal(38),
+    borderRadius: calcReal(8),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: `${colors.steamBlack}CC`,
+    marginRight: calcReal(10),
+  },
   itemIcon: {
     width: calcReal(18),
     height: calcReal(18),
+  },
+  platformIcon: {
+    width: calcReal(19),
+    height: calcReal(19),
+    tintColor: colors.white,
   },
 });

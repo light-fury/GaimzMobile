@@ -1,103 +1,85 @@
 // @flow
 import React, { useContext } from 'react';
 import {
-  Alert, Text, View, TouchableOpacity, FlatList, Linking, ImageBackground,
+  Text, View, TouchableOpacity, FlatList, Linking, ImageBackground,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
-import { get } from 'lodash';
-import queryString from 'query-string';
 import {
-  steamIcon,
-  twitchIcon,
-  checkWhiteIcon,
   arrowLeft,
   moreIcon,
   editIcon,
 } from '../../../../Assets';
 import SocialButton from '../../../../Components/SocialButton';
-import styles from './ConnectionSettingScreen.style';
+import styles from './HelpScreen.style';
 import { UserContext } from '../../../../contexts';
-import { twitchSigninUrl, steamSigninUrl } from '../../../../constants/oauth';
-import { signInWithTwitch, signInWithSteam } from '../../../../api';
 import HeaderComponent from '../../../../Components/HeaderComponent';
 
 const renderItem = ({ item, index }) => (
   <TouchableOpacity
     key={index}
     style={styles.itemContainer}
-    onPress={item.onPress}
+    onPress={() => item.onPress(item.url)}
   >
-    <SocialButton
-      style={styles.itemImage}
-      iconStyle={styles.platformIcon}
-      icon={item.image}
-      clickOpacity={2}
-    />
     <View style={styles.flexContainer}>
       <Text style={styles.headerNameText}>
-        {item.connected ? 'Connected' : 'Connect'}
+        {item.title}
       </Text>
       <Text style={styles.itemDescriptionText}>
-        {item.title}
+        {item.description}
       </Text>
     </View>
     <SocialButton
-      style={item.connected ? styles.connectedButton : styles.itemButton}
-      iconStyle={item.connected ? styles.connectedIcon : styles.itemIcon}
-      icon={item.connected ? checkWhiteIcon : editIcon}
+      style={styles.itemButton}
+      iconStyle={styles.itemIcon}
+      icon={editIcon}
       clickOpacity={2}
     />
   </TouchableOpacity>
 );
 
-const ConnectionSettingScreen = ({ navigation }) => {
-  const [user, setUser] = useContext(UserContext);
+const HelpScreen = ({ navigation }) => {
+  const [user] = useContext(UserContext);
 
-  // TODO: Extract due to code duplication
-  const handleOpenURL = async (params) => {
-    if (params.url) {
-      const parsedParams = queryString.parse(params.url.split('?')[1].replace(/(openid)(.)([a-z_]+)(=)/g, '$1_$3$4'));
-      let userResponse;
-
-      try {
-        if (params.url.includes('twitch')) {
-          userResponse = await signInWithTwitch(parsedParams);
-        } else {
-          userResponse = await signInWithSteam(parsedParams);
+  const handleUrl = async (url) => {
+    try {
+      if (url === 'contactus') {
+        navigation.navigate('ContactScreen');
+      } else {
+        const canOpen = Linking.canOpenURL(url);
+        if (canOpen) {
+          Linking.openURL(url);
         }
-
-        setUser(userResponse);
-      } catch (err) {
-        Alert.alert('Error', 'There was an error connecting the account');
       }
+    } catch (error) {
+      // console.log(error);
     }
-
-    Linking.removeAllListeners('url');
-  };
-
-  const connectTwitch = async () => {
-    Linking.addEventListener('url', handleOpenURL);
-    Linking.openURL(twitchSigninUrl);
-  };
-
-  const connectSteam = async () => {
-    Linking.addEventListener('url', handleOpenURL);
-    Linking.openURL(steamSigninUrl);
   };
 
   const listData = [
     {
-      onPress: connectSteam,
-      image: steamIcon,
-      title: 'Steam',
-      connected: get(user, 'apps.steam', false),
+      onPress: handleUrl,
+      title: 'FAQ',
+      description: 'Have questions? Check here.',
+      url: 'https://drive.google.com/open?id=1NSO04ynjJv8S5dVFwoBoNFClLoUQSsfIrUC8ddQAEZ8',
     },
     {
-      onPress: connectTwitch,
-      image: twitchIcon,
-      title: 'Twitch',
-      connected: get(user, 'apps.twitch', false),
+      onPress: handleUrl,
+      title: 'Terms of Service',
+      description: 'MM/DD/YY',
+      url: 'https://drive.google.com/open?id=1NSO04ynjJv8S5dVFwoBoNFClLoUQSsfIrUC8ddQAEZ8',
+    },
+    {
+      onPress: handleUrl,
+      title: 'Privacy Policy',
+      description: 'MM/DD/YY',
+      url: 'https://drive.google.com/open?id=1E5ZmIWhSxNStsjDNLv9ZRQ---Z-b8yL5ZmR4UTlCzyM',
+    },
+    {
+      onPress: handleUrl,
+      title: 'Contact Us',
+      description: 'Discord, Facebook, Twitch, Email',
+      url: 'contactus',
     },
   ];
 
@@ -136,7 +118,7 @@ const ConnectionSettingScreen = ({ navigation }) => {
   );
 };
 
-ConnectionSettingScreen.propTypes = {
+HelpScreen.propTypes = {
   Secrets: PropTypes.shape({
     isFetching: PropTypes.bool.isRequired,
     secretsData: PropTypes.shape(),
@@ -144,4 +126,4 @@ ConnectionSettingScreen.propTypes = {
   }).isRequired,
 };
 
-export default ConnectionSettingScreen;
+export default HelpScreen;

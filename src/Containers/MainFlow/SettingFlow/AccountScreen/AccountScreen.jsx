@@ -1,5 +1,5 @@
 // @flow
-import React, { useContext, useCallback } from 'react';
+import React, { useContext, useCallback, useState } from 'react';
 import {
   Text,
   View,
@@ -7,16 +7,22 @@ import {
   Image,
   FlatList,
   ImageBackground,
+  ScrollView,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
+import {
+  get,
+} from 'lodash';
 
 import {
   heroTemplate,
-  dotaBackground,
   arrowLeft,
+  settingsIcon,
+  eyeIcon,
+  twitchBackground,
 } from '../../../../Assets';
-import SocialButton from '../../../../Components/SocialButton';
+import HeaderComponent from '../../../../Components/HeaderComponent';
 import styles from './AccountScreen.style';
 import { UserContext } from '../../../../contexts';
 
@@ -24,86 +30,171 @@ import { UserContext } from '../../../../contexts';
 const listData = [
   {
     image: heroTemplate,
+    game: 'Dota 2',
+    views: 2500,
+    description: 'NOOB DOTA WITH SUBS ONLY',
     title: 'Riki',
     status: '14/6/19',
   },
   {
     image: heroTemplate,
+    game: 'Dota 2',
+    views: 2500,
+    description: 'NOOB DOTA WITH SUBS ONLY',
     title: 'Lich',
     status: '17/2/4',
   },
   {
     image: heroTemplate,
+    game: 'Dota 2',
+    views: 2500,
+    description: 'NOOB DOTA WITH SUBS ONLY',
     title: 'Pudge',
     status: '7/3/29',
   },
   {
     image: heroTemplate,
+    game: 'Dota 2',
+    views: 2500,
+    description: 'NOOB DOTA WITH SUBS ONLY',
     title: 'Lycan',
     status: '6/12/7',
   },
   {
     image: heroTemplate,
+    game: 'Dota 2',
+    views: 2500,
+    description: 'NOOB DOTA WITH SUBS ONLY',
     title: 'Phantom Assasin',
     status: '19/2/14',
   },
 ];
 
+const horizontalTabs = ['Videos', 'Recent Games', 'Games'];
+
 const AccountScreen = ({ navigation }) => {
   const [user] = useContext(UserContext);
+  const [currentTab, setCurrentTab] = useState(0);
 
   const handleGoBack = useCallback(() => {
     const fromScreen = navigation.getParam('from');
-    navigation.pop();
     if (fromScreen && fromScreen.length > 0) {
       navigation.navigate(fromScreen);
+    } else {
+      navigation.navigate('HomeFlow');
     }
   });
 
   const renderItem = ({ item, index }) => (
     <TouchableOpacity
       key={index}
-      onPress={() => navigation.navigate(item.route)}
       style={styles.itemContainer}
     >
-      <Image
-        source={item.image}
+      <View style={styles.rowContainer}>
+        <Image
+          source={{ uri: get(user, 'userAvatarUrl') }}
+          resizeMode="cover"
+          style={styles.videoUserImage}
+        />
+        <View style={[styles.flexContainer, styles.mh10]}>
+          <Text style={styles.tabText}>{get(user, 'userName')}</Text>
+          <View style={styles.rowContainer}>
+            <Text style={styles.itemStatus}>
+              {item.game}
+            </Text>
+            <Image
+              source={eyeIcon}
+              resizeMode="contain"
+              style={styles.eyeIcon}
+            />
+            <Text style={styles.itemStatus}>
+              {item.views >= 1000
+                ? `${(item.views / 1000).toFixed(1)}k`
+                : item.views}
+            </Text>
+          </View>
+        </View>
+        <Image
+          source={item.image}
+          resizeMode="cover"
+          style={styles.heroImage}
+        />
+      </View>
+      <Text style={[styles.accountName, styles.itemHeader]}>
+        {item.description}
+      </Text>
+      <ImageBackground
+        style={styles.itemBackground}
+        imageStyle={styles.flexContainer}
+        source={twitchBackground}
         resizeMode="cover"
-        style={styles.heroImage}
-      />
-      <Text style={[styles.itemHeader, styles.smallFont]}>
-        {item.title}
-      </Text>
-      <Text style={[styles.itemHeader, styles.smallFont, styles.itemDescription]}>
-        {item.status}
-      </Text>
+      >
+        <View style={styles.liveButton}>
+          <Text style={[styles.itemStatus, styles.whiteText]}>Live</Text>
+        </View>
+      </ImageBackground>
     </TouchableOpacity>
   );
-
 
   return (
     <SafeAreaView
       forceInset={{ bottom: 'never', top: 'never' }}
       style={styles.container}
     >
-      <View style={styles.header}>
-        <SocialButton
-          style={styles.headerButton}
-          iconStyle={styles.headerIcon}
-          icon={arrowLeft}
-          onClick={() => handleGoBack()}
-        />
-        <Text style={[styles.flexContainer, styles.profileName]}>
-          {user.userName}
-        </Text>
+      <HeaderComponent
+        rightIcon={settingsIcon}
+        rightStyle={styles.rightButton}
+        rightIconStyle={styles.rightIcon}
+        rightClick={() => navigation.navigate('SettingMainScreen')}
+        leftIcon={arrowLeft}
+        leftClick={() => handleGoBack()}
+        leftStyle={styles.leftButton}
+        outContainer={styles.headerComponent}
+        innerContainer={styles.headerInnerComponent}
+      />
+      <View style={styles.userContainer}>
         <Image
           source={{ uri: user.userAvatarUrl }}
           style={styles.avatarImage}
           resizeMode="cover"
         />
+        <Text style={styles.userName}>
+          {user.userName}
+        </Text>
+        <Text style={styles.accountName}>
+          {`@${user.userName}`}
+        </Text>
       </View>
-      <Text style={styles.titleText}>Recent Matches</Text>
-      <ImageBackground style={styles.liveVideo} imageStyle={styles.flexContainer} resizeMode="cover" source={dotaBackground} />
+      <View
+        style={styles.horizontalScrollView}
+      >
+        <ScrollView horizontal contentContainerStyle={styles.horizontalInnerStyle}>
+          {horizontalTabs.map((item, index) => (
+            <TouchableOpacity
+              onPress={() => setCurrentTab(index)}
+              style={styles.horizontalTab}
+            >
+              <Text style={[styles.tabText, index !== currentTab && styles.grayText]}>
+                {item}
+              </Text>
+              <View style={[styles.tabDot, index !== currentTab && styles.transparentBackground]} />
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
+      <FlatList
+        style={styles.flexContainer}
+        contentContainerStyle={styles.scrollIntent}
+        data={listData}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => `${item.host}-${index}`}
+      />
+      {/* <ImageBackground
+        style={styles.liveVideo}
+        imageStyle={styles.flexContainer}
+        resizeMode="cover"
+        source={dotaBackground}
+      />
       <View style={styles.bottomContainer}>
         <View
           style={styles.headerContainer}
@@ -122,7 +213,7 @@ const AccountScreen = ({ navigation }) => {
           renderItem={renderItem}
           keyExtractor={(item, index) => `${item.host}-${index}`}
         />
-      </View>
+      </View> */}
     </SafeAreaView>
   );
 };

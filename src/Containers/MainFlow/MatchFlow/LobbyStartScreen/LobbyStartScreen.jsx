@@ -97,7 +97,7 @@ const LobbyStartScreen = ({ navigation }) => {
       setMatch({});
       BackgroundTimer.stopBackgroundTimer();
       setTimeout(() => {
-        // navigation.popToTop();
+        navigation.popToTop();
       }, 250);
     } catch (error) {
       //
@@ -142,10 +142,14 @@ const LobbyStartScreen = ({ navigation }) => {
           ...match,
           match: response,
         });
-
         setMatchType(get(response, 'gameType') === '1v1');
-        updateTeamMembers(get(response, 'stats.dire.players'), 'dire');
-        updateTeamMembers(get(response, 'stats.radiant.players'), 'radiant');
+        if (get(response, 'stats.dire.players')) {
+          updateTeamMembers(get(response, 'stats.dire.players'), 'dire');
+          updateTeamMembers(get(response, 'stats.radiant.players'), 'radiant');
+        } else {
+          updateTeamMembers(get(response, 'stats.dire.players'), 'dire');
+          updateTeamMembers(get(response, 'stats.radiant.players'), 'radiant');
+        }
         if (get(response, 'stats.radiantWon') === true) {
           setRadiantWon(1);
         } else if (get(response, 'stats.radiantWon') === null) {
