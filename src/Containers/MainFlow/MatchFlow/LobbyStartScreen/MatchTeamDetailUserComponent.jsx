@@ -49,7 +49,7 @@ const MatchTeamDetailUserComponent = ({ selectedTeam, match }) => {
               <View style={[styles.itemContainer, styles.flex3]}>
                 <FastImage
                   style={styles.heroImage}
-                  source={{ uri: get(member, 'userAvatarUrl') }}
+                  source={{ uri: `${get(member, 'userAvatarUrl')}?${new Date()}` }}
                   resizeMode={FastImage.resizeMode.cover}
                 />
               </View>

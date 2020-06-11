@@ -23,6 +23,10 @@ const AccountSettingScreen = ({ navigation }) => {
 
   const handleUrl = async (url) => {
     try {
+      if (url === 'userAvatarUrl') {
+        navigation.navigate('AccountAvatarScreen');
+        return;
+      }
       navigation.navigate('AccountUpdateScreen', { field: url });
     } catch (error) {
       // console.log(error);
@@ -122,7 +126,7 @@ const AccountSettingScreen = ({ navigation }) => {
         leftIconStyle={styles.headerLeftIcon}
       >
         <View style={styles.headerContainer}>
-          <ImageBackground source={{ uri: user.userAvatarUrl || '' }} style={styles.avatarImage} imageStyle={styles.flexContainer}>
+          <ImageBackground source={{ uri: `${user.userAvatarUrl}?${new Date()}` || '' }} style={styles.avatarImage} imageStyle={styles.flexContainer}>
             <View style={styles.onlineStatus} />
           </ImageBackground>
           <View style={styles.headerTextContainer}>

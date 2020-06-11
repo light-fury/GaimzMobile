@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-console */
 import { decamelizeKeys, camelizeKeys } from 'humps';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -64,8 +65,10 @@ async function innerFetch(method, url, headers = {}, data, options) {
       request.headers.Authorization = `Bearer ${authToken}`;
     }
 
-    if (data) {
+    if (data && headers['Content-Type'] === 'application/json') {
       request.body = JSON.stringify(decamelizeKeys(data));
+    } else {
+      request.body = data;
     }
     const concatUrl = `${options.baseUrl}${url}`;
     console.info('request:', request);
@@ -76,6 +79,7 @@ async function innerFetch(method, url, headers = {}, data, options) {
     }
 
     // eslint-disable-next-line no-undef
+    console.log('request', request);
     const fetchReq = fetch(concatUrl, request);
     const response = await wrapFetchInTimeout(fetchReq);
     console.info('response:', response);
@@ -106,12 +110,13 @@ async function innerFetch(method, url, headers = {}, data, options) {
  * @param {*} data - Any data to be POSTed
  * @param {*} options - { baseUrl, anonymous, abortController }
  */
-const post = async (url, data, options) => innerFetch(
+const post = async (url, data, options, headers = {}) => innerFetch(
   METHOD.POST,
   url,
   {
     Accept: 'application/json',
     'Content-Type': 'application/json',
+    ...headers,
   },
   data,
   options,

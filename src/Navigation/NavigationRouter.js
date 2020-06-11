@@ -28,6 +28,7 @@ import ContactScreen from '../Containers/MainFlow/SettingFlow/ContactScreen';
 import ConnectionSettingScreen from '../Containers/MainFlow/SettingFlow/ConnectionSettingScreen';
 import AccountSettingScreen from '../Containers/MainFlow/SettingFlow/AccountSettingScreen';
 import AccountUpdateScreen from '../Containers/MainFlow/SettingFlow/AccountUpdateScreen';
+import AccountAvatarScreen from '../Containers/MainFlow/SettingFlow/AccountAvatarScreen';
 import TabScreen from '../Components/TabScreen/TabScreen';
 import { colors } from '../Assets/config';
 
@@ -194,6 +195,12 @@ export const MainNavigator = createStackNavigator(
                     headerShown: false,
                   }),
                 },
+                AccountAvatarScreen: {
+                  screen: AccountAvatarScreen,
+                  navigationOptions: () => ({
+                    headerShown: false,
+                  }),
+                },
                 HelpScreen: {
                   screen: HelpScreen,
                   navigationOptions: () => ({
@@ -222,6 +229,7 @@ export const MainNavigator = createStackNavigator(
                 'ContactScreen',
                 'ConnectionSettingScreen',
                 'AccountUpdateScreen',
+                'AccountAvatarScreen',
                 'AccountSettingScreen']
                 .indexOf(routeName) >= 0) {
                 navigationOptions.tabBarVisible = false;
