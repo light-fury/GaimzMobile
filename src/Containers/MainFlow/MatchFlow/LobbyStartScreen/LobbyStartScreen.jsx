@@ -236,7 +236,7 @@ const LobbyStartScreen = ({ navigation }) => {
           <ProfileComponent
             item={{
               username: matchType ? direPlayer.userName : 'DIRE',
-              avatar: matchType ? { uri: `${direPlayer.userAvatarUrl}?${new Date()}` } : direIcon,
+              avatar: matchType ? { uri: direPlayer.userAvatarUrl } : direIcon,
               team: (matchType && !!get(match, 'match.dire')) ? 'DIRE' : '',
               borderWidth: (matchType || !selectedTeam) ? 0 : calcReal(4),
               borderColor: '#6320EE',
@@ -247,7 +247,7 @@ const LobbyStartScreen = ({ navigation }) => {
           <ProfileComponent
             item={{
               username: matchType ? radiantPlayer.userName : 'RADIANT',
-              avatar: matchType ? { uri: `${radiantPlayer.userAvatarUrl}?${new Date()}` } : radiantIcon,
+              avatar: matchType ? { uri: radiantPlayer.userAvatarUrl } : radiantIcon,
               team: (matchType && !!get(match, 'match.radiant')) ? 'RADIANT' : '',
               borderWidth: (matchType || selectedTeam) ? 0 : calcReal(4),
               borderColor: '#6320EE',

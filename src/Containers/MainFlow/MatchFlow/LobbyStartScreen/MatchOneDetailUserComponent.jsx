@@ -40,7 +40,7 @@ const MatchOneDetailUserComponent = ({ teamMember }) => {
             <Image
               style={styles.heroImage}
               defaultSource={heroTemplate}
-              source={{ uri: `${get(teamMember, 'userAvatarUrl')}?${new Date()}` }}
+              source={{ uri: get(teamMember, 'userAvatarUrl') }}
               resizeMode="cover"
             />
           )}

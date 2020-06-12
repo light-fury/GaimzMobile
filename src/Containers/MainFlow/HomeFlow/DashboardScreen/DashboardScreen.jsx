@@ -51,7 +51,7 @@ const renderItem = ({ item, index }, navigation) => (
     </TouchableOpacity>
     <View style={styles.itemHostContainer}>
       <Image
-        source={{ uri: `${item.userAvatarUrl}?${new Date()}` }}
+        source={{ uri: item.userAvatarUrl }}
         resizeMode="cover"
         style={styles.hostAvatar}
       />

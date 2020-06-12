@@ -75,7 +75,7 @@ const AccountAvatarScreen = ({ navigation }) => {
         leftClick={() => navigation.goBack()}
         leftIconStyle={styles.headerLeftIcon}
       />
-      <Image source={{ uri: `${user.userAvatarUrl}?${new Date()}` || '' }} style={styles.avatarImage} />
+      <Image source={{ uri: user.userAvatarUrl }} style={styles.avatarImage} />
       <ConfirmButton
         color={colors.loginColor}
         borderColor={colors.transparent}

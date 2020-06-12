@@ -92,7 +92,7 @@ const AccountScreen = ({ navigation }) => {
     >
       <View style={styles.rowContainer}>
         <Image
-          source={{ uri: `${get(user, 'userAvatarUrl')}?${new Date()}` }}
+          source={{ uri: get(user, 'userAvatarUrl') }}
           resizeMode="cover"
           style={styles.videoUserImage}
         />
@@ -154,7 +154,7 @@ const AccountScreen = ({ navigation }) => {
       />
       <View style={styles.userContainer}>
         <Image
-          source={{ uri: `${user.userAvatarUrl}?${new Date()}` }}
+          source={{ uri: user.userAvatarUrl }}
           style={styles.avatarImage}
           resizeMode="cover"
         />
