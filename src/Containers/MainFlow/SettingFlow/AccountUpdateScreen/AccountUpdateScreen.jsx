@@ -96,13 +96,13 @@ const AccountUpdateScreen = ({ navigation }) => {
       case 'birthDate':
         return 'We use your birth date to verify your account';
       case 'userEmail':
-        return 'A verified email address allows you to recover your account and find your friends on Social app';
+        return 'A verified email address allows you to recover your account and find your friends on Gaimz';
       case 'fullName':
         return 'Your full name is necessary to verify your account';
       case 'userName':
         return 'The Username is what is displayed to other people and in the app';
       default:
-        return 'A verified email address allows you to recover your account and find your friends on Social app';
+        return 'A verified email address allows you to recover your account and find your friends on Gaimz';
     }
   });
 

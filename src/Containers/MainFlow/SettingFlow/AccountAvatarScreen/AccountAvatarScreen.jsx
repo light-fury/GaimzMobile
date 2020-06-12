@@ -39,13 +39,7 @@ const AccountAvatarScreen = ({ navigation }) => {
     try {
       setLoading(true);
       ImagePicker.showImagePicker(options, async (response) => {
-        if (response.didCancel) {
-          // console.log('User cancelled image picker');
-        } else if (response.error) {
-          // console.log('ImagePicker Error: ', response.error);
-        } else if (response.customButton) {
-          // console.log('User tapped custom button: ', response.customButton);
-        } else {
+        if (!response.didCancel && !response.error && !response.customButton) {
           try {
             const formData = new FormData();
             formData.append('avatar', {
