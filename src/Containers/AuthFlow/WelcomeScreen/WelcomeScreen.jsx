@@ -26,9 +26,9 @@ import {
   checkIcon,
   eyeIcon,
   closeIcon,
-  facebookIcon,
+  // facebookIcon,
   eyeCloseIcon,
-  googleIcon,
+  // googleIcon,
 } from '../../../Assets';
 import { colors, validateEmail } from '../../../Assets/config';
 import { signIn, signInWithTwitch, attemptRefreshUser } from '../../../api';
@@ -139,19 +139,19 @@ const WelcomeScreen = ({ navigation }) => {
             {translations['welcome.login.description']}
           </Text>
           <View style={styles.socialContainer}>
-            <SocialButton
+            {/* <SocialButton
               style={[styles.socialButton, { backgroundColor: colors.fbColor }]}
               icon={facebookIcon}
               iconStyle={styles.iconStyle}
               onClick={() => {}}
-            />
+            /> */}
             <SocialButton
               style={[styles.socialButton, { backgroundColor: colors.steamBlack }]}
               icon={twitchIcon}
               iconStyle={styles.iconStyle}
               onClick={twitchSignin}
             />
-            <SocialButton
+            {/* <SocialButton
               style={[
                 styles.socialButton,
                 styles.googleContainer,
@@ -159,7 +159,7 @@ const WelcomeScreen = ({ navigation }) => {
               icon={googleIcon}
               iconStyle={styles.googleIconStyle}
               onClick={() => {}}
-            />
+            /> */}
           </View>
           <Text style={[styles.instructionText, styles.extraInstruction]}>
             {translations['welcome.login.email']}

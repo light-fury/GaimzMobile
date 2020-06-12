@@ -11,7 +11,7 @@ import SocialButton from '../SocialButton';
 import { removeSecretsData } from '../../State/Secrets/Actions';
 import styles from './TabScreen.style';
 import {
-  homeIcon, matchIcon, settingsIcon, calendarIcon, messageIcon,
+  homeIcon, matchIcon, settingsIcon, // calendarIcon, messageIcon,
 } from '../../Assets';
 import { colors } from '../../Assets/config';
 
@@ -26,21 +26,21 @@ class TabScreen extends Component {
           routeName: 'HomeFlow',
           icon: homeIcon,
         },
-        {
-          title: 'Calendar',
-          routeName: 'CalendarFlow',
-          icon: calendarIcon,
-        },
+        // {
+        //   title: 'Calendar',
+        //   routeName: 'CalendarFlow',
+        //   icon: calendarIcon,
+        // },
         {
           title: 'Match Up',
           routeName: 'MatchFlow',
           icon: matchIcon,
         },
-        {
-          title: 'Messages',
-          routeName: 'MessageFlow',
-          icon: messageIcon,
-        },
+        // {
+        //   title: 'Messages',
+        //   routeName: 'MessageFlow',
+        //   icon: messageIcon,
+        // },
         {
           title: 'Settings',
           routeName: 'SettingFlow',

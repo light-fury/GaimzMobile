@@ -1,7 +1,7 @@
 // @flow
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Alert,
+  // Alert,
   Text,
   View,
   TouchableOpacity,
@@ -18,7 +18,7 @@ import HeaderComponent from '../../../../Components/HeaderComponent';
 import styles from './DashboardScreen.style';
 import {
   eyeIcon,
-  notificationIcon,
+  // notificationIcon,
 } from '../../../../Assets';
 import { colors } from '../../../../Assets/config';
 import { UserContext } from '../../../../contexts';
@@ -96,9 +96,9 @@ const DashboardScreen = ({ navigation }) => {
       <StatusBar barStyle="dark-content" />
       <HeaderComponent
         label="HOME"
-        rightIcon={notificationIcon}
-        rightClick={() => Alert.alert('Bell Clicked')}
-        rightIconStyle={styles.headerIcon}
+        // rightIcon={notificationIcon}
+        // rightClick={() => Alert.alert('Bell Clicked')}
+        // rightIconStyle={styles.headerIcon}
       />
       <FlatList
         style={[styles.flexContainer, { backgroundColor: colors.lightGray }]}
