@@ -10,11 +10,11 @@ import {
 
 import styles from './LobbyStartScreen.style';
 
-const getBotText = (val, radiantWon, direWon) => {
+const getBotText = (val, radiantWon) => {
   if (radiantWon === true) {
     return 'BOT: Radiant Won';
   }
-  if (direWon === true) {
+  if (radiantWon === false) {
     return 'BOT: Dire Won';
   }
   switch (val) {
@@ -34,7 +34,7 @@ const getBotText = (val, radiantWon, direWon) => {
 const MatchSummaryComponent = ({ match, currentPage }) => (
   <View>
     <Text style={[styles.profileText, styles.fontBig]}>
-      {getBotText(currentPage, get(match, 'match.stats.radiantWon'), get(match, 'match.stats.direWon'))}
+      {getBotText(currentPage, get(match, 'match.stats.radiantWon'))}
     </Text>
     <Text style={[styles.profileText, styles.description]}>
       {`#GMZLOBBY${get(match, 'match.matchId') || ''}`}

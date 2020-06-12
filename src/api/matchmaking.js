@@ -26,6 +26,25 @@ export const createMatch = async (match, abortController = null) => {
   throw Error('Unable to create match');
 };
 
+
+/**
+ * Creates a match based on the specified params
+ * @param {p} match
+ * @param {*} abortController
+ */
+export const getDummyData = async (match, abortController = null) => {
+  const response = await HttpClient.get('/match/create/test', {
+    baseUrl: HttpClient.MatchMakingApiUrl,
+    abortController,
+  });
+
+  if (!response.error) {
+    return response.payload;
+  }
+  throw Error('Unable to create match');
+};
+
+
 /**
  * Attempts to join the specified lobby
  * @param {*} lobby
@@ -120,10 +139,27 @@ export const updateMatchStatus = async (matchId, params, abortController = null)
   throw Error('Unable to update match status');
 };
 
+/**
+ * Get a list of games supported for matches
+ * @param {*} abortController
+ */
+export const getRecentMatches = async (userId, abortController = null) => {
+  const response = await HttpClient.get(`/results/list/${userId}`, {
+    baseUrl: HttpClient.MatchMakingApiUrl,
+    abortController,
+  });
+
+  if (!response.error) {
+    return response.payload;
+  }
+  // Failed to get Games
+  return [];
+};
 
 export default {
   createMatch,
   getMatchStatus,
   getMatchList,
   lobbyInvite,
+  getRecentMatches,
 };

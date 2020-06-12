@@ -244,6 +244,8 @@ PODS:
   - React-jsinspector (0.62.2)
   - react-native-background-timer (2.2.0):
     - React
+  - react-native-image-picker (2.3.1):
+    - React
   - react-native-safe-area-context (0.7.3):
     - React
   - react-native-splash-screen (3.2.0):
@@ -378,6 +380,7 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - react-native-background-timer (from `../node_modules/react-native-background-timer`)
+  - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - react-native-webview (from `../node_modules/react-native-webview`)
@@ -453,6 +456,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   react-native-background-timer:
     :path: "../node_modules/react-native-background-timer"
+  react-native-image-picker:
+    :path: "../node_modules/react-native-image-picker"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-splash-screen:
@@ -530,6 +535,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 1540d1c01bb493ae3124ed83351b1b6a155db7da
   React-jsinspector: 512e560d0e985d0e8c479a54a4e5c147a9c83493
   react-native-background-timer: 53c0e028a95d58b1f4498ef7ce152b6c6b337595
+  react-native-image-picker: 668e72d0277dc8c12ae90e835507c1eddd2e4f85
   react-native-safe-area-context: 8260e5157617df4b72865f44006797f895b2ada7
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   react-native-webview: 0e2881d2e3e72ad52a82445c1a116c43205fd471

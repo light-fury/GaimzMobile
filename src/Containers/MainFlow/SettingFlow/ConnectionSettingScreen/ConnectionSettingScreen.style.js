@@ -1,102 +1,114 @@
 // @flow
-import { StyleSheet, Platform } from 'react-native';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
+import { StyleSheet } from 'react-native';
 import { colors, calcReal } from '../../../../Assets/config';
 
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.steamBlack,
-    paddingBottom: calcReal(100),
+    backgroundColor: colors.lightGray,
   },
   flexContainer: {
     flex: 1,
   },
-  header: {
-    marginTop: Platform.OS === 'ios' ? getStatusBarHeight(true) : calcReal(14),
-    height: calcReal(78),
+  headerContainer: {
+    flex: 1,
+    marginHorizontal: calcReal(16),
     flexDirection: 'row',
     alignItems: 'center',
-    paddingTop: calcReal(8),
-    paddingBottom: calcReal(22),
-    paddingHorizontal: calcReal(20),
   },
   avatarImage: {
     width: calcReal(38),
     height: calcReal(38),
     borderRadius: calcReal(12),
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: `${colors.lightGray}70`,
+    borderTopRightRadius: 0,
+    overflow: 'hidden',
   },
-  profileName: {
-    marginHorizontal: calcReal(18),
-    fontSize: calcReal(16),
-    lineHeight: calcReal(22),
-    fontWeight: 'bold',
-    color: colors.white,
+  headerTextContainer: {
+    marginLeft: calcReal(8),
+    flexDirection: 'column',
   },
-  headerButton: {
-    width: calcReal(38),
-    height: calcReal(38),
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: calcReal(12),
-    borderWidth: calcReal(1),
-    borderColor: `${colors.lightGray}70`,
-    backgroundColor: colors.transparent,
-    marginRight: calcReal(5),
+  headerNameText: {
+    fontStyle: 'italic',
+    fontSize: calcReal(14),
+    lineHeight: calcReal(20),
+    color: colors.steamBlack,
   },
-  itemButton: {
-    width: calcReal(48),
-    height: calcReal(48),
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: calcReal(12),
-    backgroundColor: `${colors.white}30`,
+  grayText: {
+    color: colors.gray,
   },
-  itemIcon: {
-    width: calcReal(36),
-    height: calcReal(36),
-    tintColor: colors.white,
-  },
-  headerIcon: {
-    width: calcReal(18),
-    height: calcReal(18),
-  },
-  arrowIcon: {
-    width: calcReal(18),
-    height: calcReal(18),
-    marginRight: calcReal(28),
-  },
-  arrowConnectedIcon: {
-    width: calcReal(18),
-    height: calcReal(18),
-  },
-  arrowConnectedContainer: {
-    width: calcReal(38),
-    height: calcReal(38),
-    marginRight: calcReal(18),
-    borderRadius: calcReal(12),
+  onlineStatus: {
+    alignSelf: 'flex-end',
+    width: calcReal(12),
+    height: calcReal(12),
+    borderRadius: calcReal(6),
     backgroundColor: colors.green,
-    justifyContent: 'center',
-    alignItems: 'center',
+    borderWidth: calcReal(2),
+    borderColor: colors.steamBlack,
+  },
+  headerLeftIcon: {
+    tintColor: colors.steamBlack,
+  },
+  headerRightIcon: {
+    tintColor: colors.gray,
+  },
+  rightButton: {
+    backgroundColor: colors.transparent,
   },
   scrollIntent: {
-    paddingHorizontal: calcReal(35),
-    paddingBottom: calcReal(22),
+    paddingHorizontal: calcReal(24),
+    paddingVertical: calcReal(32),
   },
   itemContainer: {
-    marginTop: calcReal(22),
+    marginBottom: calcReal(8),
     flexDirection: 'row',
     alignItems: 'center',
+    borderRadius: calcReal(12),
+    backgroundColor: colors.white,
+    height: calcReal(76),
+    paddingHorizontal: calcReal(18),
   },
-  titleText: {
-    fontSize: calcReal(22),
-    lineHeight: calcReal(30),
-    fontWeight: 'bold',
-    marginHorizontal: calcReal(35),
-    marginBottom: calcReal(6),
-    color: colors.white,
+  itemDescriptionText: {
+    fontSize: calcReal(12),
+    fontStyle: 'normal',
+    color: colors.gray,
+  },
+  itemButton: {
+    width: calcReal(28),
+    height: calcReal(28),
+    borderRadius: calcReal(8),
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: calcReal(2),
+    borderColor: colors.grayOpacity,
+  },
+  connectedButton: {
+    width: calcReal(28),
+    height: calcReal(28),
+    borderRadius: calcReal(8),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.green,
+  },
+  itemImage: {
+    width: calcReal(38),
+    height: calcReal(38),
+    borderRadius: calcReal(8),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: `${colors.steamBlack}CC`,
+    marginRight: calcReal(10),
+  },
+  itemIcon: {
+    width: calcReal(18),
+    height: calcReal(18),
+  },
+  connectedIcon: {
+    width: calcReal(14),
+    height: calcReal(14),
+  },
+  platformIcon: {
+    width: calcReal(19),
+    height: calcReal(19),
+    tintColor: colors.white,
   },
 });

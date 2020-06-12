@@ -21,6 +21,27 @@ export const updateUser = async (params, abortController = null) => {
 };
 
 /**
+ * Update a user with the provided params
+ * @param {*} params
+ * @param {*} abortController
+ * @returns {User}
+ */
+export const updateAvatar = async (param, abortController = null) => {
+  const response = await HttpClient.post('/user/avatar', param, {
+    abortController,
+    baseUrl: HttpClient.BasicApiUrl,
+  }, {
+    'Content-Type': 'multipart/form-data',
+  });
+
+  if (!response.error && response.payload.success) {
+    return response.payload.user;
+  }
+
+  throw Error('Unable to update user');
+};
+
+/**
  * Permanently delete a user and clear local storage
  * @param {*} abortController
  */
