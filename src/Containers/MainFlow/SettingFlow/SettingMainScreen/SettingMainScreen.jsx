@@ -18,7 +18,6 @@ import {
   connectionIcon,
   arrowRight,
   logoutIcon,
-  moreIcon,
   arrowLeft,
   notificationIcon,
   helpIcon,
@@ -107,10 +106,6 @@ const SettingMainScreen = ({ navigation }) => {
     >
       <StatusBar barStyle="light-content" />
       <HeaderComponent
-        rightIcon={moreIcon}
-        rightStyle={styles.rightButton}
-        rightIconStyle={styles.headerRightIcon}
-        rightClick={() => navigation.goBack()}
         leftIcon={arrowLeft}
         leftClick={() => navigation.goBack()}
         leftIconStyle={styles.headerLeftIcon}

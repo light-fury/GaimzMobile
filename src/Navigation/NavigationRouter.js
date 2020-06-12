@@ -29,6 +29,8 @@ import ConnectionSettingScreen from '../Containers/MainFlow/SettingFlow/Connecti
 import AccountSettingScreen from '../Containers/MainFlow/SettingFlow/AccountSettingScreen';
 import AccountUpdateScreen from '../Containers/MainFlow/SettingFlow/AccountUpdateScreen';
 import AccountAvatarScreen from '../Containers/MainFlow/SettingFlow/AccountAvatarScreen';
+import TwitchDetailScreen from '../Containers/MainFlow/SettingFlow/TwitchDetailScreen';
+import NotificationScreen from '../Containers/MainFlow/SettingFlow/NotificationScreen';
 import TabScreen from '../Components/TabScreen/TabScreen';
 import { colors } from '../Assets/config';
 
@@ -213,6 +215,18 @@ export const MainNavigator = createStackNavigator(
                     headerShown: false,
                   }),
                 },
+                TwitchDetailScreen: {
+                  screen: TwitchDetailScreen,
+                  navigationOptions: () => ({
+                    headerShown: false,
+                  }),
+                },
+                NotificationScreen: {
+                  screen: NotificationScreen,
+                  navigationOptions: () => ({
+                    headerShown: false,
+                  }),
+                },
               },
               {
                 headerMode: 'screen',
@@ -230,6 +244,7 @@ export const MainNavigator = createStackNavigator(
                 'ConnectionSettingScreen',
                 'AccountUpdateScreen',
                 'AccountAvatarScreen',
+                'TwitchDetailScreen',
                 'AccountSettingScreen']
                 .indexOf(routeName) >= 0) {
                 navigationOptions.tabBarVisible = false;

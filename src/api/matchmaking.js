@@ -139,10 +139,27 @@ export const updateMatchStatus = async (matchId, params, abortController = null)
   throw Error('Unable to update match status');
 };
 
+/**
+ * Get a list of games supported for matches
+ * @param {*} abortController
+ */
+export const getRecentMatches = async (userId, abortController = null) => {
+  const response = await HttpClient.get(`/results/list/${userId}`, {
+    baseUrl: HttpClient.MatchMakingApiUrl,
+    abortController,
+  });
+
+  if (!response.error) {
+    return response.payload;
+  }
+  // Failed to get Games
+  return [];
+};
 
 export default {
   createMatch,
   getMatchStatus,
   getMatchList,
   lobbyInvite,
+  getRecentMatches,
 };

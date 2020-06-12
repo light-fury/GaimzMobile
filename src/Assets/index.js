@@ -44,6 +44,8 @@ export { default as editIcon } from './edit_icon.png';
 export { default as messageIcon } from './message_icon.png';
 export { default as successMark } from './success_mark.png';
 export { default as matchInMark } from './match_in_icon.png';
+export { default as reloadIcon } from './reload_icon.png';
+export { default as dotaApp } from './dota_app.png';
 export { default as twitchBackground } from './twitch_background.png';
 export { default as gameBackgroundTemp1 } from './game_background_temp1.png';
 export { default as gameBackgroundTemp2 } from './game_background_temp2.png';

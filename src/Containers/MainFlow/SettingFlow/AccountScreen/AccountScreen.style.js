@@ -14,6 +14,12 @@ export default StyleSheet.create({
   flexContainer: {
     flex: 1,
   },
+  flex2: {
+    flex: 2,
+  },
+  flex3: {
+    flex: 3,
+  },
   header: {
     marginTop: Platform.OS === 'ios' ? getStatusBarHeight(true) : calcReal(14),
     flexDirection: 'row',
@@ -53,6 +59,7 @@ export default StyleSheet.create({
   itemBackground: {
     height: calcReal(218),
     borderRadius: calcReal(12),
+    overflow: 'hidden',
   },
   liveButton: {
     alignSelf: 'flex-start',
@@ -185,5 +192,81 @@ export default StyleSheet.create({
   },
   mh10: {
     marginHorizontal: calcReal(10),
+  },
+  listView: {
+    width,
+  },
+  teamDetailHeader: {
+    height: calcReal(24),
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: calcReal(15),
+    marginTop: calcReal(12),
+  },
+  teamDetailHeaderText: {
+    fontSize: calcReal(12),
+    lineHeight: calcReal(20),
+    letterSpacing: calcReal(1),
+    textTransform: 'uppercase',
+    fontWeight: '300',
+    color: colors.gray,
+    textAlign: 'center',
+  },
+  headerItemContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+  },
+  userInnerContainer: {
+    backgroundColor: colors.white,
+    borderRadius: calcReal(8),
+    height: calcReal(70),
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: calcReal(2),
+    borderColor: colors.red,
+    marginBottom: calcReal(12),
+  },
+  greenBorderStyle: {
+    borderColor: colors.green,
+  },
+  matchHeroImage: {
+    width: calcReal(70),
+    height: calcReal(40),
+    borderRadius: calcReal(7),
+  },
+  matchItemDetails: {
+    textTransform: 'none',
+    letterSpacing: -0.25,
+    textAlign: 'center',
+    color: colors.gray,
+    fontSize: calcReal(12),
+    lineHeight: calcReal(20),
+    fontWeight: '300',
+  },
+  matchRowContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    width: calcReal(70),
+  },
+  mb4: {
+    marginBottom: calcReal(4),
+  },
+  heroItemImageContainer: {
+    width: calcReal(15),
+    height: calcReal(15),
+    marginHorizontal: calcReal(4),
+    backgroundColor: colors.grayText,
+    shadowColor: colors.black,
+    shadowOpacity: 0.4,
+    shadowRadius: calcReal(15),
+    shadowOffset: {
+      width: 0,
+      height: calcReal(4),
+    },
+  },
+  heroItemImage: {
+    width: calcReal(15),
+    height: calcReal(15),
   },
 });

@@ -7,7 +7,6 @@ import PropTypes from 'prop-types';
 import SafeAreaView from 'react-native-safe-area-view';
 import {
   arrowLeft,
-  moreIcon,
   editIcon,
 } from '../../../../Assets';
 import SocialButton from '../../../../Components/SocialButton';
@@ -89,10 +88,6 @@ const HelpScreen = ({ navigation }) => {
       style={styles.container}
     >
       <HeaderComponent
-        rightIcon={moreIcon}
-        rightStyle={styles.rightButton}
-        rightIconStyle={styles.headerRightIcon}
-        rightClick={() => navigation.goBack()}
         leftIcon={arrowLeft}
         leftClick={() => navigation.goBack()}
         leftIconStyle={styles.headerLeftIcon}

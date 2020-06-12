@@ -12,7 +12,6 @@ import {
   twitchIcon,
   checkWhiteIcon,
   arrowLeft,
-  moreIcon,
   editIcon,
 } from '../../../../Assets';
 import SocialButton from '../../../../Components/SocialButton';
@@ -107,10 +106,6 @@ const ConnectionSettingScreen = ({ navigation }) => {
       style={styles.container}
     >
       <HeaderComponent
-        rightIcon={moreIcon}
-        rightStyle={styles.rightButton}
-        rightIconStyle={styles.headerRightIcon}
-        rightClick={() => navigation.goBack()}
         leftIcon={arrowLeft}
         leftClick={() => navigation.goBack()}
         leftIconStyle={styles.headerLeftIcon}

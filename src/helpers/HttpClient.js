@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 const BasicApiUrl = 'https://basicapi.gaimz.com';
 const MatchMakingApiUrl = 'https://mmapi.gaimz.com';
+const DiscoveryApiUrl = 'https://discoveryapi.gaimz.com';
 
 // Default timeout
 let timeoutMs = 10000;
@@ -196,4 +197,5 @@ export default {
 
   BasicApiUrl,
   MatchMakingApiUrl,
+  DiscoveryApiUrl,
 };
