@@ -1,4 +1,5 @@
-import { Dimensions, Platform } from 'react-native';
+import { useState, useEffect } from 'react';
+import { Dimensions, Platform, Keyboard } from 'react-native';
 import LocalizedStrings from 'react-native-localization';
 
 import en from './localization/en.json';
@@ -67,4 +68,27 @@ export const colors = {
   grayBackground: '#2E3134',
   ADSD: '#E5E5E5',
   whiteOpacity: '#FFFFFF30',
+};
+
+export const useKeyboard = () => {
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
+
+  function onKeyboardDidShow(e) {
+    setKeyboardHeight(e.endCoordinates.height);
+  }
+
+  function onKeyboardDidHide() {
+    setKeyboardHeight(0);
+  }
+
+  useEffect(() => {
+    Keyboard.addListener('keyboardDidShow', onKeyboardDidShow);
+    Keyboard.addListener('keyboardDidHide', onKeyboardDidHide);
+    return () => {
+      Keyboard.removeListener('keyboardDidShow', onKeyboardDidShow);
+      Keyboard.removeListener('keyboardDidHide', onKeyboardDidHide);
+    };
+  }, []);
+
+  return [keyboardHeight];
 };

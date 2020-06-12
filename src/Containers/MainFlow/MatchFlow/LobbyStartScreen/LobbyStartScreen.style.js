@@ -24,6 +24,9 @@ export default StyleSheet.create({
   mb0: {
     marginBottom: 0,
   },
+  mb12: {
+    marginBottom: calcReal(12),
+  },
   space: {
     height: calcReal(18),
   },
@@ -152,7 +155,7 @@ export default StyleSheet.create({
   rowContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    width: calcReal(60),
+    width: calcReal(70),
   },
   mb4: {
     marginBottom: calcReal(4),
@@ -343,5 +346,17 @@ export default StyleSheet.create({
     paddingHorizontal: calcReal(40),
     flex: 1,
     alignItems: 'center',
+  },
+  wonBorderStyle: {
+    borderWidth: 2,
+    borderColor: colors.green,
+  },
+  defeatBorderStyle: {
+    borderWidth: 2,
+    borderColor: colors.red,
+  },
+  clearBorderStyle: {
+    borderWidth: 2,
+    borderColor: colors.white,
   },
 });

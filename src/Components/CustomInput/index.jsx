@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
 });
 
 const CustomInput = ({
-  label,
+  label = '',
   containerStyle = {},
   labelStyle = {},
   value,
@@ -80,16 +80,18 @@ const CustomInput = ({
   ...props
 }) => (
   <View style={containerStyle}>
-    <View style={styles.rowContainer}>
-      <Text style={[styles.titleText, labelStyle]}>
-        {label}
-      </Text>
-      {borderColor === colors.redOpacity && errorText.length > 0 && (
-        <Text style={[styles.titleText, labelStyle, styles.errorStyle]}>
-          {errorText}
+    {label.length > 0 && (
+      <View style={styles.rowContainer}>
+        <Text style={[styles.titleText, labelStyle]}>
+          {label}
         </Text>
-      )}
-    </View>
+        {borderColor === colors.redOpacity && errorText.length > 0 && (
+          <Text style={[styles.titleText, labelStyle, styles.errorStyle]}>
+            {errorText}
+          </Text>
+        )}
+      </View>
+    )}
     <View style={[styles.inputContainer, { borderColor }]}>
       <TextInput
         style={[styles.flexStyle, inputStyle]}

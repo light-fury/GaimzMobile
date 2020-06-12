@@ -13,7 +13,7 @@ import {
 } from '../../../../Assets';
 import styles from './LobbyStartScreen.style';
 
-const MatchOneDetailComponent = ({ teamMember }) => {
+const MatchOneDetailUserComponent = ({ teamMember }) => {
   const memberItems = ['', '', '', '', '', ''];
   return (
     <View style={styles.inProgressContainer}>
@@ -100,8 +100,8 @@ const MatchOneDetailComponent = ({ teamMember }) => {
   );
 };
 
-MatchOneDetailComponent.propTypes = {
+MatchOneDetailUserComponent.propTypes = {
   teamMember: PropTypes.shape().isRequired,
 };
 
-export default MatchOneDetailComponent;
+export default MatchOneDetailUserComponent;

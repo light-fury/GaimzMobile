@@ -16,7 +16,9 @@ import {
 } from 'lodash';
 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { updateMatchStatus, getMatchStatus, lobbyInvite } from '../../../../api';
+import {
+  updateMatchStatus, getMatchStatus, lobbyInvite,
+} from '../../../../api';
 import { MatchContext, UserContext, LocalizationContext } from '../../../../contexts';
 import HeaderComponent from '../../../../Components/HeaderComponent';
 import CustomInput from '../../../../Components/CustomInput';
@@ -53,6 +55,7 @@ const LobbyStartScreen = ({ navigation }) => {
   const [selectedTeam, setSelectedTeam] = useState(true);
   const [radiantTeam, setRadiantTeam] = useState();
   const [currentPage, setCurrentPage] = useState(0);
+  const [radiantWon, setRadiantWon] = useState(0);
   const [caseNumber, setCaseNumber] = useState(`#GMZLOBBY${get(match, 'match.matchId') || ''}`);
   const [gameName, setGameName] = useState(`#GMZLOBBY${get(match, 'game.gameName') || ''}`);
   const [reportSubject, setSubject] = useState(get(user, 'userName'));
@@ -94,7 +97,7 @@ const LobbyStartScreen = ({ navigation }) => {
       setMatch({});
       BackgroundTimer.stopBackgroundTimer();
       setTimeout(() => {
-        // navigation.popToTop();
+        navigation.popToTop();
       }, 250);
     } catch (error) {
       //
@@ -124,6 +127,7 @@ const LobbyStartScreen = ({ navigation }) => {
   const checkMatchStatus = useCallback(async () => {
     try {
       const response = await getMatchStatus(get(match, 'match.matchId'));
+      // const response = await getDummyData(match);
       if (response && response.matchStatus === 'match_cancelled') {
         cancelMatchRequest(false);
         return;
@@ -138,10 +142,21 @@ const LobbyStartScreen = ({ navigation }) => {
           ...match,
           match: response,
         });
-
         setMatchType(get(response, 'gameType') === '1v1');
-        updateTeamMembers(get(response, 'stats.dire.players'), 'dire');
-        updateTeamMembers(get(response, 'stats.radiant.players'), 'radiant');
+        if (get(response, 'stats.dire.players')) {
+          updateTeamMembers(get(response, 'stats.dire.players'), 'dire');
+          updateTeamMembers(get(response, 'stats.radiant.players'), 'radiant');
+        } else {
+          updateTeamMembers(get(response, 'stats.dire.players'), 'dire');
+          updateTeamMembers(get(response, 'stats.radiant.players'), 'radiant');
+        }
+        if (get(response, 'stats.radiantWon') === true) {
+          setRadiantWon(1);
+        } else if (get(response, 'stats.radiantWon') === null) {
+          setRadiantWon(0);
+        } else {
+          setRadiantWon(2);
+        }
         if (get(response, 'stats.dire.players[0].heroAvatarUrl')) {
           onPageChanged(3);
           return;
@@ -176,15 +191,16 @@ const LobbyStartScreen = ({ navigation }) => {
     }, 500);
   });
 
-  const startTimer = () => {
+  const startTimer = useCallback(() => {
     BackgroundTimer.runBackgroundTimer(() => {
       checkMatchStatus();
     }, 5000);
-  };
+  });
 
   useEffect(() => {
     // Start Timer for preparing lobby
     startTimer();
+
     return () => {
       BackgroundTimer.stopBackgroundTimer();
     };
@@ -256,8 +272,6 @@ const LobbyStartScreen = ({ navigation }) => {
             direPlayer={direPlayer}
             radiantPlayer={radiantPlayer}
             selectedTeam={selectedTeam}
-            direTeam={direTeam}
-            radiantTeam={radiantTeam}
             currentPage={currentPage}
           />
           {/* <PageScreen
@@ -315,17 +329,21 @@ const LobbyStartScreen = ({ navigation }) => {
               </View>
             )}
             {!matchType && direTeam && radiantTeam && (
-              <View style={styles.teamItemContainer}>
-                <MatchTeamDetailComponent teamMember={selectedTeam ? direTeam : radiantTeam} />
-                <MatchSummaryComponent match={match} />
-              </View>
+              <ScrollView
+                style={styles.flexContainer}
+                contentContainerStyle={styles.reportModal}
+                showsVerticalScrollIndicator={false}
+              >
+                <MatchTeamDetailComponent
+                  selectedTeam={selectedTeam}
+                  teamMember={selectedTeam ? direTeam || [] : radiantTeam || []}
+                  radiantWon={radiantWon}
+                />
+                <MatchSummaryComponent currentPage={currentPage} match={match} />
+              </ScrollView>
             )}
           </View>
         </ScrollView>
-        {/* <TouchableOpacity style={styles.reportContainer}>
-          <Text style={styles.profileText}>REPORT ISSUE</Text>
-          <Image source={arrowRight} style={styles.arrowImage} resizeMode="contain" />
-        </TouchableOpacity> */}
       </View>
       <Modal
         useNativeDriver

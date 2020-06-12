@@ -63,16 +63,19 @@ const HeaderComponent = ({
   rightStyle = {},
   leftIconStyle = {},
   rightIconStyle = {},
+  outContainer = {},
+  innerContainer = {},
+  children = null,
 }) => (
-  <View style={styles.container}>
-    <View style={styles.innerContainer}>
+  <View style={[styles.container, outContainer]}>
+    <View style={[styles.innerContainer, innerContainer]}>
       <TouchableOpacity
         onPress={leftClick}
         style={[styles.headerButton, leftIcon && styles.primaryBackground, leftStyle]}
       >
         {leftIcon && (<Image source={leftIcon} style={[styles.headerIcon, leftIconStyle]} resizeMode="contain" />)}
       </TouchableOpacity>
-      <Text style={styles.titleStyle}>{label}</Text>
+      {children || <Text style={styles.titleStyle}>{label}</Text>}
       <TouchableOpacity
         onPress={rightClick}
         style={[styles.headerButton, rightIcon && styles.primaryBackground, rightStyle]}
